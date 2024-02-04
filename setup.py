@@ -1,4 +1,4 @@
-"""Setup for IAA XBlock."""
+"""Setup for Iterative XBlock."""
 
 
 import os
@@ -23,26 +23,26 @@ def package_data(pkg, roots):
 
 
 setup(
-    name='iaaxblock',
+    name='iterativexblock',
     version='0.1',
-    description='Documento iterativo',
+    description='An XBlock that saves answers and allows them to be accessed at other instances of the XBlock in a course.',
     license='GPL 3.0',
     packages=[
-        'iaaxblock',
+        'iterativexblock',
     ],
     install_requires=[
         'XBlock',
     ],
     entry_points={
         'xblock.v1': [
-            'iaaxblock = iaaxblock:IterativeAssessedActivityXBlock',
+            'iterativexblock = iterativexblock:IterativeXBlock',
         ],
         "lms.djangoapp": [
-            "iaaxblock = iaaxblock.apps:IAAAppConfig",
+            "iterativexblock = iterativexblock.apps:IterativeXBlockAppConfig",
         ],
         "cms.djangoapp": [
-            "iaaxblock = iaaxblock.apps:IAAAppConfig",
+            "iterativexblock = iterativexblock.apps:IterativeXBlockAppConfig",
         ]
     },
-    package_data=package_data("iaaxblock", ["static", "public"]),
+    package_data=package_data("iterativexblock", ["static", "public"]),
 )

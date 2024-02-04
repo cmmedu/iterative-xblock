@@ -12,7 +12,7 @@ loader = ResourceLoader(__name__)
 _ = lambda text: text
 
 @XBlock.needs('i18n')
-class IterativeAssessedActivityXBlock(XBlock):
+class IterativeXBlock(XBlock):
     """
     This XBlock allows to create open response activities with multiples steps, with the possibility for instructors
     to provide feedback to each submission.
@@ -315,7 +315,7 @@ class IterativeAssessedActivityXBlock(XBlock):
 
             
             template = loader.render_django_template(
-                'public/html/iaaxblock_instructor.html',
+                'public/html/iterativexblock_instructor.html',
                 context=Context(context),
                 i18n_service=self.runtime.service(self, 'i18n'),
             )
@@ -323,10 +323,10 @@ class IterativeAssessedActivityXBlock(XBlock):
                 template,
                 initialize_js_func='IterativeAssessedActivityInstructor',
                 additional_css=[
-                    'public/css/iaaxblock.css',
+                    'public/css/iterativexblock.css',
                 ],
                 additional_js=[
-                    'public/js/iaaxblock_instructor.js'
+                    'public/js/iterativexblock_instructor.js'
                 ],
                 settings=({
                     "activity_name": self.activity_name,
@@ -448,7 +448,7 @@ class IterativeAssessedActivityXBlock(XBlock):
                     )
 
             template = loader.render_django_template(
-                'public/html/iaaxblock_student.html',
+                'public/html/iterativexblock_student.html',
                 context=Context(context),
                 i18n_service=self.runtime.service(self, 'i18n'),
             )
@@ -456,10 +456,10 @@ class IterativeAssessedActivityXBlock(XBlock):
                 template,
                 initialize_js_func='IterativeAssessedActivityStudent',
                 additional_css=[
-                    'public/css/iaaxblock.css',
+                    'public/css/iterativexblock.css',
                 ],
                 additional_js=[
-                    'public/js/iaaxblock_student.js',
+                    'public/js/iterativexblock_student.js',
                 ],
                 settings=({
                     "location": str(self.location).split('@')[-1], 
@@ -523,7 +523,7 @@ class IterativeAssessedActivityXBlock(XBlock):
             }
         )
         template = loader.render_django_template(
-            'public/html/iaaxblock_studio.html',
+            'public/html/iterativexblock_studio.html',
             context=Context(context),
             i18n_service=self.runtime.service(self, 'i18n'),
         )
@@ -531,7 +531,7 @@ class IterativeAssessedActivityXBlock(XBlock):
             template,
             initialize_js_func='IterativeAssessedActivityStudio',
             additional_js=[
-                'public/js/iaaxblock_studio.js',
+                'public/js/iterativexblock_studio.js',
             ],
         )
         return frag
@@ -614,7 +614,7 @@ class IterativeAssessedActivityXBlock(XBlock):
                 'location': str(self.location).split('@')[-1]
             }
         template = loader.render_django_template(
-            'public/html/iaaxblock_author.html',
+            'public/html/iterativexblock_author.html',
             context=Context(js_context),
             i18n_service=self.runtime.service(self, 'i18n'),
         )
@@ -622,10 +622,10 @@ class IterativeAssessedActivityXBlock(XBlock):
             template,
             initialize_js_func='IterativeAssessedActivityAuthor',
             additional_css=[
-                'public/css/iaaxblock.css',
+                'public/css/iterativexblock.css',
             ],
             additional_js=[
-                'public/js/iaaxblock_author.js',
+                'public/js/iterativexblock_author.js',
             ],
         )
         return frag
@@ -846,7 +846,7 @@ class IterativeAssessedActivityXBlock(XBlock):
         """A canned scenario for display in the workbench."""
         return [
             ("IterativeAssessedActivityXBlock",
-             """<iaaxblock/>
+             """<iterativexblock/>
              """)
         ]
 

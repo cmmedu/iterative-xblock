@@ -13,41 +13,22 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='IAAActivity',
+            name='IterativeXBlockQuestion',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('id_course', models.TextField()),
-                ('activity_name', models.TextField()),
+                ('id_question', models.TextField()),
             ],
         ),
         migrations.CreateModel(
-            name='IAAStage',
+            name='IterativeXBlockAnswer',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('stage_label', models.TextField()),
-                ('stage_number', models.IntegerField()),
-                ('id_activity', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='iaa_activity', to='iaaxblock.iaaactivity')),
-            ],
-        ),
-        migrations.CreateModel(
-            name='IAASubmission',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id_course', models.TextField()),
                 ('id_student', models.TextField()),
-                ('submission', models.TextField()),
-                ('submission_time', models.DateField()),
-                ('id_stage', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='iaa_stage_submission', to='iaaxblock.iaastage')),
-            ],
-        ),
-        migrations.CreateModel(
-            name='IAAFeedback',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('id_student', models.TextField()),
-                ('id_instructor', models.TextField()),
-                ('feedback', models.TextField()),
-                ('feedback_time', models.DateField()),
-                ('id_stage', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='iaa_stage_feedback', to='iaaxblock.iaastage')),
+                ('answer', models.TextField()),
+                ('timestamp', models.DateField()),
+                ('question', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='iterativexblock_question', to='iterativexblock.iterativexblockquestion')),
             ],
         ),
     ]

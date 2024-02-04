@@ -1,8 +1,6 @@
 from django.contrib import admin
 
-from .models import IAAActivity, IAAStage, IAASubmission, IAAFeedback
+from .models import IterativeXBlockQuestion, IterativeXBlockAnswer
 
-admin.site.register(IAAActivity)
-admin.site.register(IAAStage)
-admin.site.register(IAASubmission)
-admin.site.register(IAAFeedback)
+admin.site.register(IterativeXBlockQuestion)
+admin.site.register(IterativeXBlockAnswer)

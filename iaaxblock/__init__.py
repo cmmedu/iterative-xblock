@@ -1,1 +1,1 @@
-from .iaaxblock import IterativeAssessedActivityXBlock
+from .iterativexblock import IterativeXBlock

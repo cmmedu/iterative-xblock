@@ -1,8 +1,8 @@
 from django.apps import AppConfig
 from openedx.core.djangoapps.plugins.constants import PluginSettings, ProjectType, SettingsType
 
-class IAAAppConfig(AppConfig):
-    name = 'iaaxblock'
+class IterativeXBlockAppConfig(AppConfig):
+    name = 'iterativexblock'
 
     plugin_app = {
         PluginSettings.CONFIG: {

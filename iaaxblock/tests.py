@@ -1,5 +1,5 @@
 """
-Module To Test IAA XBlock
+Module To Test Iterative XBlock
 """
 import json
 import pytest
@@ -9,7 +9,7 @@ from mock import MagicMock, Mock
 
 from xblock.field_data import DictFieldData
 
-from .iaaxblock import IterativeAssessedActivityXBlock
+from .iterativexblock import IterativeAssessedActivityXBlock
 from .models import IAAActivity, IAAStage, IAAFeedback, IAASubmission
 import json
 COURSE_ID = "some_course_id"
