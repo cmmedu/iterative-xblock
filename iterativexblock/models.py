@@ -4,6 +4,7 @@ from django.db import models
 class IterativeXBlockQuestion(models.Model):
 
     id_course = models.TextField()
+    id_xblock = models.TextField()
     id_question = models.TextField()
 
 

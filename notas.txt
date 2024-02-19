@@ -1,0 +1,65 @@
+- Título bloque
+- Estilo
+- Mensaje de sin respuesta
+- Número de columnas (1-4)
+- Texto botón Enviar (si hay al menos un input)
+- Habilitar descarga como PDF/docx
+
+Para cada bloque:
+
+- Tipo
+- Contenido (texto, pre-respuesta, texto botón)
+
+
+
+
+FLUJO - Crear XBlock
+
+- Validar formulario (sino, error 101)
+- Consultar preguntas existentes
+- Revisar que no se esté creando una pregunta existente en otro XBlock (sino, error 102)
+
+
+FLUJO - Editar XBlock
+
+- Cargar formulario
+- Validar formulario (sino, error 201)
+- Consultar preguntas existentes
+- Revisar que no se esté creando una pregunta existente en otro XBlock (sino, error 202)
+
+
+FLUJO - Duplicar XBlock (studio_post_duplicate)
+
+- Agregar _c001 al id de cada pregunta (o aumentar si corresponde)
+- Revisar si existe (sino, +1 y revisar de nuevo en loop)
+- Crear preguntas en DB
+
+FLUJO - Eliminar XBlock (ignorar?)
+
+
+FLUJO - Cargar XBlock
+
+- Revisar que existan las preguntas (sino, error 301)
+- Cargar respuestas
+- Cargar contenido del XBlock
+
+
+
+FLUJO - Responder XBlock
+
+- Revisar si existen las preguntas (sino, error 401)
+- Crear respuestas en DB
+
+
+
+
+????
+
+- Eliminar preguntas al borrar el XBlock
+
+
+****
+
+
+- Si al importar un curso no se ejecutan las funciones post_studio,
+entonces eliminar el error 301 y reemplazar por crear DB.

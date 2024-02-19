@@ -2,7 +2,7 @@ import json
 import pkg_resources
 from xblock.core import XBlock
 from django.template.context import Context
-from xblock.fields import Integer, String, Scope, Boolean, Float
+from xblock.fields import Integer, String, Scope, Boolean, Float, Dict
 from xblockutils.resources import ResourceLoader
 from xblock.fragment import Fragment
 import datetime
@@ -14,117 +14,69 @@ _ = lambda text: text
 @XBlock.needs('i18n')
 class IterativeXBlock(XBlock):
     """
-    This XBlock allows to create open response activities with multiples steps, with the possibility for instructors
-    to provide feedback to each submission.
+    This XBlock allows to create open response activities whose user answers
+    can be later retrieved at other instances of this XBlock.
     """
 
     display_name = String(
         display_name=_("Display Name"),
         help=_("Display name for this module"),
-        default="Documento iterativo",
+        default="Iterative XBlock",
         scope=Scope.settings,
     )
 
+    configured = Boolean(
+        default=False,
+        scope=Scope.settings,
+        help="Wether this XBlock has been set up or not."
+    )
+
     title = String(
-        default="Iterative Assessed Activity",
+        default="Iterative XBlock",
         scope=Scope.settings,
         help="Title of this activity."
     )
 
-    activity_name = String(
-        default="",
+    style = String(
+        default="base",
+        values=["base", "redfid"],
         scope=Scope.settings,
-        help="Unique name of this activity within this course."
+        help="Style of this block."
     )
 
-    block_type = String(
-        default="none",
-        values=["display", "full", "summary", "none"],
+    n_columns = Integer(
+        default=1,
         scope=Scope.settings,
-        help="Variant of this block."
+        help="Number of columns of this activity."
     )
 
-    activity_stage = String(
-        default="",
+    no_answer_message = String(
+        default="You have not answered this question yet.",
         scope=Scope.settings,
-        help="Stage of this activity."
+        help="Message to be shown to the user when a question has not been answered yet."
     )
 
-    stage_label = String(
-        default="",
-        scope=Scope.settings,
-        help="Label of this stage, shown after the title."
-    )
-
-    question = String(
-        default="",
-        scope=Scope.settings,
-        help="Question shown before the text input."
-    )
-
-    min_length = Integer(
-        default=100,
-        scope=Scope.settings,
-        help="Minimum length required for submissions."
-    )
-
-    activity_previous = Boolean(
+    enable_download = Boolean(
         default=False,
         scope=Scope.settings,
-        help="Wether to show a previous student submission or not."
+        help="Wether to shown the download buttons or not."
     )
 
-    activity_name_previous = String(
-        default="",
+    force_all_answers = Boolean(
+        default=False,
         scope=Scope.settings,
-        help="Activity of the shown submission."
+        help="Wether to shown the download buttons or not."
     )
 
-    activity_stage_previous = String(
-        default="",
+    content = Dict(
+        default={},
         scope=Scope.settings,
-        help="Stage of the shown submission."
-    )
-
-    display_title = String(
-        default="",
-        scope=Scope.settings,
-        help="Title shown before the shown submission."
+        help="Content of this XBlock: texts, questions and references."
     )
 
     score = Float(
         default=0.0,
         scope=Scope.user_state,
-    )
-
-    summary_type = String(
-        default="section",
-        scope=Scope.settings,
-        help="Wether it is a 'section' or 'full' summary."
-    )
-
-    summary_visibility = String(
-        default="all",
-        scope=Scope.settings,
-        help="Who can see the summary."
-    )
-
-    summary_section = String(
-        default="",
-        scope=Scope.settings,
-        help="Name of the section to summarize."
-    )
-
-    summary_text = String(
-        default="",
-        scope=Scope.settings,
-        help="Text shown before the summary."
-    )
-
-    summary_list = String(
-        default="",
-        scope=Scope.settings,
-        help="Stages to include in the summary."
     )
 
     has_author_view = True
@@ -146,7 +98,6 @@ class IterativeXBlock(XBlock):
         additional_js=[],
         settings={}
     ):
-        #  pylint: disable=dangerous-default-value, too-many-arguments
         """
         Creates a fragment for display.
         """
@@ -163,21 +114,19 @@ class IterativeXBlock(XBlock):
     
 
     def clear_student_state(self, user_id, course_id, item_id, requesting_user_id):
-        from .models import IAAActivity, IAAStage, IAASubmission, IAAFeedback
+        from .models import IterativeXBlockQuestion, IterativeXBlockAnswer
         from common.djangoapps.student.models import user_by_anonymous_id
 
         id_student = user_by_anonymous_id(user_id).id
-        activity = IAAActivity.objects.get(id_course=self.course_id, activity_name=self.activity_name)
-        stage = IAAStage.objects.get(activity=activity, stage_number=self.activity_stage)
-        submissions = IAASubmission.objects.filter(stage=stage, id_student=id_student)
-        feedbacks = IAAFeedback.objects.filter(stage=stage, id_student=id_student)
-        for submission in submissions:
-            submission.delete()
-        for feedback in feedbacks:
-            feedback.delete()
+        for id_question in get_questions(self.content):
+            question = IterativeXBlockQuestion.objects.get(id_course=self.course_id, id_xblock=self.scope_ids.usage_id, id_question=id_question)
+            answers = IterativeXBlockAnswer.objects.filter(question=question, id_student=id_student)
+            for answer in answers:
+                answer.delete()
 
 
     def studio_post_duplicate(self, store, source_item):
+        #pendiente
         from .models import IAAActivity, IAAStage
         if source_item.block_type == "full":
             item = IAAActivity.objects.last()
@@ -190,332 +139,81 @@ class IterativeXBlock(XBlock):
         return True
 
 
-    def iaa_delete(self):
-        from .models import IAAActivity, IAAStage, IAASubmission, IAAFeedback
-        if self.block_type == "full":
-            id_course = self.course_id
-            id_student = self.scope_ids.user_id
-            activity = IAAActivity.objects.get(id_course=id_course, activity_name=self.activity_name)
-            stage = IAAStage.objects.get(activity=activity, stage_number=self.activity_stage)
-            current_submissions = IAASubmission.objects.filter(stage=stage, id_student=id_student).all()
-            for submission in current_submissions:
-                submission.delete()
-            current_feedbacks = IAAFeedback.objects.filter(stage=stage, id_student=id_student).all()
-            for feedback in current_feedbacks:
-                feedback.delete()
-            stage.delete()
-            all_stages = IAAStage.objects.filter(activity=activity).all()
-            if len(all_stages) == 0:
-                activity.delete()
-
-
     def student_view(self, context={}):
-        """
-        Vista estudiante
-        """
-        from .models import IAAActivity, IAAStage, IAASubmission, IAAFeedback
+        from .models import IterativeXBlockQuestion, IterativeXBlockAnswer
         from django.contrib.auth.models import User
 
-        indicator_class = self.get_indicator_class()
-
-        # Staff
         if getattr(self.runtime, 'user_is_staff', False):
-
-            id_course = self.course_id
-            id_instructor = self.scope_ids.user_id
-
-            if self.block_type == "none":
-                context.update(
-                    {
-                        "title": self.title,
-                        "block_type": self.block_type,
-                        'location': str(self.location).split('@')[-1],
-                        'indicator_class': indicator_class,
-                    }
-                )
-
-            elif self.block_type == "full":
-                current_activity = IAAActivity.objects.get(id_course=id_course, activity_name=self.activity_name)
-                enrolled = User.objects.filter(courseenrollment__course_id=self.course_id,courseenrollment__is_active=1).order_by('id').values('id' ,'first_name', 'last_name', 'email')
-                students = []
-                student_names = [x["first_name"] + " " + x["last_name"] for x in enrolled]
-                student_ids = [x["id"] for x in enrolled]
-                current_stage = IAAStage.objects.get(activity=current_activity, stage_number=self.activity_stage)
-                for i in range(len(student_names)):
-                    submission = IAASubmission.objects.filter(stage=current_stage, id_student=student_ids[i]).values('id_student', 'submission', 'submission_time')
-                    feedback = IAAFeedback.objects.filter(stage=current_stage, id_student=student_ids[i], id_instructor=id_instructor).values('id_student', 'feedback', 'feedback_time')
-                    if len(submission) == 0:
-                        this_submission = ""
-                        this_submission_time = ""
-                    else:
-                        this_submission = submission[0]["submission"]
-                        this_submission_time = str(submission[0]["submission_time"])
-                    if len(feedback) == 0:
-                        this_feedback = ""
-                        this_feedback_time = ""
-                    else:
-                        this_feedback = feedback[0]["feedback"]
-                        this_feedback_time = str(feedback[0]["feedback_time"])
-                    students.append((student_ids[i], student_names[i], this_submission, this_submission_time, this_feedback, this_feedback_time))
-                context.update(
-                    {
-                        "title": self.title,
-                        "block_type": self.block_type,
-                        "activity_name": self.activity_name,
-                        "activity_stage": self.activity_stage,
-                        "stage_label": self.stage_label,
-                        "question": self.question,
-                        "min_length": self.min_length,
-                        "students": students,
-                        'location': str(self.location).split('@')[-1],
-                        'indicator_class': indicator_class,
-                    }
-                )
-
-            elif self.block_type == "display":
-
-                context.update(
-                    {
-                        "title": self.title,
-                        "block_type": self.block_type,
-                        'location': str(self.location).split('@')[-1],
-                        'indicator_class': indicator_class,
-                    }
-                )
-
-            elif self.block_type == "summary":
-
-                enrolled = User.objects.filter(courseenrollment__course_id=self.course_id,courseenrollment__is_active=1).order_by('id').values('id' ,'first_name', 'last_name', 'email')
-                students = []
-                student_names = [x["first_name"] + " " + x["last_name"] for x in enrolled]
-                student_ids = [x["id"] for x in enrolled]
-                for i in range(len(student_names)):
-                    students.append((student_ids[i], student_names[i]))
-
-                context.update(
-                    {
-                        "title": self.title,
-                        "block_type": self.block_type,
-                        'location': str(self.location).split('@')[-1],
-                        'indicator_class': indicator_class,
-                        "students": students
-                    }
-                )
-            
-            else:
-
-                context.update(
-                    {
-                        "title": self.title,
-                        "block_type": self.block_type,
-                        'location': str(self.location).split('@')[-1],
-                        'indicator_class': indicator_class
-                    }
-                )
-
-            
-            template = loader.render_django_template(
-                'public/html/iterativexblock_instructor.html',
-                context=Context(context),
-                i18n_service=self.runtime.service(self, 'i18n'),
-            )
-            frag = self.build_fragment(
-                template,
-                initialize_js_func='IterativeAssessedActivityInstructor',
-                additional_css=[
-                    'public/css/iterativexblock.css',
-                ],
-                additional_js=[
-                    'public/js/iterativexblock_instructor.js'
-                ],
-                settings=({
-                    "activity_name": self.activity_name,
-                    "summary_text": self.summary_text,
-                    "summary_list": self.summary_list
-                })
-            )
-            if self.block_type == "summary":
-                frag.add_javascript_url("https://unpkg.com/docx@7.1.0/build/index.js")
-                frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js")
-            return frag
-
-        
-        
-        # Student
+            return self.instructor_view(self, context)
         else:
-            if self.block_type == "none":
-                context.update(
-                    {
-                        "block_type": self.block_type
-                    }
-                )
-            else:
-                id_student = self.scope_ids.user_id
-                id_course = self.course_id
+            return self.learner_view(self, context)
 
-                if self.block_type == "full":
-                    current_activity = IAAActivity.objects.get(id_course=id_course, activity_name=self.activity_name)
-                    current_stage = IAAStage.objects.get(activity=current_activity, stage_number=self.activity_stage)
-                    feedbacks = [(x["id_instructor"], x["feedback"], x["feedback_time"]) for x in IAAFeedback.objects.filter(stage=current_stage, id_student=id_student).values('id_instructor', 'feedback', 'feedback_time')]
-                    try:
-                        current_submission = IAASubmission.objects.get(stage=current_stage, id_student=id_student)
-                        db_submission = current_submission.submission
-                        db_submission_time = current_submission.submission_time
-                    except:
-                        db_submission = ""
-                        db_submission_time = ""
-                    context.update(
-                        {
-                            "title": self.title,
-                            "block_type": self.block_type,
-                            "activity_name_previous": self.activity_name_previous,
-                            "activity_stage_previous": self.activity_stage_previous,
-                            "activity_previous": self.activity_previous,
-                            "display_title": self.display_title,
-                            "activity_name": self.activity_name,
-                            "activity_stage": self.activity_stage,
-                            "submission": db_submission.replace("&", "&amp;").replace(">", "&gt;").replace("<", "&lt;"),
-                            "submission_time": db_submission_time,
-                            "stage_label": self.stage_label,
-                            "question": self.question,
-                            "min_length": self.min_length,
-                            "feedbacks": feedbacks,
-                            'location': str(self.location).split('@')[-1],
-                            'indicator_class': indicator_class,
-                        }
-                    )
 
-                elif self.block_type == "display":
-                    if self.score != 1:
-                        self.score = 1
-                        self.runtime.publish(
-                            self,
-                            'grade',
-                            {
-                                'value': 1,
-                                'max_value': 1
-                            }
-                        )
-                    context.update(
-                        {
-                            "title": self.title,
-                            "block_type": self.block_type,
-                            "activity_name_previous": self.activity_name_previous,
-                            "activity_stage_previous": self.activity_stage_previous,
-                            "display_title": self.display_title,
-                            'location': str(self.location).split('@')[-1],
-                            'indicator_class': indicator_class,
-                        }
-                    )
+    def learner_view(self, context={}):
+        id_student = self.scope_ids.user_id
+        context.update(
+            {
+                "title": self.title
+            }
+        )
+        template = loader.render_django_template(
+            'public/html/iterativexblock_student.html',
+            context=Context(context),
+            i18n_service=self.runtime.service(self, 'i18n'),
+        )
+        frag = self.build_fragment(
+            template,
+            initialize_js_func='IterativeAssessedActivityStudent',
+            additional_css=[
+                'public/css/iterativexblock_{}.css'.format(self.style),
+            ],
+            additional_js=[
+                'public/js/iterativexblock_student.js',
+            ],
+            settings={
+                "location": str(self.location).split('@')[-1],
+                "user_id": id_student,
+                "title": self.title, 
+            }
+        )
+        return frag
+    
 
-                elif self.block_type == "summary":
-                    if self.score != 1:
-                        self.score = 1
-                        self.runtime.publish(
-                            self,
-                            'grade',
-                            {
-                                'value': 1,
-                                'max_value': 1
-                            }
-                        )
-                    current_activity = IAAActivity.objects.get(id_course=id_course, activity_name=self.activity_name)
-                    summary = []
-                    stages_list = IAAStage.objects.filter(activity=current_activity).order_by("stage_number").all()
-                    for stage in stages_list:
-                        if stage.stage_number in self.summary_list.split(","):
-                            submission = IAASubmission.objects.filter(stage=stage, id_student=id_student).values("submission", "submission_time")
-                            if len(submission) == 0:
-                                this_summary_submission = "No se ha respondido aún."
-                                this_summary_submission_time = "—"
-                            else:
-                                this_summary_submission = submission[0]["submission"]
-                                this_summary_submission_time = str(submission[0]["submission_time"])
-                            summary.append((stage.stage_number, stage.stage_label, this_summary_submission, this_summary_submission_time))
-                        
-                    context.update(
-                        {
-                            "title": self.title,
-                            "block_type": self.block_type,
-                            "activity_name": self.activity_name,
-                            "summary_text": self.summary_text,
-                            "summary_list": self.summary_list.split(","),
-                            "summary": summary,
-                            "summary_visibility": self.summary_visibility,
-                            'indicator_class': indicator_class,
-                            'context': json.dumps({"summary": summary})
-                        }
-                    )
-
-            template = loader.render_django_template(
-                'public/html/iterativexblock_student.html',
-                context=Context(context),
-                i18n_service=self.runtime.service(self, 'i18n'),
-            )
-            frag = self.build_fragment(
-                template,
-                initialize_js_func='IterativeAssessedActivityStudent',
-                additional_css=[
-                    'public/css/iterativexblock.css',
-                ],
-                additional_js=[
-                    'public/js/iterativexblock_student.js',
-                ],
-                settings=({
-                    "location": str(self.location).split('@')[-1], 
-                    "user_id": id_student, 
-                    "summary": summary, 
-                    "title": self.title, 
-                    "activity_name": self.activity_name, 
-                    "summary_text": self.summary_text, 
-                    "summary_list": self.summary_list,
-                    "summary_type": self.summary_type,
-                    "summary_visibility": self.summary_visibility,
-                    "summary_section": self.summary_section
-                } if self.block_type == "summary" else {"block_type": self.block_type, "location": str(self.location).split('@')[-1], "min_length": self.min_length})
-            )
-            if self.block_type == "summary":
-                frag.add_javascript_url("https://unpkg.com/docx@7.1.0/build/index.js")
-                frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js")
-            return frag
+    def instructor_view(self, context={}):
+        id_student = self.scope_ids.user_id
+        context.update(
+            {
+                "title": self.title
+            }
+        )
+        template = loader.render_django_template(
+            'public/html/iterativexblock_student.html',
+            context=Context(context),
+            i18n_service=self.runtime.service(self, 'i18n'),
+        )
+        frag = self.build_fragment(
+            template,
+            initialize_js_func='IterativeAssessedActivityStudent',
+            additional_css=[
+                'public/css/iterativexblock_{}.css'.format(self.style),
+            ],
+            additional_js=[
+                'public/js/iterativexblock_student.js',
+            ],
+            settings={
+                "location": str(self.location).split('@')[-1],
+                "user_id": id_student,
+                "title": self.title, 
+            }
+        )
+        return frag
 
 
     def studio_view(self, context):
-        """
-        Create a fragment used to display the edit view in the Studio.
-        """
         from .models import IAAActivity, IAAStage
         id_course = self.course_id
-        activities_no_stage = [x for x in IAAActivity.objects.filter(id_course=id_course).all()]
-        activities = []
-        for i in range(len(activities_no_stage)):
-            activity = activities_no_stage[i]
-            stages_list = []
-            labels_list = []
-            for x in IAAStage.objects.filter(activity=activity).order_by("stage_number").values("stage_number", "stage_label"):
-                stages_list.append(x["stage_number"])
-                labels_list.append(x["stage_label"])
-            if len(stages_list) != 0:
-                stages = ",".join(stages_list)
-                labels = "###".join(labels_list)
-            activities.append([activity.id, activity.activity_name, stages, labels])
         js_context = {
-            "title": self.title,
-            "activity_name": self.activity_name,
-            "block_type": self.block_type,
-            "activity_stage": self.activity_stage,
-            "stage_label": self.stage_label,
-            "question": self.question,
-            "min_length": self.min_length,
-            "display_title": self.display_title,
-            "activity_name_previous": self.activity_name_previous,
-            "activity_stage_previous": self.activity_stage_previous,
-            "summary_type": self.summary_type,
-            "summary_section": self.summary_section,
-            "summary_visibility": self.summary_visibility,
-            "summary_text": self.summary_text,
-            "summary_list": self.summary_list,
-            "activities": json.dumps(activities)
+            "title": self.title
         }
         context.update(
             {
@@ -538,10 +236,6 @@ class IterativeXBlock(XBlock):
 
 
     def author_view(self, context={}):
-        """
-        Vista de autor
-        """
-
         indicator_class = self.get_indicator_class()
         if self.block_type == "none":
             js_context = {
@@ -636,83 +330,44 @@ class IterativeXBlock(XBlock):
         """
         Called when submitting the form in Studio.
         """
-        from .models import IAAActivity, IAAStage, IAASubmission, IAAFeedback
+        from .models import IterativeXBlockQuestion, IterativeXBlockAnswer
 
         id_course = self.course_id
         id_student = self.scope_ids.user_id
-        previous_block_type = self.block_type
-        previous_activity_name = self.activity_name
-        previous_activity_stage = self.activity_stage
-        previous_stage_label = self.stage_label
+        self.content = data.get('content')
+        # agregar filtro por id_xblock distinto a este mismo
+        existing_question_ids = [x.id_question for x in IterativeXBlockQuestion.objects.filter(id_course=id_course).all()]
+        new_question_ids = [x.id_question for x in self.content.values()]
+        if bool(set(new_question_ids) & set(existing_question_ids)):
+            self.content = {}
+            return {'result': 'failed', 'error': 102}
+        if not self.configured:
+            for question in self.content.values():
+                if question.id_question is not None:
+                    # agregar id_xblock igual a este mismo
+                    new_question = IterativeXBlockQuestion(id_course=id_course, id_xblock=2, id_question=question.id_question)
+                    new_question.save()
+            self.configured = True
+        else:
+            new_questions = list(set(new_question_ids) - set(existing_question_ids))
+            deleted_questions = list(set(existing_question_ids) - set(new_question_ids))
+            for question in new_questions:
+                # agregar id_xblock igual a este mismo
+                new_question = IterativeXBlockQuestion(id_course=id_course, id_xblock=2, id_question=question.id_question)
+                new_question.save()
+            for question in deleted_questions:
+                # agregar id_xblock igual a este mismo
+                deleted_question = IterativeXBlockQuestion.objects.get(id_course=id_course, id_xblock=2, id_question=question.id_question)
+                deleted_answers = IterativeXBlockAnswer.objects.filter(id_course=id_course, question=deleted_question).all()
+                for answer in deleted_answers:
+                    answer.delete()
+                deleted_question.delete()
         self.title = data.get('title')
-        self.block_type = data.get('block_type')
-        if self.block_type == "full":
-            self.activity_name = data.get('activity_name')
-            self.activity_stage = data.get('activity_stage')
-            self.stage_label = data.get('stage_label')
-            self.question = data.get('question')
-            self.min_length = data.get('min_length')
-            self.summary_list = data.get('activity_stage')
-            if data.get('activity_previous') == "yes":
-                self.activity_previous = True
-                self.activity_name_previous = data.get('activity_name_previous')
-                self.activity_stage_previous = data.get('activity_stage_previous')
-                self.display_title = data.get('display_title')
-            else:
-                self.activity_previous = False
-                self.activity_name_previous = ""
-                self.activity_stage_previous = ""
-                self.display_title = ""
-        elif self.block_type == "display":
-            self.activity_name_previous = data.get('activity_name_previous')
-            self.activity_stage_previous = data.get('activity_stage_previous')
-            self.display_title = data.get('display_title')
-        elif self.block_type == "summary":
-            self.activity_name = data.get('activity_name')
-            self.summary_type = data.get('summary_type')
-            if self.summary_type == "section":
-                self.summary_section = data.get('summary_section')
-            self.summary_visibility = data.get('summary_visibility')
-            self.summary_text = data.get('summary_text')
-            self.summary_list = data.get('summary_list')
-
-        if self.block_type == "full":
-            if previous_block_type == "none":
-                try:
-                    activity = IAAActivity.objects.get(id_course=id_course, activity_name=self.activity_name)
-                except:
-                    activity = IAAActivity(id_course=id_course, activity_name=self.activity_name)
-                    activity.save()
-                new_stage = IAAStage(activity=activity, stage_label=self.stage_label, stage_number=self.activity_stage)
-                new_stage.save()
-            else:
-                previous_activity = IAAActivity.objects.get(id_course=id_course, activity_name=previous_activity_name)
-                try:
-                    current_activity = IAAActivity.objects.get(id_course=id_course, activity_name=self.activity_name)
-                except:
-                    current_activity = IAAActivity(id_course=id_course, activity_name=self.activity_name)
-                    current_activity.save()
-                if previous_activity_stage != self.activity_stage or previous_activity_name != data.get('activity_name'):
-                    previous_stage = IAAStage.objects.get(activity=previous_activity, stage_number=previous_activity_stage)
-                    new_stage = IAAStage(activity=current_activity, stage_label=self.stage_label, stage_number=self.activity_stage)
-                    new_stage.save()
-                    current_submissions = IAASubmission.objects.filter(stage=previous_stage, id_student=id_student).all()
-                    for submission in current_submissions:
-                        submission.stage = new_stage
-                        submission.save()
-                    current_feedbacks = IAAFeedback.objects.filter(stage=previous_stage, id_student=id_student).all()
-                    for feedback in current_feedbacks:
-                        feedback.stage = new_stage
-                        feedback.save()
-                    previous_stage.delete()
-                if previous_activity_name != data.get('activity_name'):
-                    previous_activity_all_stages = IAAStage.objects.filter(activity=previous_activity).values("stage_number")
-                    if len(previous_activity_all_stages) == 0:
-                        previous_activity.delete()
-                if previous_stage_label != self.stage_label:
-                    current_stage = IAAStage.objects.get(activity=current_activity, stage_number=self.activity_stage)
-                    current_stage.stage_label = self.stage_label
-                    current_stage.save()
+        self.style = data.get('style')
+        self.n_columns = data.get('n_columns')
+        self.no_answer_message = data.get('no_answer_message')
+        self.enable_download = data.get('enable_download')
+        self.force_all_answers = data.get('force_all_answers')
         return {'result': 'success'}
 
 

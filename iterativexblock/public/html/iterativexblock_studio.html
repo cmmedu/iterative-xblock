@@ -1,121 +1,46 @@
 <div class="wrapper-comp-settings is-active editor-with-buttons" id="settings-tab">
-    <meta id="context-iaa" data-context="{{context}}">
     <ul class="list-input settings-list">
         <li id="input_title" class="field comp-setting-entry is-set" hidden>
             <div class="wrapper-comp-setting">
-                <label class="label setting-label" for="title">Título del bloque</label>
+                <label class="label setting-label" for="title">Title</label>
                 <input class="input setting-input" name="title" id="title" value="" type="text" />
             </div>
         </li>
-        <li id="input_block_type" class="field comp-setting-entry is-set" hidden>
+        <li id="input_style" class="field comp-setting-entry is-set" hidden>
             <div class="wrapper-comp-setting">
-                <label class="label setting-label" for="block_type">Tipo de bloque</label>
-                <select id="block_type" class="block_type" name="block_type">
+                <label class="label setting-label" for="style">Style</label>
+                <select id="style" class="style" name="style">
                 </select>
             </div>
         </li>
-        <li id="input_activity_name" class="field comp-setting-entry is-set" hidden>
+        <li id="input_n_columns" class="field comp-setting-entry is-set" hidden>
             <div class="wrapper-comp-setting">
-                <label class="label setting-label" for="activity_name">Nombre de actividad</label>
-                <select class="activity_name" name="activity_name" id="activity_name">
-                </select>
+                <label class="label setting-label" for="n_columns">Columns</label>
+                <input class="input setting-input" name="n_columns" id="n_columns" value="" type="text" />
             </div>
         </li>
-        <li id="input_new_activity_name" class="field comp-setting-entry is-set" hidden>
+        <li id="input_no_answer_message" class="field comp-setting-entry is-set" hidden>
             <div class="wrapper-comp-setting">
-                <label class="label setting-label" for="new_activity_name">Nombre de nueva actividad</label>
-                <input class="input setting-input" name="new_activity_name" id="new_activity_name" value=""
-                    type="text" />
+                <label class="label setting-label" for="no_answer_message">No answer message</label>
+                <input class="input setting-input" name="no_answer_message" id="no_answer_message" value="" type="text" />
             </div>
         </li>
-        <li id="input_activity_stage" class="field comp-setting-entry is-set" hidden>
+        <li id="input_enable_download" class="field comp-setting-entry is-set" hidden>
             <div class="wrapper-comp-setting">
-                <label class="label setting-label" for="activity_stage">ID</label>
-                <input class="input setting-input" name="activity_stage" id="activity_stage" value="" type="text" />
-            </div>
-        </li>
-        <li id="input_stage_label" class="field comp-setting-entry is-set" hidden>
-            <div class="wrapper-comp-setting">
-                <label class="label setting-label" for="stage_label">Sección</label>
-                <input class="input setting-input" name="stage_label" id="stage_label" value="" type="text" />
-            </div>
-        </li>
-        <li id="input_question" class="field comp-setting-entry is-set" hidden>
-            <div class="wrapper-comp-setting">
-                <label class="label setting-label" for="question">Enunciado</label>
-                <input class="input setting-input" name="question" id="question" value="" type="text" />
-            </div>
-        </li>
-        <li id="input_min_length" class="field comp-setting-entry is-set" hidden>
-            <div class="wrapper-comp-setting">
-                <label class="label setting-label" for="min_length">Largo mínimo</label>
-                <input class="input setting-input" name="min_length" id="min_length" value="" type="text" />
-            </div>
-        </li>
-        <li id="input_activity_previous" class="field comp-setting-entry is-set" hidden>
-            <div class="wrapper-comp-setting">
-                <label class="label setting-label" for="activity_previous">¿Mostrar una respuesta anterior?</label>
-                <select id="activity_previous" class="activity_previous" name="activity_previous">
-                    <option value="yes">Sí</option>
+                <label class="label setting-label" for="enable_download">Enable download buttons?</label>
+                <select id="enable_download" class="enable_download" name="enable_download">
+                    <option value="yes">Yes</option>
                     <option value="no" selected>No</option>
                 </select>
             </div>
         </li>
-        <li id="input_activity_name_previous" class="field comp-setting-entry is-set" hidden>
+        <li id="input_force_all_answers" class="field comp-setting-entry is-set" hidden>
             <div class="wrapper-comp-setting">
-                <label class="label setting-label" for="activity_name_previous">Actividad de respuesta anterior</label>
-                <select id="activity_name_previous" class="activity_name_previous" name="activity_name_previous">
+                <label class="label setting-label" for="force_all_answers">Force all answers?</label>
+                <select id="force_all_answers" class="force_all_answers" name="force_all_answers">
+                    <option value="yes">Yes</option>
+                    <option value="no" selected>No</option>
                 </select>
-            </div>
-        </li>
-        <li id="input_activity_stage_previous" class="field comp-setting-entry is-set" hidden>
-            <div class="wrapper-comp-setting">
-                <label class="label setting-label" for="activity_stage_previous">ID de respuesta anterior</label>
-                <input class="input setting-input" name="activity_stage_previous" id="activity_stage_previous"
-                    type="text" />
-            </div>
-        </li>
-        <li id="input_display_title" class="field comp-setting-entry is-set" hidden>
-            <div class="wrapper-comp-setting">
-                <label class="label setting-label" for="display_title">Título de respuesta anterior</label>
-                <input class="input setting-input" name="display_title" id="display_title" value="" type="text" />
-            </div>
-        </li>
-        <li id="input_summary_type" class="field comp-setting-entry is-set" hidden>
-            <div class="wrapper-comp-setting">
-                <label class="label setting-label" for="summary_type">Tipo de resumen</label>
-                <select class="input setting-input" name="summary_type" id="summary_type">
-                    <option value="full">Completo</option>
-                    <option value="section">Sección</option>
-                </select>
-            </div>
-        </li>
-        <li id="input_summary_section" class="field comp-setting-entry is-set" hidden>
-            <div class="wrapper-comp-setting">
-                <label class="label setting-label" for="summary_section">Sección de resumen</label>
-                <select class="input setting-input" name="summary_section" id="summary_section">
-                </select>
-            </div>
-        </li>
-        <li id="input_summary_visibility" class="field comp-setting-entry is-set" hidden>
-            <div class="wrapper-comp-setting">
-                <label class="label setting-label" for="summary_visibility">Visibilidad de resumen</label>
-                <select class="input setting-input" name="summary_visibility" id="summary_visibility">
-                    <option value="instructors">Instructores</option>
-                    <option value="all">Instructores y alumnos</option>
-                </select>
-            </div>
-        </li>
-        <li id="input_summary_text" class="field comp-setting-entry is-set" hidden>
-            <div class="wrapper-comp-setting">
-                <label class="label setting-label" for="summary_text">Texto de resumen</label>
-                <input class="input setting-input" name="summary_text" id="summary_text" value="" type="textarea" />
-            </div>
-        </li>
-        <li id="input_summary_list" class="field comp-setting-entry is-set" hidden>
-            <div class="wrapper-comp-setting">
-                <label class="label setting-label" for="summary_list">IDs de resumen</label>
-                <input class="input setting-input" name="summary_list" id="summary_list" value="" type="textarea" />
             </div>
         </li>
     </ul>
@@ -128,7 +53,7 @@
                 <a href="#" class="button cancel-button">Cancel</a>
             </li>
             <li>
-                <p class="iaa-studio-error-msg"></p>
+                <p class="studio-error-msg"></p>
             </li>
         </ul>
     </div>
