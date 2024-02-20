@@ -1,95 +1,38 @@
-{% if block_type == 'summary' and summary_visibility == 'instructors' %}
-<div></div>
-{% else %}
-<div class="iaa-container_block xmodule_display xmodule_HtmlModule">
-    <div class="Reconociendo-RedFid" id="{{xblock.type}}{{location}}">
+<div class="iterative-xblock-container_block xmodule_display xmodule_HtmlModule">
+    <div class="iterative-xblock" id="{{xblock.type}}{{location}}">
         <div class="exptop">
-            <p class="recono-title">{{title}}</p>
+            <p class="iterative-xblock-title">{{title}}</p>
         </div>
         <div class="expmid">
-            <meta id="context-iaa" data-context="{{context}}">
-            {% if indicator_class == 'unanswered' %}
-            <div class="status {{ indicator_class }}" id="status_{{ location }}"></div>
-            {% else %}
-            <div class="status " id="status_{{ location }}"></div>
-            {% endif %}
-
-            {% if block_type == "none" %}
-            <div class="iaa-not-created">
-                <p class="centered">Esta actividad no se ha configurado correctamente.</p>
+            {% if not configured %}
+            <div class="iterative-xblock-not-created">
+                <p class="centered">This XBlock has not been configured yet.</p>
             </div>
             {% endif %}
-            {% if block_type == "display" %}
-            <meta id="context-iaa" data-context="{{context}}">
-            <div>
-                <p class="display-title">{{display_title}}</p>
-                <div id="{{location}}-display-button-div" class="display-button-div">
-                    <span id="{{location}}-display-button" class="iaa-display-button">Ver</span>
-                </div>
-                <div id="{{location}}-submission-previous" class="iaa-display-area"></div>
-            </div>
-            {% endif %}
-            {% if block_type == "full" %}
-            <meta id="context-iaa" data-context="{{context}}">
             <div>
                 {% if activity_previous %}
                 <div>
                     <p class="display-title"><b>{{display_title}}</b></p>
                     <div id="{{location}}-display-button-div" class="display-button-div">
-                        <span id="{{location}}-display-button" class="iaa-display-button">Ver</span>
+                        <span id="{{location}}-display-button" class="iterative-xblock-display-button">Ver</span>
                     </div>
-                    <div id="{{location}}-submission-previous" class="iaa-display-area"></div>
+                    <div id="{{location}}-submission-previous" class="iterative-xblock-display-area"></div>
                 </div>
                 {% endif %}
                 <p class="question"><b>{{question}}</b></p>
-                <textarea class="iaa-submission">{{submission}}</textarea>
+                <textarea class="iterative-xblock-submission">{{submission}}</textarea>
             </div>
-            <div class="action iaa-action">
-                <button class="iaa-submit submit Submit" data-checking="Enviando..." data-value="Enviar"
-                    aria-describedby="iaa_submit_{{ location }}">
-                    <span>Enviar</span>
+            <div class="action iterative-xblock-action">
+                <button class="iterative-xblock-submit submit Submit"
+                    aria-describedby="iterative-xblock_submit_{{ location }}">
+                    <span>Submit</span>
                 </button>
             </div>
-            {% if feedbacks %}
-            <div>
-                <p>¡Cuentas con feedback!</p>
-                <table class="iaa-table">
-                    <tr>
-                        <th>Feedback</th>
-                        <th>Fecha/Hora</th>
-                    </tr>
-                    {% for feedback in feedbacks %}
-                    <tr>
-                        <td>{{feedback.1}}</td>
-                        <td>{{feedback.2}}</td>
-                    </tr>
-                    {% endfor %}
-                </table>
-            </div>
-            {% endif %}
-            {% endif %}
-            {% if block_type == "summary" %}
-            <meta id="context-iaa" data-context="{{context}}">
-
-            {% if activity_name == "empty" %}
-            <div class="centered">Actividad no disponible.</div>
-            {% else %}
-            <div>
-                <p class="summary-text">{{summary_text}}</p>
-                <div class="display-button-div">
-                    <span id="iaa-summary-button" class="iaa-summary-button">Ver</span>
-                </div>
-                <div id="iaa-summary" class="iaa-summary-area"></div>
-            </div>
-
-            {% endif %}
-            {% endif %}
-            <div>
-                <p id="iaa-student-error-msg" class="iaa-error-msg"></p>
-                <p id="iaa-student-warning-msg" class="iaa-warning-msg"></p>
-                <p id="iaa-student-success-msg" class="iaa-success-msg"></p>
+            <div id="iterative-xblock-student-msg">
+                <p id="iterative-xblock-student-error-msg" class="iterative-xblock-error-msg"></p>
+                <p id="iterative-xblock-student-warning-msg" class="iterative-xblock-warning-msg"></p>
+                <p id="iterative-xblock-student-success-msg" class="iterative-xblock-success-msg"></p>
             </div>
         </div>
     </div>
 </div>
-{% endif %}

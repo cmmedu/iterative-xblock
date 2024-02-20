@@ -110,13 +110,14 @@ class IterativeXBlock(XBlock):
     def clear_student_state(self, user_id, course_id, item_id, requesting_user_id):
         from .models import IterativeXBlockQuestion, IterativeXBlockAnswer
         from common.djangoapps.student.models import user_by_anonymous_id
-
+        id_xblock = str(self.location).split('@')[-1]
         id_student = user_by_anonymous_id(user_id).id
-        for id_question in get_questions(self.content):
-            question = IterativeXBlockQuestion.objects.get(id_course=self.course_id, id_xblock=self.scope_ids.usage_id, id_question=id_question)
-            answers = IterativeXBlockAnswer.objects.filter(question=question, id_student=id_student)
-            for answer in answers:
-                answer.delete()
+        for id_question in [x.id_question for x in self.content.values()]:
+            if id_question is not None:
+                question = IterativeXBlockQuestion.objects.get(id_course=course_id, id_xblock=id_xblock, id_question=id_question)
+                answers = IterativeXBlockAnswer.objects.filter(question=question, id_student=id_student)
+                for answer in answers:
+                    answer.delete()
 
 
     def studio_post_duplicate(self, store, source_item):
@@ -141,6 +142,7 @@ class IterativeXBlock(XBlock):
 
 
     def learner_view(self, context={}):
+        id_student = self.scope_ids.user_id
         context = {
             "title": self.title,
             'location': str(self.location).split('@')[-1]
@@ -170,6 +172,7 @@ class IterativeXBlock(XBlock):
 
     def instructor_view(self, context={}):
         from django.contrib.auth.models import User
+        id_student = self.scope_ids.user_id
         context = {
             "title": self.title,
             'location': str(self.location).split('@')[-1]
@@ -246,12 +249,10 @@ class IterativeXBlock(XBlock):
         Called when submitting the form in Studio.
         """
         from .models import IterativeXBlockQuestion, IterativeXBlockAnswer
-
         id_course = self.course_id
-        id_student = self.scope_ids.user_id
+        id_xblock = str(self.location).split('@')[-1]
         self.content = data.get('content')
-        # agregar filtro por id_xblock distinto a este mismo
-        existing_question_ids = [x.id_question for x in IterativeXBlockQuestion.objects.filter(id_course=id_course).all()]
+        existing_question_ids = [x.id_question for x in IterativeXBlockQuestion.objects.filter(id_course=id_course, id_xblock__ne=id_xblock).all()]
         new_question_ids = [x.id_question for x in self.content.values()]
         if bool(set(new_question_ids) & set(existing_question_ids)):
             self.content = {}
@@ -259,21 +260,18 @@ class IterativeXBlock(XBlock):
         if not self.configured:
             for question in self.content.values():
                 if question.id_question is not None:
-                    # agregar id_xblock igual a este mismo
-                    new_question = IterativeXBlockQuestion(id_course=id_course, id_xblock=2, id_question=question.id_question)
+                    new_question = IterativeXBlockQuestion(id_course=id_course, id_xblock=id_xblock, id_question=question.id_question)
                     new_question.save()
             self.configured = True
         else:
             new_questions = list(set(new_question_ids) - set(existing_question_ids))
             deleted_questions = list(set(existing_question_ids) - set(new_question_ids))
             for question in new_questions:
-                # agregar id_xblock igual a este mismo
-                new_question = IterativeXBlockQuestion(id_course=id_course, id_xblock=2, id_question=question.id_question)
+                new_question = IterativeXBlockQuestion(id_course=id_course, id_xblock=id_xblock, id_question=question.id_question)
                 new_question.save()
             for question in deleted_questions:
-                # agregar id_xblock igual a este mismo
                 try:
-                    deleted_question = IterativeXBlockQuestion.objects.get(id_course=id_course, id_xblock=2, id_question=question.id_question)
+                    deleted_question = IterativeXBlockQuestion.objects.get(id_course=id_course, id_xblock=id_xblock, id_question=question.id_question)
                 except IterativeXBlockQuestion.DoesNotExist:
                     continue
                 deleted_answers = IterativeXBlockAnswer.objects.filter(id_course=id_course, question=deleted_question).all()
@@ -294,8 +292,8 @@ class IterativeXBlock(XBlock):
         Called when a student submits an answer to this XBlock.
         """
         from .models import IterativeXBlockQuestion, IterativeXBlockAnswer
-
         id_course = self.course_id
+        id_xblock = str(self.location).split('@')[-1]
         id_student = self.scope_ids.user_id
         if self.score != 0.0:
             return {"result": 'repeated'}
@@ -311,9 +309,8 @@ class IterativeXBlock(XBlock):
             )
             submission_time = datetime.datetime.now()
             for answer in data["answers"]:
-                # agregar id_xblock
                 try:
-                    question = IterativeXBlockQuestion.objects.get(id_course=id_course, id_xblock=2, id_question=answer["id_question"])
+                    question = IterativeXBlockQuestion.objects.get(id_course=id_course, id_xblock=id_xblock, id_question=answer["id_question"])
                 except IterativeXBlockQuestion.DoesNotExist:
                     # manejar este caso
                     continue
@@ -328,13 +325,12 @@ class IterativeXBlock(XBlock):
         Called when a student wants to see their previous submission.
         """
         from .models import IterativeXBlockQuestion, IterativeXBlockAnswer
-
         id_course = self.course_id
+        id_xblock = str(self.location).split('@')[-1]
         id_student = self.scope_ids.user_id
         id_question = data["id_question"]
-        # agregar id_xblock
         try:
-            question = IterativeXBlockQuestion.objects.get(id_course=id_course, id_xblock=2, id_question=id_question)
+            question = IterativeXBlockQuestion.objects.get(id_course=id_course, id_xblock=id_xblock, id_question=id_question)
         except IterativeXBlockQuestion.DoesNotExist:
             return {"result": 'failed', 'error': 501}
         try:

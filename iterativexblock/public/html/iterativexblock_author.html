@@ -1,120 +1,13 @@
-<div class="iaa-container_block xmodule_display xmodule_HtmlModule">
-    <div class="Reconociendo-RedFid" id="{{xblock.type}}{{location}}">
+<div class="iterative-xblock-container_block xmodule_display xmodule_HtmlModule">
+    <div class="iterative-xblock" id="{{xblock.type}}{{location}}">
         <div class="exptop">
-            <p class="recono-title">{{title}}</p>
+            <p class="iterative-xblock-title">{{title}}</p>
         </div>
         <div class="expmid">
-            {% if block_type == "none" %}
-            <p class="centered">Este XBlock aún no se ha configurado. No se verá en el LMS.</p>
-            {% endif %}
-
-
-            {% if block_type == "full" %}
-            {% if activity_previous %}
-            <p>Este XBlock mostrará al estudiante, la respuesta correspondiente a la siguiente instancia de actividad
-                iterativa:</p>
-            {% if activity_name_previous == "ERROR" %}
-            <p class="iaa-student-error-msg">ERROR: La instancia referenciada por este XBlock no está disponible. Por
-                favor, actualice desde Studio.</p>
+            {% if not configured %}
+            <p class="centered">This XBlock has not been configured yet.</p>
             {% else %}
-            <div>
-                <table class="iaa-table">
-                    <tr>
-                        <th><b>Actividad</b></th>
-                        <td>{{activity_name_previous}}</td>
-                    </tr>
-                    <tr>
-                        <th><b>ID</b></th>
-                        <td>{{activity_stage_previous}}</td>
-                    </tr>
-                    <tr>
-                        <th><b>Sección</b></th>
-                        <td>{{stage_label_previous}}</td>
-                    </tr>
-                </table>
-            </div>
-            {% endif %}
-            {% endif %}
-            <p>Este XBlock consiste en una instancia de actividad iterativa:</p>
-            <div>
-                <table class="iaa-table">
-                    <tr>
-                        <th><b>Actividad</b></th>
-                        <td>{{activity_name}}</td>
-                    </tr>
-                    <tr>
-                        <th><b>ID</b></th>
-                        <td>{{activity_stage}}</td>
-                    </tr>
-                    <tr>
-                        <th><b>Sección</b></th>
-                        <td>{{stage_label}}</td>
-                    </tr>
-                    <tr>
-                        <th><b>Enunciado</b></th>
-                        <td>{{question}}</td>
-                    </tr>
-                </table>
-            </div>
-            <p>Esta actividad cuenta actualmente con las siguientes fases:</p>
-            <div>
-                <table class="iaa-table">
-                    <tr>
-                        <th><b>ID</b></th>
-                        <th><b>Sección</b></th>
-                    </tr>
-                    {% for stage in stages %}
-                    <tr>
-                        <td>{{stage.0}}</td>
-                        <td>{{stage.1}}</td>
-                    </tr>
-                    {% endfor %}
-                </table>
-            </div>
-            <p>Los efectos de este XBlock se verán en el LMS.</p>
-            {% endif %}
-
-            {% if block_type == "display" %}
-            <p>Este XBlock mostrará al estudiante, la respuesta correspondiente a la siguiente instancia de problema
-                iterativo:</p>
-            {% if activity_name_previous == "ERROR" %}
-            <p class="iaa-student-error-msg">ERROR: La instancia referenciada por este XBlock no está disponible. Por
-                favor, actualice desde Studio.</p>
-            {% else %}
-            <div>
-                <table class="iaa-table">
-                    <tr>
-                        <th><b>Actividad</b></th>
-                        <td>{{activity_name_previous}}</td>
-                    </tr>
-                    <tr>
-                        <th><b>Fase</b></th>
-                        <td>{{activity_stage_previous}}</td>
-                    </tr>
-                    <tr>
-                        <th><b>Etiqueta</b></th>
-                        <td>{{stage_label_previous}}</td>
-                    </tr>
-                </table>
-            </div>
-            {% endif %}
-            {% endif %}
-            {% if block_type == "summary" %}
-            {% if activity_name == "empty" %}
-            <div class="centered">No se cuenta con actividades.</div>
-            {% else %}
-            <p>Este XBlock mostrará al {% if summary_visibility == "instructor" %}instructor{% else %}instructor y a los
-                alumnos{% endif %} todas las respuestas proporcionadas a la siguiente actividad de problema iterativo:
-            </p>
-            <div>
-                <table class="iaa-table">
-                    <tr>
-                        <th><b>Actividad</b></th>
-                        <td>{{activity_name}}</td>
-                    </tr>
-                </table>
-            </div>
-            {% endif %}
+            <p>Configured.</p>
             {% endif %}
         </div>
     </div>
