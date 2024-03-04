@@ -44,21 +44,21 @@ function IterativeXBlockStudio(runtime, element, settings) {
         if (data["display_message"].length > 100) {
             return "Display message must be less than 100 characters."
         }
-        if (data["displayed_message"] === "") {
-            return "Please provide a message for the display button when the answer is displayed."
-        }
-        if (data["displayed_message"].length > 100) {
-            return "Displayed message must be less than 100 characters."
-        }
+        // if (data["displayed_message"] === "") {
+        //     return "Please provide a message for the display button when the answer is displayed."
+        // }
+        // if (data["displayed_message"].length > 100) {
+        //     return "Displayed message must be less than 100 characters."
+        // }
         if (data["no_answer_message"] === "") {
             return "Please provide a message for when there is no answer."
         }
         if (data["no_answer_message"].length > 100) {
             return "No answer message must be less than 100 characters."
         }
-        if (data["enable_downloads"] == null) {
-            return "Please select if you want to enable download of answers as a PDF file or not."
-        }
+        // if (data["enable_downloads"] == null) {
+        //     return "Please select if you want to enable download of answers as a PDF file or not."
+        // }
         return "";
     }
 
@@ -116,7 +116,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
         input_displayed_message.removeAttr("hidden");
         input_no_answer_message.removeAttr("hidden");
         input_enable_downloads.removeAttr("hidden");
-        title.val("Iterative XBlock");
+        title.val("Iterative XBlocks");
     }
     onLoad();
 }
