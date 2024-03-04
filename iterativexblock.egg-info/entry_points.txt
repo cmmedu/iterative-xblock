@@ -1,0 +1,9 @@
+[cms.djangoapp]
+iterativexblock = iterativexblock.apps:IterativeXBlockAppConfig
+
+[lms.djangoapp]
+iterativexblock = iterativexblock.apps:IterativeXBlockAppConfig
+
+[xblock.v1]
+iterativexblock = iterativexblock:IterativeXBlock
+
