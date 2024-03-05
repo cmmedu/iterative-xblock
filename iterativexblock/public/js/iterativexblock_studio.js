@@ -15,6 +15,8 @@ function IterativeXBlockStudio(runtime, element, settings) {
     let no_answer_message = $(element).find("#no_answer_message");
     let input_enable_downloads = $(element).find("#input_enable_downloads");
     let enable_downloads = $(element).find("#enable_downloads");
+    
+    var content_format =  settings.content_format;
 
     function validate(data) {
         if (data["title"] === "") {
@@ -62,9 +64,148 @@ function IterativeXBlockStudio(runtime, element, settings) {
         return "";
     }
 
+    function getContentData() {
+
+    }
+
     function showStudioErrorMessage(msg) {
         $(element).find('.studio-error-msg').html(msg);
     }
+
+    function addNewCell(row) {
+        if(content_format[row.toString()]["visible"] === true) {
+            if(content_format[row.toString()]["n_cells"] < 4) {
+                let input_content_row = $(element).find("#input_content_row_" + row);
+                let input_content_cells = input_content_row.find(".iterative-content-studio-input");
+                let nth_element = content_format[row.toString()]["n_cells"];
+                input_content_cells.eq(nth_element).removeAttr("hidden");
+                input_content_cells.eq(nth_element).find("input").val("");
+                input_content_cells.eq(nth_element).find("select").val("none");
+                content_format[row.toString()]["n_cells"] += 1;
+            } else {
+                console.log("Too many cells!")
+            }
+        }
+    }
+    
+    function removeCell(row) {
+        if(content_format[row.toString()]["visible"] === true) {
+            if(content_format[row.toString()]["n_cells"] > 1) {
+                let input_content_row = $(element).find("#input_content_row_" + row);
+                let input_content_cells = input_content_row.find(".iterative-content-studio-input");
+                let nth_element = content_format[row.toString()]["n_cells"] - 1;
+                input_content_cells.eq(nth_element).attr("hidden", true);
+                input_content_cells.eq(nth_element).find("input").val("");
+                input_content_cells.eq(nth_element).find("select").val("none");
+                content_format[row.toString()]["n_cells"] -= 1;
+            } else {
+                console.log("Too few cells!")
+            }
+        }
+    }
+
+    function addNewRow() {
+        if(content_format["n_rows"] < 9) {
+            let nth_element = content_format["n_rows"];
+            let input_content_row = $(element).find("#input_content_row_" + nth_element);
+            let input_content_cells = input_content_row.find(".iterative-content-studio-input");
+            input_content_cells.eq(0).removeAttr("hidden");
+            input_content_cells.eq(0).find("input").val("");
+            input_content_cells.eq(0).find("select").val("none");
+            input_content_cells.eq(1).removeAttr("hidden");
+            input_content_cells.eq(1).find("input").val("");
+            input_content_cells.eq(1).find("select").val("none");
+            input_content_cells.eq(2).attr("hidden");
+            input_content_cells.eq(2).find("input").val("");
+            input_content_cells.eq(2).find("select").val("none");
+            input_content_cells.eq(3).attr("hidden");
+            input_content_cells.eq(3).find("input").val("");
+            input_content_cells.eq(3).find("select").val("none");
+            input_content_row.removeAttr("hidden");
+            content_format["n_rows"] += 1;
+        } else {
+            console.log("Too many rows!")
+        }
+    }
+
+    function removeRow(row) {
+        if (content_format[row.toString()]["n_rows"] > 1) {
+            if (row === content_format["n_rows"]) {
+                let input_content_row = $(element).find("#input_content_row_" + row);
+                let input_content_cells = input_content_row.find(".iterative-content-studio-input");
+                input_content_cells.eq(0).find("input").val("");
+                input_content_cells.eq(0).find("select").val("none");
+                input_content_cells.eq(0).attr("hidden", true);
+                input_content_cells.eq(1).find("input").val("");
+                input_content_cells.eq(1).find("select").val("none");
+                input_content_cells.eq(1).attr("hidden", true);
+                input_content_cells.eq(2).find("input").val("");
+                input_content_cells.eq(2).find("select").val("none");
+                input_content_cells.eq(2).attr("hidden", true);
+                input_content_cells.eq(3).find("input").val("");
+                input_content_cells.eq(3).find("select").val("none");
+                input_content_cells.eq(3).attr("hidden", true);
+                input_content_row.attr("hidden", true);
+                content_format["n_rows"] -= 1;
+            } else {
+                for (let i = row + 1; i <= content_format["n_rows"]; i++) {
+                    let currentRow = $(element).find("#input_content_row_" + i);
+                    let previousRow = $(element).find("#input_content_row_" + (i - 1));
+                    let currentCells = currentRow.find(".iterative-content-studio-input");
+                    let previousCells = previousRow.find(".iterative-content-studio-input");
+                    previousCells.eq(0).find("input").val(currentCells.eq(0).find("input").val());
+                    previousCells.eq(0).find("select").val(currentCells.eq(0).find("select").val());
+                    previousCells.eq(1).find("input").val(currentCells.eq(1).find("input").val());
+                    previousCells.eq(1).find("select").val(currentCells.eq(1).find("select").val());
+                    previousCells.eq(2).find("input").val(currentCells.eq(2).find("input").val());
+                    previousCells.eq(2).find("select").val(currentCells.eq(2).find("select").val());
+                    previousCells.eq(3).find("input").val(currentCells.eq(3).find("input").val());
+                    previousCells.eq(3).find("select").val(currentCells.eq(3).find("select").val());
+                    if (i === content_format["n_rows"]) {
+                        currentCells.eq(0).find("input").val("");
+                        currentCells.eq(0).find("select").val("none");
+                        currentCells.eq(0).attr("hidden", true);
+                        currentCells.eq(1).find("input").val("");
+                        currentCells.eq(1).find("select").val("none");
+                        currentCells.eq(1).attr("hidden", true);
+                        currentCells.eq(2).find("input").val("");
+                        currentCells.eq(2).find("select").val("none");
+                        currentCells.eq(2).attr("hidden", true);
+                        currentCells.eq(3).find("input").val("");
+                        currentCells.eq(3).find("select").val("none");
+                        currentCells.eq(3).attr("hidden", true);
+                        currentRow.attr("hidden", true);
+                        content_format["n_rows"] -= 1;
+                    }
+                }
+            }
+        } else {
+            console.log("Too few rows!")
+        }
+    }
+
+    $(element).find(".content-cell-new").bind('click', function (eventObject) {
+        eventObject.preventDefault();
+        let row = $(this).attr("id").split("_")[2];
+        addNewCell(row);
+    });
+
+    $(element).find(".content-cell-delete").bind('click', function (eventObject) {
+        eventObject.preventDefault();
+        let row = $(this).attr("id").split("_")[2];
+        removeCell(row);
+    });
+
+    $(element).find(".new-row-button").bind('click', function (eventObject) {
+        eventObject.preventDefault();
+        addNewRow();
+    });
+
+    $(element).find(".content-row-delete").bind('click', function (eventObject) {
+        eventObject.preventDefault();
+        let row = $(this).attr("id").split("_")[2];
+        removeRow(row);
+    });
 
 
     $(element).find('.save-button').bind('click', function (eventObject) {
@@ -116,7 +257,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
         input_displayed_message.removeAttr("hidden");
         input_no_answer_message.removeAttr("hidden");
         input_enable_downloads.removeAttr("hidden");
-        title.val("Iterative XBlocks");
+        title.val("Iterative XBlock");
     }
     onLoad();
 }

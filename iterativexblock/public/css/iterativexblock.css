@@ -5,6 +5,32 @@
 }
 
 
-.iterative-xblock-span-container {
-  width: 10% !important;
+.wrapper-comp-settings .list-input.settings-list .iterative-xblock-span-container {
+  width: 10%;
+}
+
+.wrapper-comp-settings .list-input.settings-list .setting-label {
+  width: 10%;
+}
+
+.wrapper-comp-settings .list-input.settings-list .setting-input:not(.iterative-content-studio-input) {
+  width: 80%;
+}
+
+.wrapper-comp-settings .list-input.settings-list .setting-select-input:not(.iterative-content-studio-input) {
+  width: 80%;
+}
+
+.wrapper-comp-settings .list-input.settings-list .iterative-content-studio-input-container{
+  width: 70%;
+}
+
+.wrapper-comp-settings .list-input.settings-list .iterative-content-studio-input-container {
+  width: 70%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.iterative-content-studio-input{
+  width: 17%;
 }
