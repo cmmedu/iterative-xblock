@@ -127,8 +127,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 "2": {
                     "type": "text",
                     "content": ""
-                },
-                "visible": true
+                }
             }
         }
         return basicContent;
@@ -153,9 +152,6 @@ function IterativeXBlockStudio(runtime, element, settings) {
                     cell_input.attr("placeholder", "Please select an option...").attr("disabled", true);
                 }
                 cell_input.val(content[i.toString()][j.toString()]["content"]);
-            }
-            if (content[i.toString()]["visible"] === false) {
-                input_content_row.attr("hidden", true);
             }
         }
     }
@@ -189,15 +185,13 @@ function IterativeXBlockStudio(runtime, element, settings) {
         } else {
             let questionIds = [];
             for (let i = 0; i < content["n_rows"]; i++) {
-                if(content[(i+1).toString()]["visible"]) {
-                    for (let j = 0; j < content[i.toString()]["n_cells"]; j++) {
-                        let cell = content[i.toString()][j.toString()];
-                        if (cell["type"] === "question") {
-                            questionIds.push(cell["content"]);
-                        }
+                for (let j = 0; j < content[i.toString()]["n_cells"]; j++) {
+                    let cell = content[i.toString()][j.toString()];
+                    if (cell["type"] === "question") {
+                        questionIds.push(cell["content"]);
                     }
-                
                 }
+            
             }
         }
     }
@@ -211,42 +205,38 @@ function IterativeXBlockStudio(runtime, element, settings) {
     }
 
     function addNewCell(row) {
-        if(content[row]["visible"] === true) {
-            if(content[row]["n_cells"] < 4) {
-                let input_content_row = $(element).find("#input_content_row_" + row);
-                let input_content_cells = input_content_row.find(".iterative-content-studio-input");
-                let nth_element = content[row]["n_cells"];
-                input_content_cells.eq(nth_element).removeAttr("hidden");
-                input_content_cells.eq(nth_element).find("input").val("");
-                input_content_cells.eq(nth_element).find("input").attr("placeholder", "Please select an option...").attr("disabled", true);
-                input_content_cells.eq(nth_element).find("select").val("none");
-                content[row]["n_cells"] += 1;
-            } else {
-                setStudioWarningMessage("Maximum number of cells per row is 4.")
-                setTimeout(function() {
-                    setStudioWarningMessage("");
-                }, 3000);
-            }
+        if(content[row]["n_cells"] < 4) {
+            let input_content_row = $(element).find("#input_content_row_" + row);
+            let input_content_cells = input_content_row.find(".iterative-content-studio-input");
+            let nth_element = content[row]["n_cells"];
+            input_content_cells.eq(nth_element).removeAttr("hidden");
+            input_content_cells.eq(nth_element).find("input").val("");
+            input_content_cells.eq(nth_element).find("input").attr("placeholder", "Please select an option...").attr("disabled", true);
+            input_content_cells.eq(nth_element).find("select").val("none");
+            content[row]["n_cells"] += 1;
+        } else {
+            setStudioWarningMessage("Maximum number of cells per row is 4.")
+            setTimeout(function() {
+                setStudioWarningMessage("");
+            }, 3000);
         }
     }
     
     function removeCell(row) {
-        if(content[row]["visible"] === true) {
-            if(content[row]["n_cells"] > 1) {
-                let input_content_row = $(element).find("#input_content_row_" + row);
-                let input_content_cells = input_content_row.find(".iterative-content-studio-input");
-                let nth_element = content[row]["n_cells"] - 1;
-                input_content_cells.eq(nth_element).attr("hidden", true);
-                input_content_cells.eq(nth_element).find("input").val("");
-                input_content_cells.eq(nth_element).find("input").attr("placeholder", "Please select an option...").attr("disabled", true);
-                input_content_cells.eq(nth_element).find("select").val("none");
-                content[row]["n_cells"] -= 1;
-            } else {
-                setStudioWarningMessage("Minimum number of cells per row is 1.")
-                setTimeout(function() {
-                    setStudioWarningMessage("");
-                }, 3000);
-            }
+        if(content[row]["n_cells"] > 1) {
+            let input_content_row = $(element).find("#input_content_row_" + row);
+            let input_content_cells = input_content_row.find(".iterative-content-studio-input");
+            let nth_element = content[row]["n_cells"] - 1;
+            input_content_cells.eq(nth_element).attr("hidden", true);
+            input_content_cells.eq(nth_element).find("input").val("");
+            input_content_cells.eq(nth_element).find("input").attr("placeholder", "Please select an option...").attr("disabled", true);
+            input_content_cells.eq(nth_element).find("select").val("none");
+            content[row]["n_cells"] -= 1;
+        } else {
+            setStudioWarningMessage("Minimum number of cells per row is 1.")
+            setTimeout(function() {
+                setStudioWarningMessage("");
+            }, 3000);
         }
     }
 
