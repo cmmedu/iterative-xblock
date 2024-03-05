@@ -135,10 +135,10 @@ function IterativeXBlockStudio(runtime, element, settings) {
     }
 
     function applyContent() {
-        for (let i = 0; i < content["n_rows"]; i++) {
+        for (let i = 1; i <= content["n_rows"]; i++) {
             let input_content_row = $(element).find("#input_content_row_" + i);
             let input_content_cells = input_content_row.find(".iterative-content-studio-input");
-            for (let j = 0; j < content[i.toString()]["n_cells"]; j++) {
+            for (let j = 1; j <= content[i.toString()]["n_cells"]; j++) {
                 let cell = input_content_cells.eq(j);
                 let cell_type = cell.find(".iterative-content-type");
                 let cell_input = cell.find("input");
