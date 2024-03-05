@@ -197,7 +197,8 @@ class IterativeXBlock(XBlock):
     def studio_view(self, context):
         context = {
             "title": self.title,
-            'location': str(self.location).split('@')[-1]
+            'location': str(self.location).split('@')[-1],
+            "content_format": self.content,
         }
         template = loader.render_django_template(
             'public/html/iterativexblock_studio.html',
@@ -210,6 +211,9 @@ class IterativeXBlock(XBlock):
             additional_js=[
                 'public/js/iterativexblock_studio.js',
             ],
+            settings={
+                "content": self.content,
+            }
         )
         return frag
 
