@@ -273,6 +273,17 @@ function IterativeXBlockStudio(runtime, element, settings) {
             input_content_cells.eq(3).find("select").val("none");
             input_content_row.removeAttr("hidden");
             content["n_rows"] += 1;
+            content[nth_element] = {
+                "n_cells": 2,
+                "1": {
+                    "type": "text",
+                    "content": ""
+                },
+                "2": {
+                    "type": "text",
+                    "content": ""
+                },
+            }
         } else {
             setStudioWarningMessage("Maximum number of rows is 9.")
             setTimeout(function() {
@@ -304,6 +315,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 input_content_cells.eq(3).attr("hidden", true);
                 input_content_row.attr("hidden", true);
                 content["n_rows"] -= 1;
+                delete content[(content["n_rows"]-1).toString()];
             } else {
                 for (let i = row + 1; i <= content["n_rows"]; i++) {
                     let currentRow = $(element).find("#input_content_row_" + i);
@@ -339,6 +351,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
                         content["n_rows"] -= 1;
                     }
                 }
+                delete content[(content["n_rows"]-1).toString()];
             }
         } else {
             setStudioWarningMessage("Minimum number of rows is 1.")
