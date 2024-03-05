@@ -44,12 +44,6 @@ class IterativeXBlock(XBlock):
         help="Style of this block."
     )
 
-    n_columns = Integer(
-        default=1,
-        scope=Scope.settings,
-        help="Number of columns of this activity."
-    )
-
     no_answer_message = String(
         default="You have not answered this question yet.",
         scope=Scope.settings,
@@ -241,7 +235,20 @@ class IterativeXBlock(XBlock):
             ],
         )
         return frag
-    
+
+
+    @XBlock.json_handler
+    def check_question_ids(self, data, suffix=''):
+        from .models import IterativeXBlockQuestion
+        id_course = self.course_id
+        id_xblock = str(self.location).split('@')[-1]
+        existing_question_ids = [x.id_question for x in IterativeXBlockQuestion.objects.filter(id_course=id_course, id_xblock__ne=id_xblock).all()]
+        new_question_ids = [x.id_question for x in data.values()]
+        if bool(set(new_question_ids) & set(existing_question_ids)):
+            return {'result': 'failed', 'existing_question_ids': existing_question_ids}
+        else:
+            return {'result': 'success'}
+
 
     @XBlock.json_handler
     def studio_submit(self, data, suffix=''):
@@ -251,36 +258,39 @@ class IterativeXBlock(XBlock):
         from .models import IterativeXBlockQuestion, IterativeXBlockAnswer
         id_course = self.course_id
         id_xblock = str(self.location).split('@')[-1]
-        self.content = data.get('content')
+        content = data.get('content')
         existing_question_ids = [x.id_question for x in IterativeXBlockQuestion.objects.filter(id_course=id_course, id_xblock__ne=id_xblock).all()]
-        new_question_ids = [x.id_question for x in self.content.values()]
+        new_question_ids = data.get('new_questions')
         if bool(set(new_question_ids) & set(existing_question_ids)):
-            self.content = {}
             return {'result': 'failed', 'error': 102}
         if not self.configured:
-            for question in self.content.values():
-                if question.id_question is not None:
-                    new_question = IterativeXBlockQuestion(id_course=id_course, id_xblock=id_xblock, id_question=question.id_question)
-                    new_question.save()
+            for i in range(content["n_rows"]):
+                row = content[str(i)]
+                for j in range(row["n_cells"]):
+                    cell = row[str(j)]
+                    if cell["type"] == "question":
+                        id_question = cell["content"]
+                        new_question = IterativeXBlockQuestion(id_course=id_course, id_xblock=id_xblock, id_question=id_question)
+                        new_question.save()
             self.configured = True
         else:
-            new_questions = list(set(new_question_ids) - set(existing_question_ids))
-            deleted_questions = list(set(existing_question_ids) - set(new_question_ids))
+            new_questions = data.get('new_questions')
+            deleted_questions = data.get('deleted_questions')
             for question in new_questions:
-                new_question = IterativeXBlockQuestion(id_course=id_course, id_xblock=id_xblock, id_question=question.id_question)
+                new_question = IterativeXBlockQuestion(id_course=id_course, id_xblock=id_xblock, id_question=question)
                 new_question.save()
             for question in deleted_questions:
                 try:
-                    deleted_question = IterativeXBlockQuestion.objects.get(id_course=id_course, id_xblock=id_xblock, id_question=question.id_question)
+                    deleted_question = IterativeXBlockQuestion.objects.get(id_course=id_course, id_xblock=id_xblock, id_question=question)
                 except IterativeXBlockQuestion.DoesNotExist:
                     continue
                 deleted_answers = IterativeXBlockAnswer.objects.filter(id_course=id_course, question=deleted_question).all()
                 for answer in deleted_answers:
                     answer.delete()
                 deleted_question.delete()
+        self.content = data.get('content')
         self.title = data.get('title')
         self.style = data.get('style')
-        self.n_columns = data.get('n_columns')
         self.no_answer_message = data.get('no_answer_message')
         self.enable_download = data.get('enable_download')
         return {'result': 'success'}

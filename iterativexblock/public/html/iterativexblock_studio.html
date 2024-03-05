@@ -55,68 +55,6 @@
             </div>
             <span class="tip setting-help">Enable download of previous answers as a PDF document. Only available if no questions in this module.</span>
         </li>
-        <style>
-            .setting-help {
-                margin-top: 15px;
-            }
-
-            .wrapper-comp-settings .list-input.settings-list .iterative-xblock-span-container {
-            width: 5%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-evenly;
-            }
-
-            .iterative-xblock-span-container span {
-            cursor: pointer;
-            width: 80px;
-            text-align: center;
-            font-size: smaller;
-            }
-
-            .wrapper-comp-settings .list-input.settings-list .setting-label {
-            width: 10%;
-            }
-
-            .wrapper-comp-settings .list-input.settings-list .setting-input:not(.iterative-content-studio-input) {
-            width: 80%;
-            }
-
-            .wrapper-comp-settings .list-input.settings-list .setting-select-input:not(.iterative-content-studio-input) {
-            width: 80%;
-            }
-
-            .wrapper-comp-settings .list-input.settings-list .iterative-content-studio-input-container{
-            width: 70%;
-            }
-
-            .wrapper-comp-settings .list-input.settings-list .iterative-content-studio-input-container {
-            width: 75%;
-            display: flex;
-            justify-content: space-between;
-            }
-
-            .iterative-content-studio-input{
-            margin: 2px;
-            }
-
-            .iterative-content-studio-input input {
-            height: auto !important;
-            width: 100% !important;
-            margin-top: 5px;
-            }
-
-            .iterative-content-studio-input select {
-            height: auto !important;
-            width: 100% !important;
-            }
-
-            .iterative-content-row .wrapper-comp-setting {
-                display: flex !important;
-            }
-
-        </style>
         <li id="input_content_row_1" class="field comp-setting-entry is-set iterative-content-row">
             <div class="wrapper-comp-setting">
                 <label class="label setting-label">Content row 1</label>
@@ -126,34 +64,34 @@
                             <option value="none" selected disabled>Select an option...</option>
                             <option value="text">Fixed text</option>
                             <option value="question">Question</option>
-                            <option value="answer">Answer</option>
+                            <option value="answer">Answer from previous question</option>
                         </select>
                         <input class="input setting-input" name="content_row_1_1" id="content_row_1_1" value="" type="text" />
                     </div>
-                    <div class="iterative-content-studio-input">
+                    <div class="iterative-content-studio-input" hidden>
                         <select class="iterative-content-type" id="content_type_1_2">
                             <option value="none" selected disabled>Select an option...</option>
                             <option value="text">Fixed text</option>
                             <option value="question">Question</option>
-                            <option value="answer">Answer</option>
+                            <option value="answer">Answer from previous question</option>
                         </select>
                         <input class="input setting-input" name="content_row_1_2" id="content_row_1_2" value="" type="text" />
                     </div>
-                    <div class="iterative-content-studio-input">
+                    <div class="iterative-content-studio-input" hidden>
                         <select class="iterative-content-type" id="content_type_1_3">
                             <option value="none" selected disabled>Select an option...</option>
                             <option value="text">Fixed text</option>
                             <option value="question">Question</option>
-                            <option value="answer">Answer</option>
+                            <option value="answer">Answer from previous question</option>
                         </select>
                         <input class="input setting-input" name="content_row_1_3" id="content_row_1_3" value="" type="text" />
                     </div>
-                    <div class="iterative-content-studio-input">
+                    <div class="iterative-content-studio-input" hidden>
                         <select class="iterative-content-type" id="content_type_1_4">
                             <option value="none" selected disabled>Select an option...</option>
                             <option value="text">Fixed text</option>
                             <option value="question">Question</option>
-                            <option value="answer">Answer</option>
+                            <option value="answer">Answer from previous question</option>
                         </select>
                         <input class="input setting-input" name="content_row_1_4" id="content_row_1_4" value="" type="text" />
                     </div>    
@@ -165,7 +103,7 @@
                 </div>
             </div>
         </li>
-        <li id="input_content_row_2" class="field comp-setting-entry is-set iterative-content-row">
+        <li id="input_content_row_2" class="field comp-setting-entry is-set iterative-content-row" hidden>
             <div class="wrapper-comp-setting">
                 <label class="label setting-label">Content row 2</label>
                 <div class="iterative-content-studio-input-container">
@@ -174,34 +112,34 @@
                             <option value="none" selected disabled>Select an option...</option>
                             <option value="text">Fixed text</option>
                             <option value="question">Question</option>
-                            <option value="answer">Answer</option>
+                            <option value="answer">Answer from previous question</option>
                         </select>
                         <input class="input setting-input" name="content_row_2_1" id="content_row_2_1" value="" type="text" />
                     </div>
-                    <div class="iterative-content-studio-input">
+                    <div class="iterative-content-studio-input" hidden>
                         <select class="iterative-content-type" id="content_type_2_2">
                             <option value="none" selected disabled>Select an option...</option>
                             <option value="text">Fixed text</option>
                             <option value="question">Question</option>
-                            <option value="answer">Answer</option>
+                            <option value="answer">Answer from previous question</option>
                         </select>
                         <input class="input setting-input" name="content_row_2_2" id="content_row_2_2" value="" type="text" />
                     </div>
-                    <div class="iterative-content-studio-input">
+                    <div class="iterative-content-studio-input" hidden>
                         <select class="iterative-content-type" id="content_type_2_3">
                             <option value="none" selected disabled>Select an option...</option>
                             <option value="text">Fixed text</option>
                             <option value="question">Question</option>
-                            <option value="answer">Answer</option>
+                            <option value="answer">Answer from previous question</option>
                         </select>
                         <input class="input setting-input" name="content_row_2_3" id="content_row_2_3" value="" type="text" />
                     </div>
-                    <div class="iterative-content-studio-input">
+                    <div class="iterative-content-studio-input" hidden>
                         <select class="iterative-content-type" id="content_type_2_4">
                             <option value="none" selected disabled>Select an option...</option>
                             <option value="text">Fixed text</option>
                             <option value="question">Question</option>
-                            <option value="answer">Answer</option>
+                            <option value="answer">Answer from previous question</option>
                         </select>
                         <input class="input setting-input" name="content_row_2_4" id="content_row_2_4" value="" type="text" />
                     </div>    
@@ -213,7 +151,7 @@
                 </div>
             </div>
         </li>
-        <li id="input_content_row_3" class="field comp-setting-entry is-set iterative-content-row">
+        <li id="input_content_row_3" class="field comp-setting-entry is-set iterative-content-row" hidden>
             <div class="wrapper-comp-setting">
                 <label class="label setting-label">Content row 3</label>
                 <div class="iterative-content-studio-input-container">
@@ -222,34 +160,34 @@
                             <option value="none" selected disabled>Select an option...</option>
                             <option value="text">Fixed text</option>
                             <option value="question">Question</option>
-                            <option value="answer">Answer</option>
+                            <option value="answer">Answer from previous question</option>
                         </select>
                         <input class="input setting-input" name="content_row_3_1" id="content_row_3_1" value="" type="text" />
                     </div>
-                    <div class="iterative-content-studio-input">
+                    <div class="iterative-content-studio-input" hidden>
                         <select class="iterative-content-type" id="content_type_3_2">
                             <option value="none" selected disabled>Select an option...</option>
                             <option value="text">Fixed text</option>
                             <option value="question">Question</option>
-                            <option value="answer">Answer</option>
+                            <option value="answer">Answer from previous question</option>
                         </select>
                         <input class="input setting-input" name="content_row_3_2" id="content_row_3_2" value="" type="text" />
                     </div>
-                    <div class="iterative-content-studio-input">
+                    <div class="iterative-content-studio-input" hidden>
                         <select class="iterative-content-type" id="content_type_3_3">
                             <option value="none" selected disabled>Select an option...</option>
                             <option value="text">Fixed text</option>
                             <option value="question">Question</option>
-                            <option value="answer">Answer</option>
+                            <option value="answer">Answer from previous question</option>
                         </select>
                         <input class="input setting-input" name="content_row_3_3" id="content_row_3_3" value="" type="text" />
                     </div>
-                    <div class="iterative-content-studio-input">
+                    <div class="iterative-content-studio-input" hidden>
                         <select class="iterative-content-type" id="content_type_3_4">
                             <option value="none" selected disabled>Select an option...</option>
                             <option value="text">Fixed text</option>
                             <option value="question">Question</option>
-                            <option value="answer">Answer</option>
+                            <option value="answer">Answer from previous question</option>
                         </select>
                         <input class="input setting-input" name="content_row_3_4" id="content_row_3_4" value="" type="text" />
                     </div>    
@@ -261,7 +199,7 @@
                 </div>
             </div>
         </li> 
-        <li id="input_content_row_4" class="field comp-setting-entry is-set iterative-content-row">
+        <li id="input_content_row_4" class="field comp-setting-entry is-set iterative-content-row" hidden>
             <div class="wrapper-comp-setting">
                 <label class="label setting-label">Content row 4</label>
                 <div class="iterative-content-studio-input-container">
@@ -270,34 +208,34 @@
                             <option value="none" selected disabled>Select an option...</option>
                             <option value="text">Fixed text</option>
                             <option value="question">Question</option>
-                            <option value="answer">Answer</option>
+                            <option value="answer">Answer from previous question</option>
                         </select>
                         <input class="input setting-input" name="content_row_4_1" id="content_row_4_1" value="" type="text" />
                     </div>
-                    <div class="iterative-content-studio-input">
+                    <div class="iterative-content-studio-input" hidden>
                         <select class="iterative-content-type" id="content_type_4_2">
                             <option value="none" selected disabled>Select an option...</option>
                             <option value="text">Fixed text</option>
                             <option value="question">Question</option>
-                            <option value="answer">Answer</option>
+                            <option value="answer">Answer from previous question</option>
                         </select>
                         <input class="input setting-input" name="content_row_4_2" id="content_row_4_2" value="" type="text" />
                     </div>
-                    <div class="iterative-content-studio-input">
+                    <div class="iterative-content-studio-input" hidden>
                         <select class="iterative-content-type" id="content_type_4_3">
                             <option value="none" selected disabled>Select an option...</option>
                             <option value="text">Fixed text</option>
                             <option value="question">Question</option>
-                            <option value="answer">Answer</option>
+                            <option value="answer">Answer from previous question</option>
                         </select>
                         <input class="input setting-input" name="content_row_4_3" id="content_row_4_3" value="" type="text" />
                     </div>
-                    <div class="iterative-content-studio-input">
+                    <div class="iterative-content-studio-input" hidden>
                         <select class="iterative-content-type" id="content_type_4_4">
                             <option value="none" selected disabled>Select an option...</option>
                             <option value="text">Fixed text</option>
                             <option value="question">Question</option>
-                            <option value="answer">Answer</option>
+                            <option value="answer">Answer from previous question</option>
                         </select>
                         <input class="input setting-input" name="content_row_4_4" id="content_row_4_4" value="" type="text" />
                     </div>    
@@ -309,43 +247,43 @@
                 </div>
             </div>
         </li>
-        <li id="input_content_row_5" class="field comp-setting-entry is-set iterative-content-row">
+        <li id="input_content_row_5" class="field comp-setting-entry is-set iterative-content-row" hidden>
             <div class="wrapper-comp-setting">
                 <label class="label setting-label">Content row 5</label>
                 <div class="iterative-content-studio-input-container">
                     <div class="iterative-content-studio-input">
-                        <select class="iterative-content-type" id="content_type_6_1">
+                        <select class="iterative-content-type" id="content_type_5_1">
                             <option value="none" selected disabled>Select an option...</option>
                             <option value="text">Fixed text</option>
                             <option value="question">Question</option>
-                            <option value="answer">Answer</option>
+                            <option value="answer">Answer from previous question</option>
                         </select>
                         <input class="input setting-input" name="content_row_5_1" id="content_row_5_1" value="" type="text" />
                     </div>
-                    <div class="iterative-content-studio-input">
+                    <div class="iterative-content-studio-input" hidden>
                         <select class="iterative-content-type" id="content_type_5_2">
                             <option value="none" selected disabled>Select an option...</option>
                             <option value="text">Fixed text</option>
                             <option value="question">Question</option>
-                            <option value="answer">Answer</option>
+                            <option value="answer">Answer from previous question</option>
                         </select>
                         <input class="input setting-input" name="content_row_5_2" id="content_row_5_2" value="" type="text" />
                     </div>
-                    <div class="iterative-content-studio-input">
+                    <div class="iterative-content-studio-input" hidden>
                         <select class="iterative-content-type" id="content_type_5_3">
                             <option value="none" selected disabled>Select an option...</option>
                             <option value="text">Fixed text</option>
                             <option value="question">Question</option>
-                            <option value="answer">Answer</option>
+                            <option value="answer">Answer from previous question</option>
                         </select>
                         <input class="input setting-input" name="content_row_5_3" id="content_row_5_3" value="" type="text" />
                     </div>
-                    <div class="iterative-content-studio-input">
+                    <div class="iterative-content-studio-input" hidden>
                         <select class="iterative-content-type" id="content_type_5_4">
                             <option value="none" selected disabled>Select an option...</option>
                             <option value="text">Fixed text</option>
                             <option value="question">Question</option>
-                            <option value="answer">Answer</option>
+                            <option value="answer">Answer from previous question</option>
                         </select>
                         <input class="input setting-input" name="content_row_5_4" id="content_row_5_4" value="" type="text" />
                     </div>    
@@ -357,7 +295,7 @@
                 </div>
             </div>
         </li>
-        <li id="input_content_row_6" class="field comp-setting-entry is-set iterative-content-row">
+        <li id="input_content_row_6" class="field comp-setting-entry is-set iterative-content-row" hidden>
             <div class="wrapper-comp-setting">
                 <label class="label setting-label">Content row 6</label>
                 <div class="iterative-content-studio-input-container">
@@ -366,34 +304,34 @@
                             <option value="none" selected disabled>Select an option...</option>
                             <option value="text">Fixed text</option>
                             <option value="question">Question</option>
-                            <option value="answer">Answer</option>
+                            <option value="answer">Answer from previous question</option>
                         </select>
                         <input class="input setting-input" name="content_row_6_1" id="content_row_6_1" value="" type="text" />
                     </div>
-                    <div class="iterative-content-studio-input">
+                    <div class="iterative-content-studio-input" hidden>
                         <select class="iterative-content-type" id="content_type_6_2">
                             <option value="none" selected disabled>Select an option...</option>
                             <option value="text">Fixed text</option>
                             <option value="question">Question</option>
-                            <option value="answer">Answer</option>
+                            <option value="answer">Answer from previous question</option>
                         </select>
                         <input class="input setting-input" name="content_row_6_2" id="content_row_6_2" value="" type="text" />
                     </div>
-                    <div class="iterative-content-studio-input">
+                    <div class="iterative-content-studio-input" hidden>
                         <select class="iterative-content-type" id="content_type_6_3">
                             <option value="none" selected disabled>Select an option...</option>
                             <option value="text">Fixed text</option>
                             <option value="question">Question</option>
-                            <option value="answer">Answer</option>
+                            <option value="answer">Answer from previous question</option>
                         </select>
                         <input class="input setting-input" name="content_row_6_3" id="content_row_6_3" value="" type="text" />
                     </div>
-                    <div class="iterative-content-studio-input">
+                    <div class="iterative-content-studio-input" hidden>
                         <select class="iterative-content-type" id="content_type_6_4">
                             <option value="none" selected disabled>Select an option...</option>
                             <option value="text">Fixed text</option>
                             <option value="question">Question</option>
-                            <option value="answer">Answer</option>
+                            <option value="answer">Answer from previous question</option>
                         </select>
                         <input class="input setting-input" name="content_row_6_4" id="content_row_6_4" value="" type="text" />
                     </div>    
@@ -405,7 +343,7 @@
                 </div>
             </div>
         </li>
-        <li id="input_content_row_7" class="field comp-setting-entry is-set iterative-content-row">
+        <li id="input_content_row_7" class="field comp-setting-entry is-set iterative-content-row" hidden>
             <div class="wrapper-comp-setting">
                 <label class="label setting-label">Content row 7</label>
                 <div class="iterative-content-studio-input-container">
@@ -414,34 +352,34 @@
                             <option value="none" selected disabled>Select an option...</option>
                             <option value="text">Fixed text</option>
                             <option value="question">Question</option>
-                            <option value="answer">Answer</option>
+                            <option value="answer">Answer from previous question</option>
                         </select>
                         <input class="input setting-input" name="content_row_7_1" id="content_row_7_1" value="" type="text" />
                     </div>
-                    <div class="iterative-content-studio-input">
+                    <div class="iterative-content-studio-input" hidden>
                         <select class="iterative-content-type" id="content_type_7_2">
                             <option value="none" selected disabled>Select an option...</option>
                             <option value="text">Fixed text</option>
                             <option value="question">Question</option>
-                            <option value="answer">Answer</option>
+                            <option value="answer">Answer from previous question</option>
                         </select>
                         <input class="input setting-input" name="content_row_7_2" id="content_row_7_2" value="" type="text" />
                     </div>
-                    <div class="iterative-content-studio-input">
+                    <div class="iterative-content-studio-input" hidden>
                         <select class="iterative-content-type" id="content_type_7_3">
                             <option value="none" selected disabled>Select an option...</option>
                             <option value="text">Fixed text</option>
                             <option value="question">Question</option>
-                            <option value="answer">Answer</option>
+                            <option value="answer">Answer from previous question</option>
                         </select>
                         <input class="input setting-input" name="content_row_7_3" id="content_row_7_3" value="" type="text" />
                     </div>
-                    <div class="iterative-content-studio-input">
+                    <div class="iterative-content-studio-input" hidden>
                         <select class="iterative-content-type" id="content_type_7_4">
                             <option value="none" selected disabled>Select an option...</option>
                             <option value="text">Fixed text</option>
                             <option value="question">Question</option>
-                            <option value="answer">Answer</option>
+                            <option value="answer">Answer from previous question</option>
                         </select>
                         <input class="input setting-input" name="content_row_7_4" id="content_row_7_4" value="" type="text" />
                     </div>    
@@ -453,7 +391,7 @@
                 </div>
             </div>
         </li>
-        <li id="input_content_row_8" class="field comp-setting-entry is-set iterative-content-row">
+        <li id="input_content_row_8" class="field comp-setting-entry is-set iterative-content-row" hidden>
             <div class="wrapper-comp-setting">
                 <label class="label setting-label">Content row 8</label>
                 <div class="iterative-content-studio-input-container">
@@ -462,34 +400,34 @@
                             <option value="none" selected disabled>Select an option...</option>
                             <option value="text">Fixed text</option>
                             <option value="question">Question</option>
-                            <option value="answer">Answer</option>
+                            <option value="answer">Answer from previous question</option>
                         </select>
                         <input class="input setting-input" name="content_row_8_1" id="content_row_8_1" value="" type="text" />
                     </div>
-                    <div class="iterative-content-studio-input">
+                    <div class="iterative-content-studio-input" hidden>
                         <select class="iterative-content-type" id="content_type_8_2">
                             <option value="none" selected disabled>Select an option...</option>
                             <option value="text">Fixed text</option>
                             <option value="question">Question</option>
-                            <option value="answer">Answer</option>
+                            <option value="answer">Answer from previous question</option>
                         </select>
                         <input class="input setting-input" name="content_row_8_2" id="content_row_8_2" value="" type="text" />
                     </div>
-                    <div class="iterative-content-studio-input">
+                    <div class="iterative-content-studio-input" hidden>
                         <select class="iterative-content-type" id="content_type_8_3">
                             <option value="none" selected disabled>Select an option...</option>
                             <option value="text">Fixed text</option>
                             <option value="question">Question</option>
-                            <option value="answer">Answer</option>
+                            <option value="answer">Answer from previous question</option>
                         </select>
                         <input class="input setting-input" name="content_row_8_3" id="content_row_8_3" value="" type="text" />
                     </div>
-                    <div class="iterative-content-studio-input">
+                    <div class="iterative-content-studio-input" hidden>
                         <select class="iterative-content-type" id="content_type_8_4">
                             <option value="none" selected disabled>Select an option...</option>
                             <option value="text">Fixed text</option>
                             <option value="question">Question</option>
-                            <option value="answer">Answer</option>
+                            <option value="answer">Answer from previous question</option>
                         </select>
                         <input class="input setting-input" name="content_row_8_4" id="content_row_8_4" value="" type="text" />
                     </div>    
@@ -501,7 +439,7 @@
                 </div>
             </div>
         </li>
-        <li id="input_content_row_9" class="field comp-setting-entry is-set iterative-content-row">
+        <li id="input_content_row_9" class="field comp-setting-entry is-set iterative-content-row" hidden>
             <div class="wrapper-comp-setting">
                 <label class="label setting-label">Content row 9</label>
                 <div class="iterative-content-studio-input-container">
@@ -510,34 +448,34 @@
                             <option value="none" selected disabled>Select an option...</option>
                             <option value="text">Fixed text</option>
                             <option value="question">Question</option>
-                            <option value="answer">Answer</option>
+                            <option value="answer">Answer from previous question</option>
                         </select>
                         <input class="input setting-input" name="content_row_9_1" id="content_row_9_1" value="" type="text" />
                     </div>
-                    <div class="iterative-content-studio-input">
+                    <div class="iterative-content-studio-input" hidden>
                         <select class="iterative-content-type" id="content_type_9_2">
                             <option value="none" selected disabled>Select an option...</option>
                             <option value="text">Fixed text</option>
                             <option value="question">Question</option>
-                            <option value="answer">Answer</option>
+                            <option value="answer">Answer from previous question</option>
                         </select>
                         <input class="input setting-input" name="content_row_9_2" id="content_row_9_2" value="" type="text" />
                     </div>
-                    <div class="iterative-content-studio-input">
+                    <div class="iterative-content-studio-input" hidden>
                         <select class="iterative-content-type" id="content_type_9_3">
                             <option value="none" selected disabled>Select an option...</option>
                             <option value="text">Fixed text</option>
                             <option value="question">Question</option>
-                            <option value="answer">Answer</option>
+                            <option value="answer">Answer from previous question</option>
                         </select>
                         <input class="input setting-input" name="content_row_9_3" id="content_row_9_3" value="" type="text" />
                     </div>
-                    <div class="iterative-content-studio-input">
+                    <div class="iterative-content-studio-input" hidden>
                         <select class="iterative-content-type" id="content_type_9_4">
                             <option value="none" selected disabled>Select an option...</option>
                             <option value="text">Fixed text</option>
                             <option value="question">Question</option>
-                            <option value="answer">Answer</option>
+                            <option value="answer">Answer from previous question</option>
                         </select>
                         <input class="input setting-input" name="content_row_9_4" id="content_row_9_4" value="" type="text" />
                     </div>    
@@ -552,6 +490,12 @@
     </ul>
     <div class="xblock-actions">
         <ul>
+            <li>
+                <p class="studio-error-msg">asdsadsadsa</p>
+            </li>
+            <li>
+                <p class="studio-warning-msg">asdsadsadsa</p>
+            </li>
             <li class="action-item">
                 <a href="#" class="button action-primary save-button">Save</a>
             </li>
@@ -560,9 +504,6 @@
             </li>
             <li class="action-item">
                 <a href="#" class="button new-row-button">Add a content row</a>
-            </li>
-            <li>
-                <p class="studio-error-msg"></p>
             </li>
         </ul>
     </div>

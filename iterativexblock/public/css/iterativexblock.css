@@ -4,9 +4,39 @@
   --max-width: 800px;
 }
 
+.centered {
+  text-align: center;
+}
+
+.studio-error-msg {
+  color: red;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.studio-warning-msg {
+  color: orange;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.setting-help {
+  margin-top: 15px;
+}
 
 .wrapper-comp-settings .list-input.settings-list .iterative-xblock-span-container {
-  width: 10%;
+  width: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.iterative-xblock-span-container span {
+  cursor: pointer;
+  width: 80px;
+  text-align: center;
+  font-size: smaller;
 }
 
 .wrapper-comp-settings .list-input.settings-list .setting-label {
@@ -21,16 +51,31 @@
   width: 80%;
 }
 
-.wrapper-comp-settings .list-input.settings-list .iterative-content-studio-input-container{
+.wrapper-comp-settings .list-input.settings-list .iterative-content-studio-input-container {
   width: 70%;
 }
 
 .wrapper-comp-settings .list-input.settings-list .iterative-content-studio-input-container {
-  width: 70%;
+  width: 75%;
   display: flex;
   justify-content: space-between;
 }
 
-.iterative-content-studio-input{
-  width: 17%;
+.iterative-content-studio-input {
+  margin: 2px;
+}
+
+.iterative-content-studio-input input {
+  height: auto !important;
+  width: 100% !important;
+  margin-top: 5px;
+}
+
+.iterative-content-studio-input select {
+  height: auto !important;
+  width: 100% !important;
+}
+
+.iterative-content-row .wrapper-comp-setting {
+  display: flex !important;
 }
