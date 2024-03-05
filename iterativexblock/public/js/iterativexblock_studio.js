@@ -288,7 +288,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
     function removeRow(row) {
         console.log(content)
         if (content["n_rows"] > 1) {
-            if (row === content["n_rows"]) {
+            if (parseInt(row) === content["n_rows"]) {
                 let input_content_row = $(element).find("#input_content_row_" + row);
                 let input_content_cells = input_content_row.find(".iterative-content-studio-input");
                 input_content_cells.eq(0).find("input").val("");
@@ -311,7 +311,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 delete content[content["n_rows"].toString()];
                 content["n_rows"] -= 1;
             } else {
-                for (let i = row; i <= content["n_rows"]; i++) {
+                for (let i = parseInt(row); i <= content["n_rows"]; i++) {
                     let currentRow = $(element).find("#input_content_row_" + i);
                     let previousRow = $(element).find("#input_content_row_" + (i - 1));
                     let currentCells = currentRow.find(".iterative-content-studio-input");
