@@ -62,7 +62,7 @@
 .wrapper-comp-settings .list-input.settings-list .iterative-content-studio-input-container {
   width: 75%;
   display: flex;
-  justify-content: space-between;
+  justify-content: start;
 }
 
 .iterative-content-studio-input {

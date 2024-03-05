@@ -16,7 +16,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
     let input_enable_downloads = $(element).find("#input_enable_downloads");
     let enable_downloads = $(element).find("#enable_downloads");
     
-    var content =  settings.content;
+    var content =  Object.keys(settings.content).length === 0 ? makeBasicContent() : settings.content;
 
     function validateContent() {
         let error_msg = "";
@@ -115,6 +115,25 @@ function IterativeXBlockStudio(runtime, element, settings) {
         return validateContent();
     }
 
+    function makeBasicContent() {
+        let basicContent = {
+            "n_rows": 1,
+            "1": {
+                "n_cells": 2,
+                "1": {
+                    "type": "text",
+                    "content": ""
+                },
+                "2": {
+                    "type": "text",
+                    "content": ""
+                },
+                "visible": true
+            }
+        }
+        return basicContent;
+    }
+
     function applyContent() {
         for (let i = 0; i < content["n_rows"]; i++) {
             let input_content_row = $(element).find("#input_content_row_" + i);
@@ -192,16 +211,16 @@ function IterativeXBlockStudio(runtime, element, settings) {
     }
 
     function addNewCell(row) {
-        if(content[row.toString()]["visible"] === true) {
-            if(content[row.toString()]["n_cells"] < 4) {
+        if(content[row]["visible"] === true) {
+            if(content[row]["n_cells"] < 4) {
                 let input_content_row = $(element).find("#input_content_row_" + row);
                 let input_content_cells = input_content_row.find(".iterative-content-studio-input");
-                let nth_element = content[row.toString()]["n_cells"];
+                let nth_element = content[row]["n_cells"];
                 input_content_cells.eq(nth_element).removeAttr("hidden");
                 input_content_cells.eq(nth_element).find("input").val("");
                 input_content_cells.eq(nth_element).find("input").attr("placeholder", "Please select an option...").attr("disabled", true);
                 input_content_cells.eq(nth_element).find("select").val("none");
-                content[row.toString()]["n_cells"] += 1;
+                content[row]["n_cells"] += 1;
             } else {
                 setStudioWarningMessage("Maximum number of cells per row is 4.")
                 setTimeout(function() {
@@ -212,16 +231,16 @@ function IterativeXBlockStudio(runtime, element, settings) {
     }
     
     function removeCell(row) {
-        if(content[row.toString()]["visible"] === true) {
-            if(content[row.toString()]["n_cells"] > 1) {
+        if(content[row]["visible"] === true) {
+            if(content[row]["n_cells"] > 1) {
                 let input_content_row = $(element).find("#input_content_row_" + row);
                 let input_content_cells = input_content_row.find(".iterative-content-studio-input");
-                let nth_element = content[row.toString()]["n_cells"] - 1;
+                let nth_element = content[row]["n_cells"] - 1;
                 input_content_cells.eq(nth_element).attr("hidden", true);
                 input_content_cells.eq(nth_element).find("input").val("");
                 input_content_cells.eq(nth_element).find("input").attr("placeholder", "Please select an option...").attr("disabled", true);
                 input_content_cells.eq(nth_element).find("select").val("none");
-                content[row.toString()]["n_cells"] -= 1;
+                content[row]["n_cells"] -= 1;
             } else {
                 setStudioWarningMessage("Minimum number of cells per row is 1.")
                 setTimeout(function() {
@@ -233,7 +252,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
 
     function addNewRow() {
         if(content["n_rows"] < 9) {
-            let nth_element = content["n_rows"];
+            let nth_element = content["n_rows"] + 1;
             let input_content_row = $(element).find("#input_content_row_" + nth_element);
             let input_content_cells = input_content_row.find(".iterative-content-studio-input");
             input_content_cells.eq(0).removeAttr("hidden");
@@ -263,7 +282,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
     }
 
     function removeRow(row) {
-        if (content[row.toString()]["n_rows"] > 1) {
+        if (content[row]["n_rows"] > 1) {
             if (row === content["n_rows"]) {
                 let input_content_row = $(element).find("#input_content_row_" + row);
                 let input_content_cells = input_content_row.find(".iterative-content-studio-input");
