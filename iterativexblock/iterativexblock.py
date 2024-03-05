@@ -242,7 +242,7 @@ class IterativeXBlock(XBlock):
         from .models import IterativeXBlockQuestion
         id_course = self.course_id
         id_xblock = str(self.location).split('@')[-1]
-        existing_question_ids = [x.id_question for x in IterativeXBlockQuestion.objects.filter(id_course=id_course, id_xblock__ne=id_xblock).all()]
+        existing_question_ids = [x.id_question for x in IterativeXBlockQuestion.objects.filter(id_course=id_course).exclude(id_xblock=id_xblock).all()]
         new_question_ids = [x.id_question for x in data.values()]
         if bool(set(new_question_ids) & set(existing_question_ids)):
             return {'result': 'failed', 'existing_question_ids': existing_question_ids}
@@ -259,7 +259,7 @@ class IterativeXBlock(XBlock):
         id_course = self.course_id
         id_xblock = str(self.location).split('@')[-1]
         content = data.get('content')
-        existing_question_ids = [x.id_question for x in IterativeXBlockQuestion.objects.filter(id_course=id_course, id_xblock__ne=id_xblock).all()]
+        existing_question_ids = [x.id_question for x in IterativeXBlockQuestion.objects.filter(id_course=id_course).exclude(id_xblock=id_xblock).all()]
         new_question_ids = data.get('new_questions')
         if bool(set(new_question_ids) & set(existing_question_ids)):
             return {'result': 'failed', 'error': 102}
