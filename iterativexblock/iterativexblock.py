@@ -50,6 +50,24 @@ class IterativeXBlock(XBlock):
         help="Message to be shown to the user when a question has not been answered yet."
     )
 
+    submit_message = String(
+        default="Submit",
+        scope=Scope.settings,
+        help="Message to be shown in the submit button."
+    )
+
+    submitted_message = String(
+        default="Done",
+        scope=Scope.settings,
+        help="Message to be shown at the submit button when they have already submitted the activity."
+    )
+
+    display_message = String(
+        default="Display",
+        scope=Scope.settings,
+        help="Message to be shown at the button to display a previous answer."
+    )
+
     enable_download = Boolean(
         default=False,
         scope=Scope.settings,
@@ -213,6 +231,14 @@ class IterativeXBlock(XBlock):
             ],
             settings={
                 "content": self.content,
+                "title": self.title,
+                "style": self.style,
+                "no_answer_message": self.no_answer_message,
+                "submit_message": self.submit_message,
+                "submitted_message": self.submitted_message,
+                "display_message": self.display_message,
+                "enable_download": self.enable_download,
+                "submit_message": "Submit",
             }
         )
         return frag
@@ -296,6 +322,9 @@ class IterativeXBlock(XBlock):
         self.title = data.get('title')
         self.style = data.get('style')
         self.no_answer_message = data.get('no_answer_message')
+        self.submit_message = data.get('submit_message')
+        self.submitted_message = data.get('submitted_message')
+        self.display_message = data.get('display_message')
         self.enable_download = data.get('enable_download')
         return {'result': 'success'}
 

@@ -24,6 +24,10 @@
   margin-top: 15px;
 }
 
+#input_no_answer_message {
+  margin-bottom: 30px;
+}
+
 .wrapper-comp-settings .list-input.settings-list .iterative-xblock-span-container {
   width: 5%;
   display: flex;
