@@ -308,8 +308,8 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 input_content_cells.eq(3).find("select").val("none");
                 input_content_cells.eq(3).attr("hidden", true);
                 input_content_row.attr("hidden", true);
+                delete content[content["n_rows"].toString()];
                 content["n_rows"] -= 1;
-                delete content[(content["n_rows"]-1).toString()];
             } else {
                 for (let i = row + 1; i <= content["n_rows"]; i++) {
                     let currentRow = $(element).find("#input_content_row_" + i);
@@ -342,10 +342,10 @@ function IterativeXBlockStudio(runtime, element, settings) {
                         currentCells.eq(3).find("select").val("none");
                         currentCells.eq(3).attr("hidden", true);
                         currentRow.attr("hidden", true);
-                        content["n_rows"] -= 1;
                     }
                 }
-                delete content[(content["n_rows"]-1).toString()];
+                delete content[content["n_rows"].toString()];
+                content["n_rows"] -= 1;
             }
         } else {
             setStudioWarningMessage("Minimum number of rows is 1.")
