@@ -121,11 +121,11 @@ function IterativeXBlockStudio(runtime, element, settings) {
             "1": {
                 "n_cells": 2,
                 "1": {
-                    "type": "text",
+                    "type": "none",
                     "content": ""
                 },
                 "2": {
-                    "type": "text",
+                    "type": "none",
                     "content": ""
                 }
             }
@@ -184,8 +184,8 @@ function IterativeXBlockStudio(runtime, element, settings) {
             return questionIds;
         } else {
             let questionIds = [];
-            for (let i = 0; i < content["n_rows"]; i++) {
-                for (let j = 0; j < content[i.toString()]["n_cells"]; j++) {
+            for (let i = 1; i <= content["n_rows"]; i++) {
+                for (let j = 1; j <= content[i.toString()]["n_cells"]; j++) {
                     let cell = content[i.toString()][j.toString()];
                     if (cell["type"] === "question") {
                         questionIds.push(cell["content"]);
@@ -283,7 +283,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
     }
 
     function removeRow(row) {
-        if (content[row]["n_rows"] > 1) {
+        if (content["n_rows"] > 1) {
             if (row === content["n_rows"]) {
                 let input_content_row = $(element).find("#input_content_row_" + row);
                 let input_content_cells = input_content_row.find(".iterative-content-studio-input");
