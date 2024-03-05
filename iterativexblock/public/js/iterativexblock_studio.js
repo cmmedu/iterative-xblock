@@ -311,7 +311,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 delete content[content["n_rows"].toString()];
                 content["n_rows"] -= 1;
             } else {
-                for (let i = parseInt(row); i <= content["n_rows"]; i++) {
+                for (let i = parseInt(row)+1; i <= content["n_rows"]; i++) {
                     let currentRow = $(element).find("#input_content_row_" + i);
                     let previousRow = $(element).find("#input_content_row_" + (i - 1));
                     let currentCells = currentRow.find(".iterative-content-studio-input");
