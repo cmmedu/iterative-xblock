@@ -20,6 +20,8 @@ function IterativeXBlockStudio(runtime, element, settings) {
 
     function validateContent() {
         let error_msg = "";
+        let questions = [];
+        let answers = [];
         for (let i = 1; i <= content["n_rows"]; i++) {
             let input_content_row = $(element).find("#input_content_row_" + i);
             let input_content_cells = input_content_row.find(".iterative-content-studio-input");
@@ -41,28 +43,25 @@ function IterativeXBlockStudio(runtime, element, settings) {
                         error_msg = "Question ID must be between 3 and 30 characters and can only contain letters, numbers, and underscores for the cell at row " + i + " and cell " + (j + 1) + ".";
                         break;
                     }
+                    questions.push(cell_input.val());
                 } else if (cell_type === "answer") {
                     if (cell_input.val().length > 30 || cell_input.val().length < 3 || !cell_input.val().match(/^[a-zA-Z0-9_]+$/)) {
                         error_msg = "Question ID must be between 3 and 30 characters and can only contain letters, numbers, and underscores for the cell at row " + i + " and cell " + (j + 1) + ".";
                         break;
                     }
-                    let questionIds = [];
-                    for (let k = 1; k <= content["n_rows"]; k++) {
-                        let questionCell = $(element).find("#input_content_row_" + k).find(".iterative-content-studio-input").eq(j);
-                        if (questionCell.find(".iterative-content-type").val() === "question") {
-                            questionIds.push(questionCell.find("input").val());
-                        }
-                    }
-                    if (questionIds.includes(cell_input.val())) {
-                        error_msg = "You cannot get the answer from a question defined at the same Iterative XBlock. Please provide a question ID for the cell at row " + (i + 1) + " and cell " + (j + 1) + " from a different Iterative XBlock.";
-                        break;
-                    }
+                    answers.push(cell_input.val());
                 } else {
-                    error_msg = "Please select a type for the cell at row " + (i + 1) + " and cell " + (j + 1) + ".";
+                    error_msg = "Please select a type for the content at row " + i + " and cell " + (j + 1) + ".";
                     break;
                 }
             }
             if (error_msg !== "") {
+                break;
+            }
+        }
+        for(let q of questions) {
+            if (answers.includes(q)) {
+                error_msg = "You cannot get the answer from a question defined at the same Iterative XBlock (" + q + ").";
                 break;
             }
         }
