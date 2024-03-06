@@ -20,7 +20,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
 
     function validateContent() {
         let error_msg = "";
-        for (let i = 0; i < content["n_rows"]; i++) {
+        for (let i = 1; i <= content["n_rows"]; i++) {
             let input_content_row = $(element).find("#input_content_row_" + i);
             let input_content_cells = input_content_row.find(".iterative-content-studio-input");
             for (let j = 0; j < content[i.toString()]["n_cells"]; j++) {
@@ -29,25 +29,25 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 let cell_input = cell.find("input");
                 if (cell_type === "text") {
                     if (cell_input.val().length > 1000) {
-                        error_msg = "Text must be less than 1000 characters for the cell at row " + (i + 1) + " and cell " + (j + 1) + ".";
+                        error_msg = "Text must be less than 1000 characters for the cell at row " + i + " and cell " + (j + 1) + ".";
                         break;
                     }
                 } else if (cell_type === "question") {
                     if (cell_input.val() === "") {
-                        error_msg = "Please provide a question ID for the cell at row " + (i + 1) + " and cell " + (j + 1) + ".";
+                        error_msg = "Please provide a question ID for the cell at row " + i + " and cell " + (j + 1) + ".";
                         break;
                     }
                     if (cell_input.val().length > 30 || cell_input.val().length < 3 || !cell_input.val().match(/^[a-zA-Z0-9_]+$/)) {
-                        error_msg = "Question ID must be between 3 and 30 characters and can only contain letters, numbers, and underscores for the cell at row " + (i + 1) + " and cell " + (j + 1) + ".";
+                        error_msg = "Question ID must be between 3 and 30 characters and can only contain letters, numbers, and underscores for the cell at row " + i + " and cell " + (j + 1) + ".";
                         break;
                     }
                 } else if (cell_type === "answer") {
                     if (cell_input.val().length > 30 || cell_input.val().length < 3 || !cell_input.val().match(/^[a-zA-Z0-9_]+$/)) {
-                        error_msg = "Question ID must be between 3 and 30 characters and can only contain letters, numbers, and underscores for the cell at row " + (i + 1) + " and cell " + (j + 1) + ".";
+                        error_msg = "Question ID must be between 3 and 30 characters and can only contain letters, numbers, and underscores for the cell at row " + i + " and cell " + (j + 1) + ".";
                         break;
                     }
                     let questionIds = [];
-                    for (let k = 0; k < content["n_rows"]; k++) {
+                    for (let k = 1; k <= content["n_rows"]; k++) {
                         let questionCell = $(element).find("#input_content_row_" + k).find(".iterative-content-studio-input").eq(j);
                         if (questionCell.find(".iterative-content-type").val() === "question") {
                             questionIds.push(questionCell.find("input").val());

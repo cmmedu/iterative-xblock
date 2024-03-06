@@ -1,20 +1,23 @@
-inicio:
+pipeline {
+    agent any
 
-- cargar actual
-- existe? aplicar actual
-
-- no existe? mostrar solo 1_1
-
-
-
-X al apretar un +
-
-
-X al apretar una X
-
-
-X al apretar agregar fila
-
-
-
-
+    stages {
+        stage('Hello') {
+            steps {
+                script {
+                    withCredentials ([string(credentialsId: 'cmmedu-2-ip', variable: 'ip')]) {
+                        withCredentials ([usernamePassword(credentialsId: 'cmmedu-2-ssh', usernameVariable: 'username', passwordVariable: 'password')]) {
+                            def remote = [:]
+                            remote.name = "cmmedu-2"
+                            remote.host = ip
+                            remote.allowAnyHosts = true
+                            remote.user = username
+                            remote.password = password
+                            sshCommand remote:remote, command: "cd /etc/suma_y_sigue/suma_y_sigue && git pull origin main && docker compose up -d"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
