@@ -329,8 +329,8 @@ function IterativeXBlockStudio(runtime, element, settings) {
                         } else {
                             currentCells.eq(q).attr("hidden", true);
                         }
-                        content[(i-1).toString()]["n_cells"] = content[i.toString()]["n_cells"];
                     }
+                    content[(i-1).toString()]["n_cells"] = content[i.toString()]["n_cells"];
                     if (i === content["n_rows"]) {
                         for (let j = 0; j < 4; j++) {
                             currentCells.eq(j).find("input").val("");
