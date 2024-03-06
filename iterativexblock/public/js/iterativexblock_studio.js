@@ -172,8 +172,8 @@ function IterativeXBlockStudio(runtime, element, settings) {
     }
 
     function getQuestionIDs(content) {
+        let questionIds = [];
         if (content === 0){
-            let questionIds = [];
             $(element).find(".iterative-content-studio-input").each(function() {
                 let cellType = $(this).find(".iterative-content-type").val();
                 if (cellType === "question") {
@@ -182,7 +182,6 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 }
             });
         } else {
-            let questionIds = [];
             for (let i = 1; i <= content["n_rows"]; i++) {
                 for (let j = 1; j <= content[i.toString()]["n_cells"]; j++) {
                     let cell = content[i.toString()][j.toString()];
