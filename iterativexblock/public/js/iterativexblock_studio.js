@@ -205,7 +205,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
     }
 
     function addNewCell(row) {
-        console.log(content)
+        console.log(JSON.stringify(content))
         if(content[row]["n_cells"] < 4) {
             let input_content_row = $(element).find("#input_content_row_" + row);
             let input_content_cells = input_content_row.find(".iterative-content-studio-input");
@@ -224,7 +224,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
     }
     
     function removeCell(row) {
-        console.log(content)
+        console.log(JSON.stringify(content))
         if(content[row]["n_cells"] > 1) {
             let input_content_row = $(element).find("#input_content_row_" + row);
             let input_content_cells = input_content_row.find(".iterative-content-studio-input");
@@ -243,7 +243,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
     }
 
     function addNewRow() {
-        console.log(content)
+        console.log(JSON.stringify(content))
         if(content["n_rows"] < 9) {
             let nth_element = content["n_rows"] + 1;
             let input_content_row = $(element).find("#input_content_row_" + nth_element);
@@ -286,7 +286,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
     }
 
     function removeRow(row) {
-        console.log(content)
+        console.log(JSON.stringify(content))
         if (content["n_rows"] > 1) {
             if (parseInt(row) === content["n_rows"]) {
                 let input_content_row = $(element).find("#input_content_row_" + row);
@@ -325,9 +325,9 @@ function IterativeXBlockStudio(runtime, element, settings) {
                             "content": cellValue
                         }
                         if (q < content[i.toString()]["n_cells"]) {
-                            currentCells.eq(q).removeAttr("hidden", true);
+                            previousCells.eq(q).removeAttr("hidden", true);
                         } else {
-                            currentCells.eq(q).attr("hidden", true);
+                            previousCells.eq(q).attr("hidden", true);
                         }
                     }
                     content[(i-1).toString()]["n_cells"] = content[i.toString()]["n_cells"];
@@ -354,7 +354,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
 
     $(element).find(".iterative-content-type").bind('change', function (eventObject) {
         eventObject.preventDefault();
-        console.log(content)
+        console.log(JSON.stringify(content))
         let row = $(this).attr("id").split("_")[2];
         let cell = $(this).attr("id").split("_")[3];
         let value = $(this).val();
