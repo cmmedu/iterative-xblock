@@ -307,7 +307,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
                     let currentCells = currentRow.find(".iterative-content-studio-input");
                     let previousCells = previousRow.find(".iterative-content-studio-input");
                     for(let q = 0; q < 4; q++) {
-                        let cellType = currentCells.eq(q).find("select").val() === "none" ? "" : currentCells.eq(q).find("select").val();
+                        let cellType = currentCells.eq(q).find("select").val() === null ? "" : currentCells.eq(q).find("select").val();
                         previousCells.eq(q).find("select").val(cellType);
                         if (cellType === "text") {
                             previousCells.eq(q).find("input").attr("placeholder", "Enter text here").removeAttr("disabled");
