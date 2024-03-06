@@ -162,7 +162,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
             let input_content_cells = input_content_row.find(".iterative-content-studio-input");
             for (let j = 0; j < content[i.toString()]["n_cells"]; j++) {
                 let cell = input_content_cells.eq(j);
-                content[i.toString()][j.toString()] = {
+                content[i.toString()][(j+1).toString()] = {
                     "type": cell.find("select").val(),
                     "content": cell.find("input").val()
                 }

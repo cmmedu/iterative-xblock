@@ -148,9 +148,9 @@ class IterativeXBlock(XBlock):
 
     def student_view(self, context={}):
         if getattr(self.runtime, 'user_is_staff', False):
-            return self.instructor_view(self, context)
+            return self.instructor_view(context)
         else:
-            return self.learner_view(self, context)
+            return self.learner_view(context)
 
 
     def learner_view(self, context={}):
@@ -273,8 +273,7 @@ class IterativeXBlock(XBlock):
         id_course = self.course_id
         id_xblock = str(self.location).split('@')[-1]
         existing_question_ids = [x.id_question for x in IterativeXBlockQuestion.objects.filter(id_course=id_course).exclude(id_xblock=id_xblock).all()]
-        new_question_ids = [x.id_question for x in data.values()]
-        if bool(set(new_question_ids) & set(existing_question_ids)):
+        if bool(set(data) & set(existing_question_ids)):
             return {'result': 'failed', 'existing_question_ids': existing_question_ids}
         else:
             return {'result': 'success'}
@@ -295,9 +294,9 @@ class IterativeXBlock(XBlock):
             return {'result': 'failed', 'error': 102}
         if not self.configured:
             for i in range(content["n_rows"]):
-                row = content[str(i)]
+                row = content[str(i+1)]
                 for j in range(row["n_cells"]):
-                    cell = row[str(j)]
+                    cell = row[str(j+1)]
                     if cell["type"] == "question":
                         id_question = cell["content"]
                         new_question = IterativeXBlockQuestion(id_course=id_course, id_xblock=id_xblock, id_question=id_question)
