@@ -181,7 +181,6 @@ function IterativeXBlockStudio(runtime, element, settings) {
                     questionIds.push(questionId);
                 }
             });
-            return questionIds;
         } else {
             let questionIds = [];
             for (let i = 1; i <= content["n_rows"]; i++) {
@@ -194,6 +193,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
             
             }
         }
+        return questionIds;
     }
 
     function setStudioErrorMessage(msg) {
