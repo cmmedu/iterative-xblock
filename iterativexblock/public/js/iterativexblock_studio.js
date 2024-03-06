@@ -320,7 +320,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
                         }
                         let cellValue = currentCells.eq(q).find("input").val();
                         previousCells.eq(q).find("input").val(cellValue);
-                        content[(i-1).toString()][q.toString()] = {
+                        content[(i-1).toString()][(q+1).toString()] = {
                             "type": cellType,
                             "content": cellValue
                         }
