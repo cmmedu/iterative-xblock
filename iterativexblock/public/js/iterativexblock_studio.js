@@ -269,11 +269,11 @@ function IterativeXBlockStudio(runtime, element, settings) {
             content[nth_element] = {
                 "n_cells": 2,
                 "1": {
-                    "type": "text",
+                    "type": "none",
                     "content": ""
                 },
                 "2": {
-                    "type": "text",
+                    "type": "none",
                     "content": ""
                 },
             }
@@ -291,22 +291,12 @@ function IterativeXBlockStudio(runtime, element, settings) {
             if (parseInt(row) === content["n_rows"]) {
                 let input_content_row = $(element).find("#input_content_row_" + row);
                 let input_content_cells = input_content_row.find(".iterative-content-studio-input");
-                input_content_cells.eq(0).find("input").val("");
-                input_content_cells.eq(0).find("input").attr("placeholder", "Please select an option...").attr("disabled", true);
-                input_content_cells.eq(0).find("select").val("none");
-                input_content_cells.eq(0).attr("hidden", true);
-                input_content_cells.eq(1).find("input").val("");
-                input_content_cells.eq(1).find("input").attr("placeholder", "Please select an option...").attr("disabled", true);
-                input_content_cells.eq(1).find("select").val("none");
-                input_content_cells.eq(1).attr("hidden", true);
-                input_content_cells.eq(2).find("input").val("");
-                input_content_cells.eq(2).find("input").attr("placeholder", "Please select an option...").attr("disabled", true);
-                input_content_cells.eq(2).find("select").val("none");
-                input_content_cells.eq(2).attr("hidden", true);
-                input_content_cells.eq(3).find("input").val("");
-                input_content_cells.eq(3).find("input").attr("placeholder", "Please select an option...").attr("disabled", true);
-                input_content_cells.eq(3).find("select").val("none");
-                input_content_cells.eq(3).attr("hidden", true);
+                for (let i = 0; i < 4; i++) {
+                    input_content_cells.eq(i).find("input").val("");
+                    input_content_cells.eq(i).find("input").attr("placeholder", "Please select an option...").attr("disabled", true);
+                    input_content_cells.eq(i).find("select").val("none");
+                    input_content_cells.eq(i).attr("hidden", true);
+                }
                 input_content_row.attr("hidden", true);
                 delete content[content["n_rows"].toString()];
                 content["n_rows"] -= 1;
@@ -316,31 +306,31 @@ function IterativeXBlockStudio(runtime, element, settings) {
                     let previousRow = $(element).find("#input_content_row_" + (i - 1));
                     let currentCells = currentRow.find(".iterative-content-studio-input");
                     let previousCells = previousRow.find(".iterative-content-studio-input");
-                    previousCells.eq(0).find("input").val(currentCells.eq(0).find("input").val());
-                    previousCells.eq(0).find("select").val(currentCells.eq(0).find("select").val());
-                    previousCells.eq(1).find("input").val(currentCells.eq(1).find("input").val());
-                    previousCells.eq(1).find("select").val(currentCells.eq(1).find("select").val());
-                    previousCells.eq(2).find("input").val(currentCells.eq(2).find("input").val());
-                    previousCells.eq(2).find("select").val(currentCells.eq(2).find("select").val());
-                    previousCells.eq(3).find("input").val(currentCells.eq(3).find("input").val());
-                    previousCells.eq(3).find("select").val(currentCells.eq(3).find("select").val());
+                    for(let q = 0; q < 4; q++) {
+                        let cellValue = currentCells.eq(q).find("input").val();
+                        previousCells.eq(q).find("input").val(cellValue);
+                        let cellType = currentCells.eq(q).find("select").val();
+                        previousCells.eq(q).find("select").val(cellType);
+                        if (content[(i-1).toString()]["n_cells"] === q) {
+                            content[(i-1).toString()]["n_cells"] += 1;
+                        }
+                        content[(i-1).toString()][q.toString()] = {
+                            "type": cellType,
+                            "content": cellValue
+                        }
+                        if (q < content[i.toString()]["n_cells"]) {
+                            currentCells.eq(q).removeAttr("hidden", true);
+                        } else {
+                            currentCells.eq(q).attr("hidden", true);
+                        }
+                    }
                     if (i === content["n_rows"]) {
-                        currentCells.eq(0).find("input").val("");
-                        currentCells.eq(0).find("input").attr("placeholder", "Please select an option...").attr("disabled", true);
-                        currentCells.eq(0).find("select").val("none");
-                        currentCells.eq(0).attr("hidden", true);
-                        currentCells.eq(1).find("input").val("");
-                        currentCells.eq(1).find("input").attr("placeholder", "Please select an option...").attr("disabled", true);
-                        currentCells.eq(1).find("select").val("none");
-                        currentCells.eq(1).attr("hidden", true);
-                        currentCells.eq(2).find("input").val("");
-                        currentCells.eq(2).find("input").attr("placeholder", "Please select an option...").attr("disabled", true);
-                        currentCells.eq(2).find("select").val("none");
-                        currentCells.eq(2).attr("hidden", true);
-                        currentCells.eq(3).find("input").val("");
-                        currentCells.eq(3).find("input").attr("placeholder", "Please select an option...").attr("disabled", true);
-                        currentCells.eq(3).find("select").val("none");
-                        currentCells.eq(3).attr("hidden", true);
+                        for (let j = 0; j < 4; j++) {
+                            currentCells.eq(j).find("input").val("");
+                            currentCells.eq(j).find("input").attr("placeholder", "Please select an option...").attr("disabled", true);
+                            currentCells.eq(j).find("select").val("none");
+                            currentCells.eq(j).attr("hidden", true);
+                        }
                         currentRow.attr("hidden", true);
                     }
                 }
