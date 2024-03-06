@@ -141,17 +141,22 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 let cell_type = cell.find(".iterative-content-type");
                 let cell_input = cell.find("input");
                 cell_type.val(content[i.toString()][j.toString()]["type"]);
+                cell_input.val(content[i.toString()][j.toString()]["content"]);
                 if (content[i.toString()][j.toString()]["type"] === "text") {
                     cell_input.attr("placeholder", "Enter text here").removeAttr("disabled");
+                    cell.removeAttr("hidden");
                 } else if (content[i.toString()][j.toString()]["type"] === "question") {
                     cell_input.attr("placeholder", "Question ID").removeAttr("disabled");
+                    cell.removeAttr("hidden");
                 } else if (content[i.toString()][j.toString()]["type"] === "answer") {
                     cell_input.attr("placeholder", "Question ID").removeAttr("disabled");
+                    cell.removeAttr("hidden");
                 } else {
                     cell_input.attr("placeholder", "Please select an option...").attr("disabled", true);
+                    cell.attr("hidden", true);
                 }
-                cell_input.val(content[i.toString()][j.toString()]["content"]);
             }
+            input_content_row.removeAttr("hidden");
         }
     }
 
