@@ -307,13 +307,19 @@ function IterativeXBlockStudio(runtime, element, settings) {
                     let currentCells = currentRow.find(".iterative-content-studio-input");
                     let previousCells = previousRow.find(".iterative-content-studio-input");
                     for(let q = 0; q < 4; q++) {
+                        let cellType = currentCells.eq(q).find("select").val() === "none" ? "" : currentCells.eq(q).find("select").val();
+                        previousCells.eq(q).find("select").val(cellType);
+                        if (cellType === "text") {
+                            previousCells.eq(q).find("input").attr("placeholder", "Enter text here").removeAttr("disabled");
+                        } else if (cellType === "question") {
+                            previousCells.eq(q).find("input").attr("placeholder", "Question ID").removeAttr("disabled");
+                        } else if (cellType === "answer") {
+                            previousCells.eq(q).find("input").attr("placeholder", "Question ID").removeAttr("disabled");
+                        } else {
+                            previousCells.eq(q).find("input").attr("placeholder", "Please select an option...").attr("disabled", true);
+                        }
                         let cellValue = currentCells.eq(q).find("input").val();
                         previousCells.eq(q).find("input").val(cellValue);
-                        let cellType = currentCells.eq(q).find("select").val();
-                        previousCells.eq(q).find("select").val(cellType);
-                        if (content[(i-1).toString()]["n_cells"] === q) {
-                            content[(i-1).toString()]["n_cells"] += 1;
-                        }
                         content[(i-1).toString()][q.toString()] = {
                             "type": cellType,
                             "content": cellValue
@@ -323,6 +329,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
                         } else {
                             currentCells.eq(q).attr("hidden", true);
                         }
+                        content[(i-1).toString()]["n_cells"] = content[i.toString()]["n_cells"];
                     }
                     if (i === content["n_rows"]) {
                         for (let j = 0; j < 4; j++) {
