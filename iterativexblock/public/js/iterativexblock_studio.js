@@ -399,7 +399,8 @@ function IterativeXBlockStudio(runtime, element, settings) {
         setStudioErrorMessage("");
         var handlerUrl = runtime.handlerUrl(element, 'studio_submit');
         var checkQuestionIDsUrl = runtime.handlerUrl(element, 'check_question_ids');
-        var original_questions = getQuestionIDs(content)
+        var contentData = getContentData();
+        var original_questions = getQuestionIDs(contentData)
         var newQuestions = getQuestionIDs(0).filter(function(questionId) {
             return !original_questions.includes(questionId);
         });
@@ -410,7 +411,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
         var data = {
             title: title.val(),
             style: style.val(),
-            content: getContentData(),
+            content: contentData,
             submit_message: submit_message.val(),
             submitted_message: submitted_message.val(),
             display_message: display_message.val(),

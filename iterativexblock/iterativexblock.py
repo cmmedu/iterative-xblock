@@ -304,7 +304,7 @@ class IterativeXBlock(XBlock):
             self.configured = True
         else:
             new_questions = data.get('new_questions')
-            deleted_questions = data.get('deleted_questions')
+            deleted_questions = data.get('removed_questions')
             for question in new_questions:
                 new_question = IterativeXBlockQuestion(id_course=id_course, id_xblock=id_xblock, id_question=question)
                 new_question.save()
