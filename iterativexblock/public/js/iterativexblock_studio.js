@@ -413,6 +413,8 @@ function IterativeXBlockStudio(runtime, element, settings) {
         var removedQuestions = original_questions.filter(function(questionId) {
             return !getQuestionIDs(0).includes(questionId);
         });
+        console.log(newQuestions)
+        console.log(removedQuestions)
         var data = {
             title: title.val(),
             style: style.val(),
