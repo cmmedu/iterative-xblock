@@ -157,18 +157,19 @@ function IterativeXBlockStudio(runtime, element, settings) {
     }
 
     function getContentData() {
-        for (let i = 1; i <= content["n_rows"]; i++) {
+        let contentData = JSON.parse(JSON.stringify(content));
+        for (let i = 1; i <= contentData["n_rows"]; i++) {
             let input_content_row = $(element).find("#input_content_row_" + i);
             let input_content_cells = input_content_row.find(".iterative-content-studio-input");
-            for (let j = 0; j < content[i.toString()]["n_cells"]; j++) {
+            for (let j = 0; j < contentData[i.toString()]["n_cells"]; j++) {
                 let cell = input_content_cells.eq(j);
-                content[i.toString()][(j+1).toString()] = {
+                contentData[i.toString()][(j+1).toString()] = {
                     "type": cell.find("select").val(),
                     "content": cell.find("input").val()
                 }
             }
         }
-        return content;
+        return contentData;
     }
 
     function getQuestionIDs(content) {
@@ -204,7 +205,6 @@ function IterativeXBlockStudio(runtime, element, settings) {
     }
 
     function addNewCell(row) {
-        console.log(JSON.stringify(content))
         if(content[row]["n_cells"] < 4) {
             let input_content_row = $(element).find("#input_content_row_" + row);
             let input_content_cells = input_content_row.find(".iterative-content-studio-input");
@@ -223,7 +223,6 @@ function IterativeXBlockStudio(runtime, element, settings) {
     }
     
     function removeCell(row) {
-        console.log(JSON.stringify(content))
         if(content[row]["n_cells"] > 1) {
             let input_content_row = $(element).find("#input_content_row_" + row);
             let input_content_cells = input_content_row.find(".iterative-content-studio-input");
@@ -242,7 +241,6 @@ function IterativeXBlockStudio(runtime, element, settings) {
     }
 
     function addNewRow() {
-        console.log(JSON.stringify(content))
         if(content["n_rows"] < 9) {
             let nth_element = content["n_rows"] + 1;
             let input_content_row = $(element).find("#input_content_row_" + nth_element);
@@ -285,7 +283,6 @@ function IterativeXBlockStudio(runtime, element, settings) {
     }
 
     function removeRow(row) {
-        console.log(JSON.stringify(content))
         if (content["n_rows"] > 1) {
             if (parseInt(row) === content["n_rows"]) {
                 let input_content_row = $(element).find("#input_content_row_" + row);
@@ -359,7 +356,6 @@ function IterativeXBlockStudio(runtime, element, settings) {
 
     $(element).find(".iterative-content-type").bind('change', function (eventObject) {
         eventObject.preventDefault();
-        console.log(JSON.stringify(content))
         let row = $(this).attr("id").split("_")[2];
         let cell = $(this).attr("id").split("_")[3];
         let value = $(this).val();
@@ -416,7 +412,6 @@ function IterativeXBlockStudio(runtime, element, settings) {
             title: title.val(),
             style: style.val(),
             content: getContentData(),
-            content: content,
             submit_message: submit_message.val(),
             submitted_message: submitted_message.val(),
             display_message: display_message.val(),
