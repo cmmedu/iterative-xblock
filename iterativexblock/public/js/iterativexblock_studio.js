@@ -144,17 +144,14 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 cell_input.val(content[i.toString()][j.toString()]["content"]);
                 if (content[i.toString()][j.toString()]["type"] === "text") {
                     cell_input.attr("placeholder", "Enter text here").removeAttr("disabled");
-                    cell.removeAttr("hidden");
                 } else if (content[i.toString()][j.toString()]["type"] === "question") {
                     cell_input.attr("placeholder", "Question ID").removeAttr("disabled");
-                    cell.removeAttr("hidden");
                 } else if (content[i.toString()][j.toString()]["type"] === "answer") {
                     cell_input.attr("placeholder", "Question ID").removeAttr("disabled");
-                    cell.removeAttr("hidden");
                 } else {
                     cell_input.attr("placeholder", "Please select an option...").attr("disabled", true);
-                    cell.attr("hidden", true);
                 }
+                cell.removeAttr("hidden");
             }
             input_content_row.removeAttr("hidden");
         }
@@ -409,7 +406,6 @@ function IterativeXBlockStudio(runtime, element, settings) {
         var newQuestions = getQuestionIDs(contentData).filter(function(questionId) {
             return !original_questions.includes(questionId);
         });
-
         var removedQuestions = original_questions.filter(function(questionId) {
             return !getQuestionIDs(contentData).includes(questionId);
         });
