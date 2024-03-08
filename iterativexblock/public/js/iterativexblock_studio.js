@@ -9,16 +9,15 @@ function IterativeXBlockStudio(runtime, element, settings) {
     let submitted_message = $(element).find("#submitted_message");
     let input_display_message = $(element).find("#input_display_message");
     let display_message = $(element).find("#display_message");
-    let input_displayed_message = $(element).find("#input_displayed_message");
-    let displayed_message = $(element).find("#displayed_message");
     let input_no_answer_message = $(element).find("#input_no_answer_message");
     let no_answer_message = $(element).find("#no_answer_message");
     let input_enable_downloads = $(element).find("#input_enable_downloads");
     let enable_downloads = $(element).find("#enable_downloads");
     
-    var content =  Object.keys(settings.content).length === 0 ? makeBasicContent() : settings.content;
+    var content_ui;
+    let content_backend  = settings.content
 
-    function validateContent() {
+    function validateContent(content) {
         let error_msg = "";
         let questions = [];
         let answers = [];
@@ -81,27 +80,21 @@ function IterativeXBlockStudio(runtime, element, settings) {
         if (data["submit_message"] === "") {
             return "Please provide a message for the submit button."
         }
-        if (data["submit_message"].length > 100) {
-            return "Submit message must be less than 100 characters."
+        if (data["submit_message"].length > 30) {
+            return "Submit message must be less than 30 characters."
         }
         if (data["submitted_message"] === "") {
             return "Please provide a message for the submit button when the answer is submitted."
         }
-        if (data["submitted_message"].length > 100) {
-            return "Submitted message must be less than 100 characters."
+        if (data["submitted_message"].length > 30) {
+            return "Submitted message must be less than 30 characters."
         }
         if (data["display_message"] === "") {
             return "Please provide a message for the display button."
         }
-        if (data["display_message"].length > 100) {
-            return "Display message must be less than 100 characters."
+        if (data["display_message"].length > 30) {
+            return "Display message must be less than 30 characters."
         }
-        // if (data["displayed_message"] === "") {
-        //     return "Please provide a message for the display button when the answer is displayed."
-        // }
-        // if (data["displayed_message"].length > 100) {
-        //     return "Displayed message must be less than 100 characters."
-        // }
         if (data["no_answer_message"] === "") {
             return "Please provide a message for when there is no answer."
         }
@@ -111,28 +104,10 @@ function IterativeXBlockStudio(runtime, element, settings) {
         // if (data["enable_downloads"] == null) {
         //     return "Please select if you want to enable download of answers as a PDF file or not."
         // }
-        return validateContent();
+        return validateContent(data["content"]);
     }
 
-    function makeBasicContent() {
-        let basicContent = {
-            "n_rows": 1,
-            "1": {
-                "n_cells": 2,
-                "1": {
-                    "type": "none",
-                    "content": ""
-                },
-                "2": {
-                    "type": "none",
-                    "content": ""
-                }
-            }
-        }
-        return basicContent;
-    }
-
-    function applyContent() {
+    function applyContent(content) {
         for (let i = 1; i <= content["n_rows"]; i++) {
             let input_content_row = $(element).find("#input_content_row_" + i);
             let input_content_cells = input_content_row.find(".iterative-content-studio-input");
@@ -155,66 +130,32 @@ function IterativeXBlockStudio(runtime, element, settings) {
             }
             input_content_row.removeAttr("hidden");
         }
-    }
-
-    function getContentData() {
-        let contentData = JSON.parse(JSON.stringify(content));
-        for (let i = 1; i <= contentData["n_rows"]; i++) {
-            let input_content_row = $(element).find("#input_content_row_" + i);
-            let input_content_cells = input_content_row.find(".iterative-content-studio-input");
-            for (let j = 0; j < contentData[i.toString()]["n_cells"]; j++) {
-                let cell = input_content_cells.eq(j);
-                contentData[i.toString()][(j+1).toString()] = {
-                    "type": cell.find("select").val(),
-                    "content": cell.find("input").val()
-                }
-            }
-        }
-        return contentData;
+        content_ui = content;
     }
 
     function getQuestionIDs(content) {
         let questionIds = [];
-        if (content === 0){
-            $(element).find(".iterative-content-studio-input").each(function() {
-                let cellType = $(this).find(".iterative-content-type").val();
-                if (cellType === "question") {
-                    let questionId = $(this).find("input").val();
-                    questionIds.push(questionId);
+        for (let i = 1; i <= content["n_rows"]; i++) {
+            for (let j = 1; j <= content[i.toString()]["n_cells"]; j++) {
+                let cell = content[i.toString()][j.toString()];
+                if (cell["type"] === "question") {
+                    questionIds.push(cell["content"]);
                 }
-            });
-        } else {
-            for (let i = 1; i <= content["n_rows"]; i++) {
-                for (let j = 1; j <= content[i.toString()]["n_cells"]; j++) {
-                    let cell = content[i.toString()][j.toString()];
-                    if (cell["type"] === "question") {
-                        questionIds.push(cell["content"]);
-                    }
-                }
-            
             }
         }
         return questionIds;
     }
 
-    function setStudioErrorMessage(msg) {
-        $(element).find('.studio-error-msg').html(msg);
-    }
-
-    function setStudioWarningMessage(msg) {
-        $(element).find('.studio-warning-msg').html(msg);
-    }
-
     function addNewCell(row) {
-        if(content[row]["n_cells"] < 4) {
+        if(content_ui[row]["n_cells"] < 4) {
             let input_content_row = $(element).find("#input_content_row_" + row);
             let input_content_cells = input_content_row.find(".iterative-content-studio-input");
-            let nth_element = content[row]["n_cells"];
+            let nth_element = content_ui[row]["n_cells"];
             input_content_cells.eq(nth_element).removeAttr("hidden");
             input_content_cells.eq(nth_element).find("input").val("");
             input_content_cells.eq(nth_element).find("input").attr("placeholder", "Please select an option...").attr("disabled", true);
             input_content_cells.eq(nth_element).find("select").val("none");
-            content[row]["n_cells"] += 1;
+            content_ui[row]["n_cells"] += 1;
         } else {
             setStudioWarningMessage("Maximum number of cells per row is 4.")
             setTimeout(function() {
@@ -224,26 +165,23 @@ function IterativeXBlockStudio(runtime, element, settings) {
     }
     
     function removeCell(row) {
-        if(content[row]["n_cells"] > 1) {
+        if(content_ui[row]["n_cells"] > 1) {
             let input_content_row = $(element).find("#input_content_row_" + row);
             let input_content_cells = input_content_row.find(".iterative-content-studio-input");
-            let nth_element = content[row]["n_cells"] - 1;
+            let nth_element = content_ui[row]["n_cells"] - 1;
             input_content_cells.eq(nth_element).attr("hidden", true);
             input_content_cells.eq(nth_element).find("input").val("");
             input_content_cells.eq(nth_element).find("input").attr("placeholder", "Please select an option...").attr("disabled", true);
             input_content_cells.eq(nth_element).find("select").val("none");
-            content[row]["n_cells"] -= 1;
+            content_ui[row]["n_cells"] -= 1;
         } else {
-            setStudioWarningMessage("Minimum number of cells per row is 1.")
-            setTimeout(function() {
-                setStudioWarningMessage("");
-            }, 3000);
+            removeRow(row);
         }
     }
 
     function addNewRow() {
-        if(content["n_rows"] < 9) {
-            let nth_element = content["n_rows"] + 1;
+        if(content_ui["n_rows"] < 9) {
+            let nth_element = content_ui["n_rows"] + 1;
             let input_content_row = $(element).find("#input_content_row_" + nth_element);
             let input_content_cells = input_content_row.find(".iterative-content-studio-input");
             input_content_cells.eq(0).removeAttr("hidden");
@@ -263,8 +201,8 @@ function IterativeXBlockStudio(runtime, element, settings) {
             input_content_cells.eq(3).find("input").attr("placeholder", "Please select an option...").attr("disabled", true);
             input_content_cells.eq(3).find("select").val("none");
             input_content_row.removeAttr("hidden");
-            content["n_rows"] += 1;
-            content[nth_element] = {
+            content_ui["n_rows"] += 1;
+            content_ui[nth_element] = {
                 "n_cells": 2,
                 "1": {
                     "type": "none",
@@ -284,8 +222,8 @@ function IterativeXBlockStudio(runtime, element, settings) {
     }
 
     function removeRow(row) {
-        if (content["n_rows"] > 1) {
-            if (parseInt(row) === content["n_rows"]) {
+        if (content_ui["n_rows"] > 1) {
+            if (parseInt(row) === content_ui["n_rows"]) {
                 let input_content_row = $(element).find("#input_content_row_" + row);
                 let input_content_cells = input_content_row.find(".iterative-content-studio-input");
                 for (let i = 0; i < 4; i++) {
@@ -295,10 +233,10 @@ function IterativeXBlockStudio(runtime, element, settings) {
                     input_content_cells.eq(i).attr("hidden", true);
                 }
                 input_content_row.attr("hidden", true);
-                delete content[content["n_rows"].toString()];
-                content["n_rows"] -= 1;
+                delete content_ui[content_ui["n_rows"].toString()];
+                content_ui["n_rows"] -= 1;
             } else {
-                for (let i = parseInt(row)+1; i <= content["n_rows"]; i++) {
+                for (let i = parseInt(row)+1; i <= content_ui["n_rows"]; i++) {
                     let currentRow = $(element).find("#input_content_row_" + i);
                     let previousRow = $(element).find("#input_content_row_" + (i - 1));
                     let currentCells = currentRow.find(".iterative-content-studio-input");
@@ -323,18 +261,18 @@ function IterativeXBlockStudio(runtime, element, settings) {
                         }
                         let cellValue = currentCells.eq(q).find("input").val();
                         previousCells.eq(q).find("input").val(cellValue);
-                        content[(i-1).toString()][(q+1).toString()] = {
+                        content_ui[(i-1).toString()][(q+1).toString()] = {
                             "type": cellType,
                             "content": cellValue
                         }
-                        if (q < content[i.toString()]["n_cells"]) {
+                        if (q < content_ui[i.toString()]["n_cells"]) {
                             previousCells.eq(q).removeAttr("hidden", true);
                         } else {
                             previousCells.eq(q).attr("hidden", true);
                         }
                     }
-                    content[(i-1).toString()]["n_cells"] = content[i.toString()]["n_cells"];
-                    if (i === content["n_rows"]) {
+                    content_ui[(i-1).toString()]["n_cells"] = content_ui[i.toString()]["n_cells"];
+                    if (i === content_ui["n_rows"]) {
                         for (let j = 0; j < 4; j++) {
                             currentCells.eq(j).find("input").val("");
                             currentCells.eq(j).find("input").attr("placeholder", "Please select an option...").attr("disabled", true);
@@ -344,8 +282,8 @@ function IterativeXBlockStudio(runtime, element, settings) {
                         currentRow.attr("hidden", true);
                     }
                 }
-                delete content[content["n_rows"].toString()];
-                content["n_rows"] -= 1;
+                delete content_ui[content_ui["n_rows"].toString()];
+                content_ui["n_rows"] -= 1;
             }
         } else {
             setStudioWarningMessage("Minimum number of rows is 1.")
@@ -353,6 +291,14 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 setStudioWarningMessage("");
             }, 3000);
         }
+    }
+
+    function setStudioErrorMessage(msg) {
+        $(element).find('.studio-error-msg').html(msg);
+    }
+
+    function setStudioWarningMessage(msg) {
+        $(element).find('.studio-warning-msg').html(msg);
     }
 
     $(element).find(".iterative-content-type").bind('change', function (eventObject) {
@@ -401,24 +347,22 @@ function IterativeXBlockStudio(runtime, element, settings) {
         setStudioErrorMessage("");
         var handlerUrl = runtime.handlerUrl(element, 'studio_submit');
         var checkQuestionIDsUrl = runtime.handlerUrl(element, 'check_question_ids');
-        var contentData = getContentData();
-        var original_questions = getQuestionIDs(0)
-        var newQuestions = getQuestionIDs(contentData).filter(function(questionId) {
+        var original_questions = getQuestionIDs(content_backend)
+        var newQuestions = getQuestionIDs(content_ui).filter(function(questionId) {
             return !original_questions.includes(questionId);
         });
         var removedQuestions = original_questions.filter(function(questionId) {
-            return !getQuestionIDs(contentData).includes(questionId);
+            return !getQuestionIDs(content_ui).includes(questionId);
         });
         console.log(newQuestions)
         console.log(removedQuestions)
         var data = {
             title: title.val(),
             style: style.val(),
-            content: contentData,
+            content: content_ui,
             submit_message: submit_message.val(),
             submitted_message: submitted_message.val(),
             display_message: display_message.val(),
-            //displayed_message: displayed_message.val(),
             no_answer_message: no_answer_message.val(),
             //enable_downloads: enable_downloads.val(),
             new_questions: newQuestions,
@@ -449,6 +393,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
         eventObject.preventDefault();
         runtime.notify('cancel', {});
     });
+    
 
     function onLoad() {
         input_title.removeAttr("hidden");
@@ -456,7 +401,6 @@ function IterativeXBlockStudio(runtime, element, settings) {
         input_submit_message.removeAttr("hidden");
         input_submitted_message.removeAttr("hidden");
         input_display_message.removeAttr("hidden");
-        //input_displayed_message.removeAttr("hidden");
         input_no_answer_message.removeAttr("hidden");
         //input_enable_downloads.removeAttr("hidden");
         title.val(settings.title);
@@ -464,10 +408,10 @@ function IterativeXBlockStudio(runtime, element, settings) {
         submit_message.val(settings.submit_message);
         submitted_message.val(settings.submitted_message);
         display_message.val(settings.display_message);
-        //displayed_message.val(settings.displayed_message);
         no_answer_message.val(settings.no_answer_message);
         //enable_downloads.val(settings.enable_downloads);
-        applyContent();
+
+        applyContent(content_backend);
     }
     onLoad();
 }
