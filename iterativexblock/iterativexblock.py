@@ -281,7 +281,10 @@ class IterativeXBlock(XBlock):
         context = {
             "title": self.title,
             'location': str(self.location).split('@')[-1],
-            'configured': self.configured
+            'configured': self.configured,
+            "content": self.content,
+            "style": self.style,
+            "gridlines": self.gridlines
         }
         template = loader.render_django_template(
             'public/html/iterativexblock_author.html',
@@ -296,7 +299,7 @@ class IterativeXBlock(XBlock):
             ],
             additional_js=[
                 'public/js/iterativexblock_author.js',
-            ],
+            ]
         )
         return frag
 
@@ -386,13 +389,13 @@ class IterativeXBlock(XBlock):
                 }
             )
             submission_time = datetime.datetime.now()
-            for answer in data["answers"]:
+            for id_question, answer in data["answers"].items():
                 try:
-                    question = IterativeXBlockQuestion.objects.get(id_course=id_course, id_xblock=id_xblock, id_question=answer["id_question"])
+                    question = IterativeXBlockQuestion.objects.get(id_course=id_course, id_xblock=id_xblock, id_question=id_question)
                 except IterativeXBlockQuestion.DoesNotExist:
                     # manejar este caso
                     continue
-                new_answer = IterativeXBlockAnswer(question=question, id_course=id_course, id_student=id_student, answer=answer["answer"], timestamp=submission_time)
+                new_answer = IterativeXBlockAnswer(question=question, id_course=id_course, id_student=id_student, answer=answer, timestamp=submission_time)
                 new_answer.save()
             return {"result": 'success'}
 

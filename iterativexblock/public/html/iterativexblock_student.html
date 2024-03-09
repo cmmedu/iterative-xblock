@@ -101,10 +101,10 @@
                     {% if cell.type == 'text' %}
                     <p>{{ cell.content }}</p>
                     {% elif cell.type == 'question' %}
-                    <textarea type="text" class="iterative-xblock-student-input"
-                        id="iterative-xblock-student-input-{{ cell.content }}" ></textarea>
+                    <textarea type="text" class="iterative-xblock-student-question"
+                        id="iterative-xblock-student-question-{{ cell.content }}" ></textarea>
                     {% elif cell.type == 'answer' %}
-                    <span>Ver respuesta</span>
+                    <span id="iterative-xblock-student-get-answer-{{ cell.content }}" class="iterative-xblock-student-get-answer">Ver respuesta</span>
                     <p></p>
                     {% endif %}
                 </div>
@@ -122,8 +122,6 @@
 
             <div id="iterative-xblock-student-msg">
                 <p id="iterative-xblock-student-error-msg" class="iterative-xblock-error-msg"></p>
-                <p id="iterative-xblock-student-warning-msg" class="iterative-xblock-warning-msg"></p>
-                <p id="iterative-xblock-student-success-msg" class="iterative-xblock-success-msg"></p>
             </div>
             {% endif %}
         </div>
