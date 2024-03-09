@@ -130,7 +130,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
             }
             input_content_row.removeAttr("hidden");
         }
-        content_ui = content;
+        content_ui = JSON.parse(JSON.stringify(content));
     }
 
     function getQuestionIDs(content) {
