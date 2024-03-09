@@ -366,6 +366,8 @@ function IterativeXBlockStudio(runtime, element, settings) {
         content_ui = makeContentUI();
         var handlerUrl = runtime.handlerUrl(element, 'studio_submit');
         var checkQuestionIDsUrl = runtime.handlerUrl(element, 'check_question_ids');
+        console.log(content_ui)
+        console.log(content_backend)
         var original_questions = getQuestionIDs(content_backend)
         var newQuestions = getQuestionIDs(content_ui).filter(function(questionId) {
             return !original_questions.includes(questionId);
@@ -373,8 +375,6 @@ function IterativeXBlockStudio(runtime, element, settings) {
         var removedQuestions = original_questions.filter(function(questionId) {
             return !getQuestionIDs(content_ui).includes(questionId);
         });
-        console.log(content_ui)
-        console.log(content_backend)
         console.log(original_questions)
         console.log(newQuestions)
         console.log(removedQuestions)
