@@ -66,7 +66,22 @@
         font-size: 1em;
     }
 
-    .iterative-xblock-style-redfid .iterative-xblock-student-cell span {
+    .iterative-xblock-style-redfid .iterative-xblock-student-msg p {
+        color: red;
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .iterative-xblock-style-redfid .iterative-xblock-student-answer-container {
+        position: relative;
+    }
+
+    .iterative-xblock-style-redfid .iterative-xblock-student-get-answer {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
         background-color: #ff595a;
         background-image: none;
         color: white;
@@ -77,12 +92,14 @@
         border-radius: 3px;
         font-weight: bold;
         margin: auto;
+        cursor: pointer;
     }
 
-    .iterative-xblock-student-msg p {
-        color: red;
-        text-align: center;
-        margin-top: 30px;
+    .iterative-xblock-style-redfid .iterative-xblock-student-answer {
+        width: 100%;
+        z-index: 1;
+        padding: 10px;
+        resize: none;
     }
 
 </style>
@@ -110,9 +127,11 @@
                     <textarea type="text" class="iterative-xblock-student-question"
                         id="iterative-xblock-student-question-{{ cell.content }}" ></textarea>
                     {% elif cell.type == 'answer' %}
-                    <span id="iterative-xblock-student-get-answer-{{ cell.content }}" class="iterative-xblock-student-get-answer">{{ display_message }}</span>
-                    <textarea type="text" class="iterative-xblock-student-answer"
-                        id="iterative-xblock-student-answer-{{ cell.content }}" ></textarea>
+                    <div class="iterative-xblock-student-answer-container">
+                        <span id="iterative-xblock-student-get-answer-{{ cell.content }}" class="iterative-xblock-student-get-answer">{{ display_message }}</span>
+                        <textarea disabled type="text" class="iterative-xblock-student-answer"
+                            id="iterative-xblock-student-answer-{{ cell.content }}" ></textarea>
+                    </div>
                     {% endif %}
                 </div>
                 {% endif %}
@@ -120,13 +139,14 @@
             </div>
             {% endif %}
             {% endfor %}
+            {% if show_submit_button %}
             <div class="action iterative-xblock-action">
                 <button class="iterative-xblock-submit submit Submit"
                     aria-describedby="iterative-xblock_submit_{{ location }}">
                     <span>{{ submit_message }}</span>
                 </button>
             </div>
-
+            {% endif %}
             <div class="iterative-xblock-student-msg">
                 <p id="iterative-xblock-student-error-msg" class="iterative-xblock-error-msg"></p>
             </div>

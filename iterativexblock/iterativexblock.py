@@ -197,7 +197,8 @@ class IterativeXBlock(XBlock):
             'submit_message': self.submit_message,
             'submitted_message': self.submitted_message,
             'display_message': self.display_message,
-            'enable_download': self.enable_download
+            'enable_download': self.enable_download,
+            'show_submit_button': len(self.getQuestionIds()) > 0
         }
         template = loader.render_django_template(
             'public/html/iterativexblock_student.html',
