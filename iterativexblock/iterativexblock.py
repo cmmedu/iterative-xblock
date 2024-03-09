@@ -144,12 +144,23 @@ class IterativeXBlock(XBlock):
         return fragment
     
 
+    def getQuestionIds(self):
+        question_ids = []
+        for i in range(self.content["n_rows"]):
+            row = self.content[str(i+1)]
+            for j in range(row["n_cells"]):
+                cell = row[str(j+1)]
+                if cell["type"] == "question":
+                    question_ids.append(cell["content"])
+        return question_ids
+    
+
     def clear_student_state(self, user_id, course_id, item_id, requesting_user_id):
         from .models import IterativeXBlockQuestion, IterativeXBlockAnswer
         from common.djangoapps.student.models import user_by_anonymous_id
         id_xblock = str(self.location).split('@')[-1]
         id_student = user_by_anonymous_id(user_id).id
-        for id_question in [x.id_question for x in self.content.values()]:
+        for id_question in self.getQuestionIds():
             if id_question is not None:
                 question = IterativeXBlockQuestion.objects.get(id_course=course_id, id_xblock=id_xblock, id_question=id_question)
                 answers = IterativeXBlockAnswer.objects.filter(question=question, id_student=id_student)
@@ -182,14 +193,38 @@ class IterativeXBlock(XBlock):
             'location': str(self.location).split('@')[-1],
             'configured': self.configured,
             'content': self.content,
-            'rows': [str(x) for x in range(1, self.content["n_rows"]+1)],
-            "cols": [str(x) for x in range(1, 5)],
+            'no_answer_message': self.no_answer_message,
+            'submit_message': self.submit_message,
+            'submitted_message': self.submitted_message,
+            'display_message': self.display_message,
+            'enable_download': self.enable_download
         }
         template = loader.render_django_template(
             'public/html/iterativexblock_student.html',
             context=Context(context),
             i18n_service=self.runtime.service(self, 'i18n'),
         )
+        if self.score == 0.0:
+            answers = {}
+            completed = False
+        else:
+            from .models import IterativeXBlockQuestion, IterativeXBlockAnswer
+            id_course = self.course_id
+            id_xblock = str(self.location).split('@')[-1]
+            id_student = self.scope_ids.user_id
+            answers = {}
+            for id_question in self.getQuestionIds():
+                try:
+                    question = IterativeXBlockQuestion.objects.get(id_course=id_course, id_xblock=id_xblock, id_question=id_question)
+                except IterativeXBlockQuestion.DoesNotExist:
+                    continue
+                try:
+                    answer = IterativeXBlockAnswer.objects.get(id_course=id_course, question=question, id_student=id_student)
+                except IterativeXBlockAnswer.DoesNotExist:
+                    answers[id_question] = ""
+                    continue
+                answers[id_question] = answer.answer
+            completed =  True
         frag = self.build_fragment(
             template,
             initialize_js_func='IterativeXBlockStudent',
@@ -208,6 +243,8 @@ class IterativeXBlock(XBlock):
                 "display_message": self.display_message,
                 "enable_download": self.enable_download,
                 "min_questions": self.min_questions,
+                "answers": answers,
+                "completed": completed,
                 "content": self.content
             }
         )
@@ -389,7 +426,7 @@ class IterativeXBlock(XBlock):
                 }
             )
             submission_time = datetime.datetime.now()
-            for id_question, answer in data["answers"].items():
+            for id_question, answer in data.items():
                 try:
                     question = IterativeXBlockQuestion.objects.get(id_course=id_course, id_xblock=id_xblock, id_question=id_question)
                 except IterativeXBlockQuestion.DoesNotExist:

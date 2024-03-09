@@ -79,6 +79,12 @@
         margin: auto;
     }
 
+    .iterative-xblock-student-msg p {
+        color: red;
+        text-align: center;
+        margin-top: 30px;
+    }
+
 </style>
 <div class="iterative-xblock-container_block xmodule_display xmodule_HtmlModule">
     <div class="iterative-xblock iterative-xblock-style-{{style}}{% if gridlines %} iterative-xblock-gridlines{% endif %}"
@@ -104,8 +110,9 @@
                     <textarea type="text" class="iterative-xblock-student-question"
                         id="iterative-xblock-student-question-{{ cell.content }}" ></textarea>
                     {% elif cell.type == 'answer' %}
-                    <span id="iterative-xblock-student-get-answer-{{ cell.content }}" class="iterative-xblock-student-get-answer">Ver respuesta</span>
-                    <p></p>
+                    <span id="iterative-xblock-student-get-answer-{{ cell.content }}" class="iterative-xblock-student-get-answer">{{ display_message }}</span>
+                    <textarea type="text" class="iterative-xblock-student-answer"
+                        id="iterative-xblock-student-answer-{{ cell.content }}" ></textarea>
                     {% endif %}
                 </div>
                 {% endif %}
@@ -116,11 +123,11 @@
             <div class="action iterative-xblock-action">
                 <button class="iterative-xblock-submit submit Submit"
                     aria-describedby="iterative-xblock_submit_{{ location }}">
-                    <span>Submit</span>
+                    <span>{{ submit_message }}</span>
                 </button>
             </div>
 
-            <div id="iterative-xblock-student-msg">
+            <div class="iterative-xblock-student-msg">
                 <p id="iterative-xblock-student-error-msg" class="iterative-xblock-error-msg"></p>
             </div>
             {% endif %}
