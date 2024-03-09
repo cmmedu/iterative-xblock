@@ -46,6 +46,10 @@ function IterativeXBlockStudio(runtime, element, settings) {
                         error_msg = "Question ID must be between 3 and 30 characters and can only contain letters, numbers, and underscores for the cell at row " + i + " and cell " + (j + 1) + ".";
                         break;
                     }
+                    if (questions.includes(cell_input.val())) {
+                        error_msg = "Question ID " + cell_input.val() + " is already used to define another question.";
+                        break;
+                    }
                     questions.push(cell_input.val());
                 } else if (cell_type === "answer") {
                     if (cell_input.val().length > 30 || cell_input.val().length < 3 || !cell_input.val().match(/^[a-zA-Z0-9_]+$/)) {
@@ -114,8 +118,8 @@ function IterativeXBlockStudio(runtime, element, settings) {
         if (isNaN(data["min_questions"])) {
             return "Minimum number of questions must be a number."
         }
-        if (parseInt(data["min_questions"]) < 1) {
-            return "Minimum number of questions must be greater than 0."
+        if (parseInt(data["min_questions"]) < 0) {
+            return "Minimum number of questions must be a positive number."
         }
         if (data["enable_download"] == null) {
             return "Please select if you want to enable download of answers as a PDF file or not."
@@ -453,7 +457,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
         display_message.val(settings.display_message);
         no_answer_message.val(settings.no_answer_message);
         min_questions.val(settings.min_questions);
-        enable_download.val(settings.enable_download);
+        enable_download.val(settings.enable_download ? "yes" : "no");
 
         applyContent(content_backend);
     }

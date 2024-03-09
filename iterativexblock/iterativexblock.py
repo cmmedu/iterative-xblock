@@ -115,26 +115,6 @@ class IterativeXBlock(XBlock):
     has_score = True
 
 
-    def __del__(self):
-        from .models import IterativeXBlockQuestion, IterativeXBlockAnswer
-        id_xblock = str(self.location).split('@')[-1]
-        id_course = self.course_id
-        for i in range(self.content["n_rows"]):
-            row = self.content[str(i+1)]
-            for j in range(row["n_cells"]):
-                cell = row[str(j+1)]
-                if cell["type"] == "question":
-                    id_question = cell["content"]
-                    question = IterativeXBlockQuestion.objects.get(id_course=id_course, id_xblock=id_xblock, id_question=id_question)
-                    answers = IterativeXBlockAnswer.objects.filter(question=question)
-                    for answer in answers:
-                        answer.delete()
-                    question.delete()
-        parent_del = getattr(super(), '__del__', None)
-        if callable(parent_del):
-            parent_del()
-
-
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
         data = pkg_resources.resource_string(__name__, path)
@@ -187,7 +167,7 @@ class IterativeXBlock(XBlock):
 
 
     def student_view(self, context={}):
-        if getattr(self.runtime, 'user_is_staff', False):
+        if getattr(self.runtime, 'user_is_staff', True):
             return self.instructor_view(context)
         else:
             return self.learner_view(context)
@@ -199,7 +179,11 @@ class IterativeXBlock(XBlock):
             "title": self.title,
             "style": self.style,
             "gridlines": self.gridlines,
-            'location': str(self.location).split('@')[-1]
+            'location': str(self.location).split('@')[-1],
+            'configured': self.configured,
+            'content': self.content,
+            'rows': [str(x) for x in range(1, self.content["n_rows"]+1)],
+            "cols": [str(x) for x in range(1, 5)],
         }
         template = loader.render_django_template(
             'public/html/iterativexblock_student.html',
@@ -235,7 +219,8 @@ class IterativeXBlock(XBlock):
         id_student = self.scope_ids.user_id
         context = {
             "title": self.title,
-            'location': str(self.location).split('@')[-1]
+            'location': str(self.location).split('@')[-1],
+            'configured': self.configured
         }
         template = loader.render_django_template(
             'public/html/iterativexblock_student.html',
@@ -295,7 +280,8 @@ class IterativeXBlock(XBlock):
     def author_view(self, context={}):
         context = {
             "title": self.title,
-            'location': str(self.location).split('@')[-1]
+            'location': str(self.location).split('@')[-1],
+            'configured': self.configured
         }
         template = loader.render_django_template(
             'public/html/iterativexblock_author.html',
