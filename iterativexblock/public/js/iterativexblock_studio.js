@@ -293,6 +293,24 @@ function IterativeXBlockStudio(runtime, element, settings) {
         }
     }
 
+    function makeContentUI() {
+        let content = {
+            "n_rows": content_ui["n_rows"]
+        }
+        for (let i = 1; i <= content_ui["n_rows"]; i++) {
+            content[i.toString()] = {
+                "n_cells": content_ui[i.toString()]["n_cells"]
+            }
+            for (let j = 1; j <= content_ui[i.toString()]["n_cells"]; j++) {
+                content[i.toString()][j.toString()] = {
+                    "type": $(element).find("#content_row_" + i + "_" + j).find(".iterative-content-type").val(),
+                    "content": $(element).find("#content_row_" + i + "_" + j).find("input").val()
+                }
+            }
+        }
+        return content;
+    }
+
     function setStudioErrorMessage(msg) {
         $(element).find('.studio-error-msg').html(msg);
     }
@@ -345,6 +363,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
     $(element).find('.save-button').bind('click', function (eventObject) {
         eventObject.preventDefault();
         setStudioErrorMessage("");
+        content_ui = makeContentUI();
         var handlerUrl = runtime.handlerUrl(element, 'studio_submit');
         var checkQuestionIDsUrl = runtime.handlerUrl(element, 'check_question_ids');
         var original_questions = getQuestionIDs(content_backend)
