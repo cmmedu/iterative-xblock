@@ -75,7 +75,20 @@ class IterativeXBlock(XBlock):
     )
 
     content = Dict(
-        default={},
+        default={
+            "n_rows": 1,
+            "1": {
+                "n_cells": 2,
+                "1": {
+                    "type": "none",
+                    "content": ""
+                },
+                "2": {
+                    "type": "none",
+                    "content": ""
+                }
+            }
+        },
         scope=Scope.settings,
         help="Content of this XBlock: texts, questions and references."
     )
@@ -215,8 +228,7 @@ class IterativeXBlock(XBlock):
     def studio_view(self, context):
         context = {
             "title": self.title,
-            'location': str(self.location).split('@')[-1],
-            "content_format": self.content,
+            'location': str(self.location).split('@')[-1]
         }
         template = loader.render_django_template(
             'public/html/iterativexblock_studio.html',
