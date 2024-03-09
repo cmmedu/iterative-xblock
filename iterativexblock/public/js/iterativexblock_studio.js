@@ -3,6 +3,8 @@ function IterativeXBlockStudio(runtime, element, settings) {
     let title = $(element).find("#title");
     let input_style = $(element).find("#input_style");
     let style = $(element).find("#style");
+    let input_gridlines = $(element).find("#input_gridlines");
+    let gridlines = $(element).find("#gridlines");
     let input_submit_message = $(element).find("#input_submit_message");
     let submit_message = $(element).find("#submit_message");
     let input_submitted_message = $(element).find("#input_submitted_message");
@@ -11,8 +13,10 @@ function IterativeXBlockStudio(runtime, element, settings) {
     let display_message = $(element).find("#display_message");
     let input_no_answer_message = $(element).find("#input_no_answer_message");
     let no_answer_message = $(element).find("#no_answer_message");
-    let input_enable_downloads = $(element).find("#input_enable_downloads");
-    let enable_downloads = $(element).find("#enable_downloads");
+    let input_min_questions = $(element).find("#input_min_questions");
+    let min_questions = $(element).find("#min_questions");
+    let input_enable_download = $(element).find("#input_enable_download");
+    let enable_download = $(element).find("#enable_download");
     
     var content_ui;
     let content_backend  = settings.content
@@ -77,6 +81,9 @@ function IterativeXBlockStudio(runtime, element, settings) {
         if (data["style"] == null) {
             return "Please select a style."
         }
+        if (data["gridlines"] === "") {
+            return "Please select a gridline style."
+        }
         if (data["submit_message"] === "") {
             return "Please provide a message for the submit button."
         }
@@ -101,9 +108,18 @@ function IterativeXBlockStudio(runtime, element, settings) {
         if (data["no_answer_message"].length > 100) {
             return "No answer message must be less than 100 characters."
         }
-        // if (data["enable_downloads"] == null) {
-        //     return "Please select if you want to enable download of answers as a PDF file or not."
-        // }
+        if (data["min_questions"] === "") {
+            return "Please provide a minimum number of questions to be answered."
+        }
+        if (isNaN(data["min_questions"])) {
+            return "Minimum number of questions must be a number."
+        }
+        if (parseInt(data["min_questions"]) < 1) {
+            return "Minimum number of questions must be greater than 0."
+        }
+        if (data["enable_download"] == null) {
+            return "Please select if you want to enable download of answers as a PDF file or not."
+        }
         return validateContent(data["content"]);
     }
 
@@ -381,12 +397,14 @@ function IterativeXBlockStudio(runtime, element, settings) {
         var data = {
             title: title.val(),
             style: style.val(),
+            gridlines: gridlines.val(),
             content: content_ui,
             submit_message: submit_message.val(),
             submitted_message: submitted_message.val(),
             display_message: display_message.val(),
             no_answer_message: no_answer_message.val(),
-            //enable_downloads: enable_downloads.val(),
+            min_questions: min_questions.val(),
+            enable_download: enable_download.val(),
             new_questions: newQuestions,
             removed_questions: removedQuestions
         };
@@ -420,18 +438,22 @@ function IterativeXBlockStudio(runtime, element, settings) {
     function onLoad() {
         input_title.removeAttr("hidden");
         input_style.removeAttr("hidden");
+        input_gridlines.removeAttr("hidden");
         input_submit_message.removeAttr("hidden");
         input_submitted_message.removeAttr("hidden");
         input_display_message.removeAttr("hidden");
         input_no_answer_message.removeAttr("hidden");
-        //input_enable_downloads.removeAttr("hidden");
+        input_min_questions.removeAttr("hidden");
+        input_enable_download.removeAttr("hidden");
         title.val(settings.title);
         style.val(settings.style);
+        gridlines.val(settings.gridlines);
         submit_message.val(settings.submit_message);
         submitted_message.val(settings.submitted_message);
         display_message.val(settings.display_message);
         no_answer_message.val(settings.no_answer_message);
-        //enable_downloads.val(settings.enable_downloads);
+        min_questions.val(settings.min_questions);
+        enable_download.val(settings.enable_download);
 
         applyContent(content_backend);
     }

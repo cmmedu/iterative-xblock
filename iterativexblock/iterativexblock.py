@@ -2,7 +2,7 @@ import json
 import pkg_resources
 from xblock.core import XBlock
 from django.template.context import Context
-from xblock.fields import Integer, String, Scope, Boolean, Float, Dict
+from xblock.fields import String, Scope, Boolean, Float, Dict, Integer
 from xblockutils.resources import ResourceLoader
 from xblock.fragment import Fragment
 import datetime
@@ -44,6 +44,12 @@ class IterativeXBlock(XBlock):
         help="Style of this block."
     )
 
+    gridlines = Boolean(
+        default=True,
+        scope=Scope.settings,
+        help="Wether to show gridlines or not."
+    )
+
     no_answer_message = String(
         default="You have not answered this question yet.",
         scope=Scope.settings,
@@ -66,6 +72,12 @@ class IterativeXBlock(XBlock):
         default="Display",
         scope=Scope.settings,
         help="Message to be shown at the button to display a previous answer."
+    )
+
+    min_questions = Integer(
+        default=0,
+        scope=Scope.settings,
+        help="Minimum number of questions to be answered. If 0, all questions must be answered."
     )
 
     enable_download = Boolean(
@@ -101,6 +113,26 @@ class IterativeXBlock(XBlock):
     has_author_view = True
 
     has_score = True
+
+
+    def __del__(self):
+        from .models import IterativeXBlockQuestion, IterativeXBlockAnswer
+        id_xblock = str(self.location).split('@')[-1]
+        id_course = self.course_id
+        for i in range(self.content["n_rows"]):
+            row = self.content[str(i+1)]
+            for j in range(row["n_cells"]):
+                cell = row[str(j+1)]
+                if cell["type"] == "question":
+                    id_question = cell["content"]
+                    question = IterativeXBlockQuestion.objects.get(id_course=id_course, id_xblock=id_xblock, id_question=id_question)
+                    answers = IterativeXBlockAnswer.objects.filter(question=question)
+                    for answer in answers:
+                        answer.delete()
+                    question.delete()
+        parent_del = getattr(super(), '__del__', None)
+        if callable(parent_del):
+            parent_del()
 
 
     def resource_string(self, path):
@@ -147,15 +179,10 @@ class IterativeXBlock(XBlock):
 
     def studio_post_duplicate(self, store, source_item):
         # pendiente
-        from .models import IAAActivity, IAAStage
-        if source_item.block_type == "full":
-            item = IAAActivity.objects.last()
-            random = item.id + 1
-            new_name = source_item.activity_name + "_copy{}".format(str(random + 1))
-            self.activity_name = new_name
-            self.activity_stage = "1"
-            new_activity = IAAActivity.objects.create(id_course=self.course_id, activity_name=self.activity_name)
-            new_stage = IAAStage.objects.create(activity=new_activity, stage_label=self.stage_label, stage_number=self.activity_stage)
+        from .models import IterativeXBlockQuestion
+        content = source_item.content
+        id_course = self.course_id
+        id_xblock = str(self.location).split('@')[-1]
         return True
 
 
@@ -170,6 +197,8 @@ class IterativeXBlock(XBlock):
         id_student = self.scope_ids.user_id
         context = {
             "title": self.title,
+            "style": self.style,
+            "gridlines": self.gridlines,
             'location': str(self.location).split('@')[-1]
         }
         template = loader.render_django_template(
@@ -189,7 +218,13 @@ class IterativeXBlock(XBlock):
             settings={
                 "location": str(self.location).split('@')[-1],
                 "user_id": id_student,
-                "title": self.title, 
+                "no_answer_message": self.no_answer_message,
+                "submit_message": self.submit_message,
+                "submitted_message": self.submitted_message,
+                "display_message": self.display_message,
+                "enable_download": self.enable_download,
+                "min_questions": self.min_questions,
+                "content": self.content
             }
         )
         return frag
@@ -245,12 +280,13 @@ class IterativeXBlock(XBlock):
                 "content": self.content,
                 "title": self.title,
                 "style": self.style,
+                "gridlines": self.gridlines,
                 "no_answer_message": self.no_answer_message,
                 "submit_message": self.submit_message,
                 "submitted_message": self.submitted_message,
                 "display_message": self.display_message,
                 "enable_download": self.enable_download,
-                "submit_message": "Submit",
+                "min_questions": self.min_questions
             }
         )
         return frag
@@ -332,10 +368,12 @@ class IterativeXBlock(XBlock):
         self.content = data.get('content')
         self.title = data.get('title')
         self.style = data.get('style')
+        self.gridlines = data.get('gridlines')
         self.no_answer_message = data.get('no_answer_message')
         self.submit_message = data.get('submit_message')
         self.submitted_message = data.get('submitted_message')
         self.display_message = data.get('display_message')
+        self.min_questions = data.get('min_questions')
         self.enable_download = data.get('enable_download')
         return {'result': 'success'}
 

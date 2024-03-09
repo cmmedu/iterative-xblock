@@ -1,5 +1,8 @@
+<style>
+
+</style>
 <div class="iterative-xblock-container_block xmodule_display xmodule_HtmlModule">
-    <div class="iterative-xblock" id="{{xblock.type}}{{location}}">
+    <div class="iterative-xblock iterative-xblock-style-{{style}}{% if gridlines %} iterative-xblock-gridlines{% endif %}" id="{{xblock.type}}{{location}}">
         <div class="exptop">
             <p class="iterative-xblock-title">{{title}}</p>
         </div>
@@ -8,17 +11,9 @@
             <div class="iterative-xblock-not-created">
                 <p class="centered">This XBlock has not been configured yet.</p>
             </div>
-            {% endif %}
+            {% else %}
             <div>
-                {% if activity_previous %}
-                <div>
-                    <p class="display-title"><b>{{display_title}}</b></p>
-                    <div id="{{location}}-display-button-div" class="display-button-div">
-                        <span id="{{location}}-display-button" class="iterative-xblock-display-button">Ver</span>
-                    </div>
-                    <div id="{{location}}-submission-previous" class="iterative-xblock-display-area"></div>
-                </div>
-                {% endif %}
+                <span id="{{location}}-display-button" class="iterative-xblock-display-button">Ver</span>
                 <p class="question"><b>{{question}}</b></p>
                 <textarea class="iterative-xblock-submission">{{submission}}</textarea>
             </div>
@@ -33,6 +28,7 @@
                 <p id="iterative-xblock-student-warning-msg" class="iterative-xblock-warning-msg"></p>
                 <p id="iterative-xblock-student-success-msg" class="iterative-xblock-success-msg"></p>
             </div>
+            {% endif %}
         </div>
     </div>
 </div>
