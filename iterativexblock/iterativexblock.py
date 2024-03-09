@@ -333,7 +333,7 @@ class IterativeXBlock(XBlock):
             template,
             initialize_js_func='IterativeXBlockAuthor',
             additional_css=[
-                'public/css/iterativexblock.css',
+                'public/css/iterativexblock_{}.css'.format(self.style),
             ],
             additional_js=[
                 'public/js/iterativexblock_author.js',
@@ -455,5 +455,5 @@ class IterativeXBlock(XBlock):
         try:
             answer = IterativeXBlockAnswer.objects.get(id_course=id_course, question=question, id_student=id_student)
         except IterativeXBlockAnswer.DoesNotExist:
-            return {"result": 'failed', 'error': 502}
+            return {"result": 'no_answer'}
         return {"result": 'success', 'answer': answer.answer, 'answer_time': str(answer.timestamp)}

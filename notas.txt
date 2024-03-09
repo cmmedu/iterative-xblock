@@ -4,11 +4,16 @@ todo:
 
 - author/instructor
 - more styles
+- conditional inputs on studio
+- pdf downloads
 - ensure conditional is working
 - ensure duplication is working
 - ensure export/import is working
+- tests
+- readme
 
 v2:
+
 
 - font size and alignment per cell
 - min max characters and words per cell

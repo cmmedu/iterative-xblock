@@ -1,76 +1,14 @@
-<div class="iaa-container_block xmodule_display xmodule_HtmlModule">
-    <div class="Reconociendo-RedFid" id="{{xblock.type}}{{location}}">
+<div class="iterative-xblock-container_block xmodule_display xmodule_HtmlModule">
+    <div class="iterative-xblock iterative-xblock-style-{{style}}{% if gridlines %} iterative-xblock-gridlines{% endif %}" id="{{xblock.type}}{{location}}">
         <div class="exptop">
-            <p class="recono-title">{{title}}</p>
+            <p class="iterative-xblock-title">{{title}}</p>
         </div>
         <div class="expmid">
-            {% if block_type == "none" %}
-            <div class="iaa-not-created">
-                <p class="centered">Este XBlock aún no se ha configurado.</p>
-            </div>
-            {% elif block_type == "full" %}
-            <p class="iaa-padded-subtitle">Aquí podrá ver las respuestas de los estudiantes para la siguiente actividad:
-            </p>
-            <div>
-                <table class="iaa-table">
-                    <tr>
-                        <th><b>Actividad</b></th>
-                        <td>{{activity_name}}</td>
-                    </tr>
-                    <tr>
-                        <th><b>ID</b></th>
-                        <td>{{activity_stage}}</td>
-                    </tr>
-                    <tr>
-                        <th><b>Sección</b></th>
-                        <td>{{stage_label}}</td>
-                    </tr>
-                    <tr>
-                        <th><b>Enunciado</b></th>
-                        <td>{{question}}</td>
-                    </tr>
-                </table>
-            </div>
-            <div>
-                <p>Seleccione un alumno:</p>
-                <div class="select-student">
-                    <select id="iaa-select-student">
-                        <option value="none" disabled selected>Por favor seleccione una opción...</option>
-                        {% for student in students %}
-                        <option value="{{student.0}}">{{student.1}}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div id="iaa-summary" class="iaa-summary-area"></div>
-            </div>
-            {% elif block_type == "display" %}
-            <p class="centered">Este XBlock no cuenta con vista de instructor.</p>
-            {% elif block_type == "summary" %}
-            <meta id="context-iaa" data-context="{{context}}">
-
-            {% if activity_name == "empty" %}
-            <div class="centered">Actividad no disponible.</div>
+            {% if not configured %}
+            <p class="centered">This XBlock has not been configured yet.</p>
             {% else %}
-            <div>
-                <p>Seleccione un alumno:</p>
-                <div class="select-student">
-                    <select id="iaa-select-student">
-                        <option value="none" disabled selected>Por favor seleccione una opción...</option>
-                        {% for student in students %}
-                        <option value="{{student.0}}">{{student.1}}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <div id="iaa-summary" class="iaa-summary-area"></div>
-            </div>
+            <p class="centered">Configured.</p>
             {% endif %}
-            {% endif %}
-            <div>
-                <p id="iaa-instructor-error-msg" class="iaa-error-msg"></p>
-                <p id="iaa-instructor-warning-msg" class="iaa-warning-msg"></p>
-                <p id="iaa-instructor-success-msg" class="iaa-success-msg"></p>
-            </div>
             <div class="action">
             </div>
         </div>

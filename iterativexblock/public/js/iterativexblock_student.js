@@ -20,7 +20,6 @@ function IterativeXBlockStudent(runtime, element, settings) {
     }
 
     function validate(data) {
-        console.log(data)
         let error_msg = "";
         let count = 0;
         for (let key in data) {
@@ -88,10 +87,15 @@ function IterativeXBlockStudent(runtime, element, settings) {
         let displayButton = $(element).find("#iterative-xblock-student-get-answer-" + id_question);
         displayButton.remove();
         let area = $(element).find("#iterative-xblock-student-answer-" + id_question);
-        let answer = result["answer"] === "" ? settings.no_answer_message : result["answer"];
-        let answer_time = result["answer_time"];
-        area.val(answer);
-        area.attr("disabled", true);
+        if(result["result"] === "success"){
+            let answer = result["answer"] === "" ? settings.no_answer_message : result["answer"];
+            let answer_time = result["answer_time"];
+            area.val(answer);
+        } else if (result["result"] === "no_answer"){
+            area.val(settings.no_answer_message);
+        } else {
+            area.val(result["error"]);
+        }
     }
 
     $(element).find(".iterative-xblock-student-get-answer").on('click', function (eventObject) {
