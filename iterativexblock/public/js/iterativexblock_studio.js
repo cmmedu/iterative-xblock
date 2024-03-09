@@ -303,8 +303,8 @@ function IterativeXBlockStudio(runtime, element, settings) {
             }
             for (let j = 1; j <= content_ui[i.toString()]["n_cells"]; j++) {
                 content[i.toString()][j.toString()] = {
-                    "type": $(element).find("#content_row_" + i + "_" + j).find(".iterative-content-type").val(),
-                    "content": $(element).find("#content_row_" + i + "_" + j).find("input").val()
+                    "type": $(element).find("#content_type_" + i + "_" + j).val(),
+                    "content": $(element).find("#content_row_" + i + "_" + j).val()
                 }
             }
         }
