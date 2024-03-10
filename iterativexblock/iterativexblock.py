@@ -45,7 +45,7 @@ class IterativeXBlock(XBlock):
     )
 
     gridlines = Boolean(
-        default=True,
+        default=False,
         scope=Scope.settings,
         help="Wether to show gridlines or not."
     )
@@ -144,7 +144,7 @@ class IterativeXBlock(XBlock):
         return fragment
     
 
-    def getQuestionIds(self):
+    def get_question_ids(self):
         question_ids = []
         for i in range(self.content["n_rows"]):
             row = self.content[str(i+1)]
@@ -155,12 +155,27 @@ class IterativeXBlock(XBlock):
         return question_ids
     
 
+    def destroy_questions(self):
+        from .models import IterativeXBlockQuestion, IterativeXBlockAnswer
+        id_xblock = str(self.location).split('@')[-1]
+        id_course = self.course_id
+        questions = IterativeXBlockQuestion.objects.filter(id_xblock=id_xblock, id_course=id_course)
+        for question in questions:
+            answers = IterativeXBlockAnswer.objects.filter(question=question, id_course=id_course)
+            for answer in answers:
+                answer.delete()
+            question.delete()
+
+
     def clear_student_state(self, user_id, course_id, item_id, requesting_user_id):
         from .models import IterativeXBlockQuestion, IterativeXBlockAnswer
         from common.djangoapps.student.models import user_by_anonymous_id
         id_xblock = str(self.location).split('@')[-1]
-        id_student = user_by_anonymous_id(user_id).id
-        for id_question in self.getQuestionIds():
+        if user_id == "test":
+            id_student = user_id
+        else:
+            id_student = user_by_anonymous_id(user_id).id
+        for id_question in self.get_question_ids():
             if id_question is not None:
                 question = IterativeXBlockQuestion.objects.get(id_course=course_id, id_xblock=id_xblock, id_question=id_question)
                 answers = IterativeXBlockAnswer.objects.filter(question=question, id_student=id_student)
@@ -198,7 +213,7 @@ class IterativeXBlock(XBlock):
             'submitted_message': self.submitted_message,
             'display_message': self.display_message,
             'enable_download': self.enable_download,
-            'show_submit_button': len(self.getQuestionIds()) > 0
+            'show_submit_button': len(self.get_question_ids()) > 0
         }
         template = loader.render_django_template(
             'public/html/iterativexblock_student.html',
@@ -214,7 +229,7 @@ class IterativeXBlock(XBlock):
             id_xblock = str(self.location).split('@')[-1]
             id_student = self.scope_ids.user_id
             answers = {}
-            for id_question in self.getQuestionIds():
+            for id_question in self.get_question_ids():
                 try:
                     question = IterativeXBlockQuestion.objects.get(id_course=id_course, id_xblock=id_xblock, id_question=id_question)
                 except IterativeXBlockQuestion.DoesNotExist:
@@ -445,11 +460,10 @@ class IterativeXBlock(XBlock):
         """
         from .models import IterativeXBlockQuestion, IterativeXBlockAnswer
         id_course = self.course_id
-        id_xblock = str(self.location).split('@')[-1]
         id_student = self.scope_ids.user_id
         id_question = data["id_question"]
         try:
-            question = IterativeXBlockQuestion.objects.get(id_course=id_course, id_xblock=id_xblock, id_question=id_question)
+            question = IterativeXBlockQuestion.objects.get(id_course=id_course, id_question=id_question)
         except IterativeXBlockQuestion.DoesNotExist:
             return {"result": 'failed', 'error': 501}
         try:

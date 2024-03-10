@@ -15,6 +15,7 @@ iterativexblock.egg-info/entry_points.txt
 iterativexblock.egg-info/requires.txt
 iterativexblock.egg-info/top_level.txt
 iterativexblock/public/css/iterativexblock.css
+iterativexblock/public/css/iterativexblock_redfid.css
 iterativexblock/public/html/iterativexblock_author.html
 iterativexblock/public/html/iterativexblock_instructor.html
 iterativexblock/public/html/iterativexblock_student.html

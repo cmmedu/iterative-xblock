@@ -9,7 +9,6 @@ todo:
 - ensure conditional is working
 - ensure duplication is working
 - ensure export/import is working
-- tests
 - readme
 
 v2:

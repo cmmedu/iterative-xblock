@@ -1,10 +1,10 @@
 Metadata-Version: 1.0
 Name: iterativexblock
 Version: 0.1
-Summary: Iterative XBlock
+Summary: An XBlock that saves answers and allows them to be accessed at other instances of the XBlock in a course.
 Home-page: UNKNOWN
-Author: Vicente Daie Pinilla
-Author-email: vdaiep@gmail.com
+Author: UNKNOWN
+Author-email: UNKNOWN
 License: GPL 3.0
 Description: UNKNOWN
 Platform: UNKNOWN
