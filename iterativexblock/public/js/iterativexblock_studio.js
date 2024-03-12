@@ -356,8 +356,8 @@ function IterativeXBlockStudio(runtime, element, settings) {
             input_min_questions.slideDown();
         } else {
             min_questions.val(0);
-            min_questions.attr("min", 0);
-            min_questions.attr("max", questionIds.length);
+            min_questions.attr("min", '0');
+            min_questions.attr("max", questionIds.length.toString());
             input_min_questions.slideUp();
         }
     }
