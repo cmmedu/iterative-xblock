@@ -144,15 +144,15 @@ class IterativeXBlock(XBlock):
         return fragment
     
 
-    def get_question_ids(self):
-        question_ids = []
+    def get_ids(self, type):
+        ids = []
         for i in range(self.content["n_rows"]):
             row = self.content[str(i+1)]
             for j in range(row["n_cells"]):
                 cell = row[str(j+1)]
-                if cell["type"] == "question":
-                    question_ids.append(cell["content"])
-        return question_ids
+                if cell["type"] == type:
+                    ids.append(cell["content"])
+        return ids
     
 
     def destroy_questions(self):
@@ -175,7 +175,7 @@ class IterativeXBlock(XBlock):
             id_student = user_id
         else:
             id_student = user_by_anonymous_id(user_id).id
-        for id_question in self.get_question_ids():
+        for id_question in self.get_ids("questions"):
             if id_question is not None:
                 question = IterativeXBlockQuestion.objects.get(id_course=course_id, id_xblock=id_xblock, id_question=id_question)
                 answers = IterativeXBlockAnswer.objects.filter(question=question, id_student=id_student)
@@ -213,7 +213,7 @@ class IterativeXBlock(XBlock):
             'submitted_message': self.submitted_message,
             'display_message': self.display_message,
             'enable_download': self.enable_download,
-            'show_submit_button': len(self.get_question_ids()) > 0
+            'show_submit_button': len(self.get_ids("questions")) > 0
         }
         template = loader.render_django_template(
             'public/html/iterativexblock_student.html',
@@ -229,7 +229,7 @@ class IterativeXBlock(XBlock):
             id_xblock = str(self.location).split('@')[-1]
             id_student = self.scope_ids.user_id
             answers = {}
-            for id_question in self.get_question_ids():
+            for id_question in self.get_ids("questions"):
                 try:
                     question = IterativeXBlockQuestion.objects.get(id_course=id_course, id_xblock=id_xblock, id_question=id_question)
                 except IterativeXBlockQuestion.DoesNotExist:
@@ -271,31 +271,35 @@ class IterativeXBlock(XBlock):
         from django.contrib.auth.models import User
         from .models import IterativeXBlockQuestion, IterativeXBlockAnswer
         id_instructor = self.scope_ids.user_id
-        students = User.objects.filter(courseenrollment__course_id=self.course_id,courseenrollment__is_active=1).order_by('id').values('id' ,'first_name', 'last_name', 'email')
-        answers = []
-        for student in students:
-            id_student = student['id']
-            answers_student = {}
-            for id_question in self.get_question_ids():
-                try:
-                    question = IterativeXBlockQuestion.objects.get(id_course=self.course_id, id_xblock=str(self.location).split('@')[-1], id_question=id_question)
-                except IterativeXBlockQuestion.DoesNotExist:
-                    # handle case
-                    continue
-                try:
-                    answer = IterativeXBlockAnswer.objects.get(id_course=self.course_id, question=question, id_student=id_student)
-                except IterativeXBlockAnswer.DoesNotExist:
-                    answers_student[id_question] = ""
-                    continue
-                answers_student[id_question] = answer.answer
-            answers.append({
-                "id_student": id_student,
-                "first_name": student['first_name'],
-                "last_name": student['last_name'],
-                "email": student['email'],
-                "answers": answers_student
-            })
-        answers.sort(key=lambda x: x['last_name'])
+        if len(self.get_ids("question")) == 0 and len(self.get_ids("answer")) == 0:
+            show_student_select = False
+            answers = []
+        else:
+            show_student_select = True
+            students = User.objects.filter(courseenrollment__course_id=self.course_id,courseenrollment__is_active=1).order_by('id').values('id' ,'first_name', 'last_name', 'email')
+            answers = []
+            for student in students:
+                id_student = student['id']
+                answers_student = {}
+                for id_question in self.get_ids("questions"):
+                    try:
+                        question = IterativeXBlockQuestion.objects.get(id_course=self.course_id, id_xblock=str(self.location).split('@')[-1], id_question=id_question)
+                    except IterativeXBlockQuestion.DoesNotExist:
+                        # handle case
+                        continue
+                    try:
+                        answer = IterativeXBlockAnswer.objects.get(id_course=self.course_id, question=question, id_student=id_student)
+                        answers_student[id_question] = answer.answer
+                    except IterativeXBlockAnswer.DoesNotExist:
+                        answers_student[id_question] = ""
+                answers.append({
+                    "id_student": id_student,
+                    "first_name": student['first_name'],
+                    "last_name": student['last_name'],
+                    "email": student['email'],
+                    "answers": answers_student
+                })
+            answers.sort(key=lambda x: x['last_name'])
         context = {
             "title": self.title,
             'location': str(self.location).split('@')[-1],
@@ -304,10 +308,11 @@ class IterativeXBlock(XBlock):
             'style': self.style,
             'gridlines': self.gridlines,
             'no_answer_message': self.no_answer_message,
-            'answers': answers
+            'answers': answers,
+            'show_student_select': show_student_select
         }
         template = loader.render_django_template(
-            'public/html/iterativexblock_student.html',
+            'public/html/iterativexblock_instructor.html',
             context=Context(context),
             i18n_service=self.runtime.service(self, 'i18n'),
         )
@@ -492,7 +497,11 @@ class IterativeXBlock(XBlock):
         """
         from .models import IterativeXBlockQuestion, IterativeXBlockAnswer
         id_course = self.course_id
-        id_student = self.scope_ids.user_id
+        id_student_data = data["id_student"]
+        if id_student_data == "":
+            id_student = id_student_data
+        else:
+            id_student = self.scope_ids.user_id
         id_question = data["id_question"]
         try:
             question = IterativeXBlockQuestion.objects.get(id_course=id_course, id_question=id_question)

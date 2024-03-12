@@ -85,7 +85,7 @@ function IterativeXBlockStudent(runtime, element, settings) {
 
     function afterDisplay(id_question, result) {
         let displayButton = $(element).find("#iterative-xblock-student-get-answer-" + id_question);
-        displayButton.remove();
+        displayButton.hide();
         let area = $(element).find("#iterative-xblock-student-answer-" + id_question);
         if(result["result"] === "success"){
             let answer = result["answer"] === "" ? settings.no_answer_message : result["answer"];
@@ -100,7 +100,8 @@ function IterativeXBlockStudent(runtime, element, settings) {
 
     $(element).find(".iterative-xblock-student-get-answer").on('click', function (eventObject) {
         var data = {
-            "id_question": $(this).attr("id").split("iterative-xblock-student-get-answer-")[1]
+            "id_question": $(this).attr("id").split("iterative-xblock-student-get-answer-")[1],
+            "id_student": ""
         }
         $.post(displayUrl, JSON.stringify(data)).done(function (response) {
             afterDisplay(data["id_question"], response)
