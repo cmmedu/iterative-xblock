@@ -3,16 +3,14 @@ docker compose down && cd ../build/edx-staging/ && docker build . -t edx-staging
 todo:
 
 - more styles
-- conditional inputs on studio
-- pdf downloads
 - ensure conditional is working
 - ensure duplication is working
 - ensure export/import is working
-- readme
 
 v2:
 
 
+- pdf downloads
 - font size and alignment per cell
 - min max characters and words per cell
 

@@ -1,3 +1,4 @@
+{% if configured %}
 <div class="iterative-xblock-container_block xmodule_display xmodule_HtmlModule">
     <div class="iterative-xblock iterative-xblock-style-{{style}}{% if gridlines %} iterative-xblock-gridlines{% endif %}"
         id="{{xblock.type}}{{location}}">
@@ -5,11 +6,6 @@
             <h1 class="iterative-xblock-title">{{title}}</h1>
         </div>
         <div class="expmid">
-            {% if not configured %}
-            <div class="iterative-xblock-not-created">
-                <p class="centered">This XBlock has not been configured yet.</p>
-            </div>
-            {% else %}
             {% for row_id, row in content.items %}
             {% if row_id != 'n_rows' %}
             <div class="iterative-xblock-student-row">
@@ -45,7 +41,7 @@
             <div class="iterative-xblock-student-msg">
                 <p id="iterative-xblock-student-error-msg" class="iterative-xblock-error-msg"></p>
             </div>
-            {% endif %}
         </div>
     </div>
 </div>
+{% endif %}

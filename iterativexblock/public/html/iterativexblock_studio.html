@@ -5,17 +5,17 @@
                 <label class="label setting-label" for="title">Title</label>
                 <input class="input setting-input" name="title" id="title" value="" type="text" />
             </div>
-            <span class="tip setting-help">Title of this module.</span>
+            <span class="tip setting-help">Specifies the module's title. If this field is left blank, no title will be displayed.</span>
         </li>
         <li id="input_style" class="field comp-setting-entry is-set" hidden>
             <div class="wrapper-comp-setting">
                 <label class="label setting-label" for="style">Style</label>
                 <select id="style" class="setting-select-input style" name="style">
-                    <option value="base">Base</option>
+                    <option value="basic">Basic</option>
                     <option value="redfid">RedFID</option>
                 </select>
             </div>
-            <span class="tip setting-help">Styling of this module.</span>
+            <span class="tip setting-help">Determines the module's appearance. A variety of stylesheets are available to choose from.</span>
         </li>
         <li id="input_content_row_1" class="field comp-setting-entry is-set iterative-content-row">
             <div class="wrapper-comp-setting">
@@ -449,6 +449,13 @@
                 </div>
             </div>
         </li>
+        <li id="input_min_questions" class="field comp-setting-entry is-set" hidden>
+            <div class="wrapper-comp-setting">
+                <label class="label setting-label" for="min_questions">Minimum questions</label>
+                <input class="input setting-input" name="min_questions" id="min_questions" value="" type="number" />
+            </div>
+            <span class="tip setting-help">Sets the minimum number of questions a student is required to answer. Setting this value to 0 mandates that all questions must be answered. This option is accessible only when at least one question is defined.</span>
+        </li>
         <li id="input_enable_download" class="field comp-setting-entry is-set" hidden>
             <div class="wrapper-comp-setting">
                 <label class="label setting-label" for="enable_download">Enable download</label>
@@ -457,42 +464,35 @@
                     <option value="no" selected>No</option>
                 </select>
             </div>
-            <span class="tip setting-help">Enable download of previous answers as a PDF document. Only available if there are no questions in this module.</span>
+            <span class="tip setting-help">Allows for the downloading of the XBlock content as a PDF document. This functionality is only enabled if there are no questions within the module.</span>
         </li>
         <li id="input_submit_message" class="field comp-setting-entry is-set" hidden>
             <div class="wrapper-comp-setting">
                 <label class="label setting-label" for="submit_message">Submit button message</label>
                 <input class="input setting-input" name="submit_message" id="submit_message" value="" type="text" />
             </div>
-            <span class="tip setting-help">Message shown at submit button.</span>
+            <span class="tip setting-help">Defines the text displayed on the submit button.</span>
         </li>
         <li id="input_submitted_message" class="field comp-setting-entry is-set" hidden>
             <div class="wrapper-comp-setting">
                 <label class="label setting-label" for="submitted_message">Submitted button message</label>
                 <input class="input setting-input" name="submitted_message" id="submitted_message" value="" type="text" />
             </div>
-            <span class="tip setting-help">Message shown at submit button after answer was submitted.</span>
+            <span class="tip setting-help">Indicates the text that appears on the submit button after a student submits an answer.</span>
         </li>
         <li id="input_display_message" class="field comp-setting-entry is-set" hidden>
             <div class="wrapper-comp-setting">
                 <label class="label setting-label" for="display_message">Display button message</label>
                 <input class="input setting-input" name="display_message" id="display_message" value="" type="text" />
             </div>
-            <span class="tip setting-help">Message shown at buttons to show a previous answer.</span>
+            <span class="tip setting-help">Text displayed on buttons used to view previous answers.</span>
         </li>
         <li id="input_no_answer_message" class="field comp-setting-entry is-set" hidden>
             <div class="wrapper-comp-setting">
                 <label class="label setting-label" for="no_answer_message">No answer message</label>
                 <input class="input setting-input" name="no_answer_message" id="no_answer_message" value="" type="text" />
             </div>
-            <span class="tip setting-help">Message shown when there is no previous answer.</span>
-        </li>
-        <li id="input_min_questions" class="field comp-setting-entry is-set" hidden>
-            <div class="wrapper-comp-setting">
-                <label class="label setting-label" for="min_questions">Minimum questions</label>
-                <input class="input setting-input" name="min_questions" id="min_questions" value="" type="number" />
-            </div>
-            <span class="tip setting-help">Minimum number of questions the student must answer. If 0, all questions must be answered.</span>
+            <span class="tip setting-help">Message displayed in the event that no previous answer is available.</span>
         </li>
     </ul>
     <div class="xblock-actions">

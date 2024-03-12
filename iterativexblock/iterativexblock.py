@@ -38,16 +38,10 @@ class IterativeXBlock(XBlock):
     )
 
     style = String(
-        default="base",
-        values=["base", "redfid"],
+        default="basic",
+        values=["basic", "redfid"],
         scope=Scope.settings,
         help="Style of this block."
-    )
-
-    gridlines = Boolean(
-        default=False,
-        scope=Scope.settings,
-        help="Wether to show gridlines or not."
     )
 
     no_answer_message = String(
@@ -204,7 +198,6 @@ class IterativeXBlock(XBlock):
         context = {
             "title": self.title,
             "style": self.style,
-            "gridlines": self.gridlines,
             'location': str(self.location).split('@')[-1],
             'configured': self.configured,
             'content': self.content,
@@ -220,27 +213,40 @@ class IterativeXBlock(XBlock):
             context=Context(context),
             i18n_service=self.runtime.service(self, 'i18n'),
         )
-        if self.score == 0.0:
+        if len(self.get_ids("question")) == 0:
+            self.score = 1
+            self.runtime.publish(
+                self,
+                'grade',
+                {
+                    'value': 1,
+                    'max_value': 1
+                }
+            )
             answers = {}
             completed = False
         else:
-            from .models import IterativeXBlockQuestion, IterativeXBlockAnswer
-            id_course = self.course_id
-            id_xblock = str(self.location).split('@')[-1]
-            id_student = self.scope_ids.user_id
-            answers = {}
-            for id_question in self.get_ids("question"):
-                try:
-                    question = IterativeXBlockQuestion.objects.get(id_course=id_course, id_xblock=id_xblock, id_question=id_question)
-                except IterativeXBlockQuestion.DoesNotExist:
-                    continue
-                try:
-                    answer = IterativeXBlockAnswer.objects.get(id_course=id_course, question=question, id_student=id_student)
-                except IterativeXBlockAnswer.DoesNotExist:
-                    answers[id_question] = ""
-                    continue
-                answers[id_question] = answer.answer
-            completed =  True
+            if self.score == 0.0:
+                answers = {}
+                completed = False
+            else:
+                from .models import IterativeXBlockQuestion, IterativeXBlockAnswer
+                id_course = self.course_id
+                id_xblock = str(self.location).split('@')[-1]
+                id_student = self.scope_ids.user_id
+                answers = {}
+                for id_question in self.get_ids("question"):
+                    try:
+                        question = IterativeXBlockQuestion.objects.get(id_course=id_course, id_xblock=id_xblock, id_question=id_question)
+                    except IterativeXBlockQuestion.DoesNotExist:
+                        continue
+                    try:
+                        answer = IterativeXBlockAnswer.objects.get(id_course=id_course, question=question, id_student=id_student)
+                    except IterativeXBlockAnswer.DoesNotExist:
+                        answers[id_question] = ""
+                        continue
+                    answers[id_question] = answer.answer
+                completed =  True
         frag = self.build_fragment(
             template,
             initialize_js_func='IterativeXBlockStudent',
@@ -306,7 +312,6 @@ class IterativeXBlock(XBlock):
             'configured': self.configured,
             'content': self.content,
             'style': self.style,
-            'gridlines': self.gridlines,
             'no_answer_message': self.no_answer_message,
             'answers': answers,
             'show_student_select': show_student_select
@@ -347,6 +352,9 @@ class IterativeXBlock(XBlock):
         frag = self.build_fragment(
             template,
             initialize_js_func='IterativeXBlockStudio',
+            additional_css=[
+                'public/css/iterativexblock.css',
+            ],
             additional_js=[
                 'public/js/iterativexblock_studio.js',
             ],
@@ -354,7 +362,6 @@ class IterativeXBlock(XBlock):
                 "content": self.content,
                 "title": self.title,
                 "style": self.style,
-                "gridlines": self.gridlines,
                 "no_answer_message": self.no_answer_message,
                 "submit_message": self.submit_message,
                 "submitted_message": self.submitted_message,
@@ -372,8 +379,7 @@ class IterativeXBlock(XBlock):
             'location': str(self.location).split('@')[-1],
             'configured': self.configured,
             "content": self.content,
-            "style": self.style,
-            "gridlines": self.gridlines
+            "style": self.style
         }
         template = loader.render_django_template(
             'public/html/iterativexblock_author.html',
@@ -446,7 +452,6 @@ class IterativeXBlock(XBlock):
         self.content = data.get('content')
         self.title = data.get('title')
         self.style = data.get('style')
-        self.gridlines = data.get('gridlines')
         self.no_answer_message = data.get('no_answer_message')
         self.submit_message = data.get('submit_message')
         self.submitted_message = data.get('submitted_message')

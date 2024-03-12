@@ -74,7 +74,7 @@ class IterativeXBlockTestCase(TransactionTestCase):
         Checks if XBlock was created successfully.
         """
         self.assertEqual(self.xblock1.title, "Iterative XBlock")
-        self.assertEqual(self.xblock1.style, "base")
+        self.assertEqual(self.xblock1.style, "basic")
         self.assertEqual(self.xblock1.configured, False)
         self.assertEqual(self.xblock1.gridlines, False)
         self.assertEqual(self.xblock1.no_answer_message, "You have not answered this question yet.")

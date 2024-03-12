@@ -3,8 +3,6 @@ function IterativeXBlockStudio(runtime, element, settings) {
     let title = $(element).find("#title");
     let input_style = $(element).find("#input_style");
     let style = $(element).find("#style");
-    let input_gridlines = $(element).find("#input_gridlines");
-    let gridlines = $(element).find("#gridlines");
     let input_submit_message = $(element).find("#input_submit_message");
     let submit_message = $(element).find("#submit_message");
     let input_submitted_message = $(element).find("#input_submitted_message");
@@ -76,17 +74,11 @@ function IterativeXBlockStudio(runtime, element, settings) {
     }
 
     function validate(data) {
-        if (data["title"] === "") {
-            return "Please provide a title for this XBlock."
-        }
-        if (data["title"].length > 100) {
+        if (data["title"].length > 200) {
             return "Title must be less than 100 characters."
         }
         if (data["style"] == null) {
             return "Please select a style."
-        }
-        if (data["gridlines"] === "") {
-            return "Please select a gridline style."
         }
         if (data["submit_message"] === "") {
             return "Please provide a message for the submit button."
@@ -117,6 +109,9 @@ function IterativeXBlockStudio(runtime, element, settings) {
         }
         if (isNaN(data["min_questions"])) {
             return "Minimum number of questions must be a number."
+        }
+        if (data["min_questions"] > getQuestionIDs(data["content"]).length) {
+            return "Minimum number of questions must be less than or equal to the number of questions defined."
         }
         if (parseInt(data["min_questions"]) < 0) {
             return "Minimum number of questions must be a positive number."
@@ -152,6 +147,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
         }
         content_ui = JSON.parse(JSON.stringify(content));
         handleEnableDownload();
+        handleMinQuestions();
     }
 
     function getQuestionIDs(content) {
@@ -345,10 +341,24 @@ function IterativeXBlockStudio(runtime, element, settings) {
         let questionIds = getQuestionIDs(content_ui);
         if (questionIds.length > 0) {
             enable_download.val("no");
-            input_enable_download.hide();
+            input_enable_download.slideUp();
         } else {
             enable_download.val(settings.enable_download ? "yes" : "no");
-            input_enable_download.show();
+            input_enable_download.slideDown();
+        }
+    }
+
+    function handleMinQuestions() {
+        let content_ui = makeContentUI();
+        let questionIds = getQuestionIDs(content_ui);
+        if (questionIds.length > 0) {
+            min_questions.val(settings.min_questions);
+            input_min_questions.slideDown();
+        } else {
+            min_questions.val(0);
+            min_questions.attr("min", 0);
+            min_questions.attr("max", questionIds.length);
+            input_min_questions.slideUp();
         }
     }
 
@@ -368,6 +378,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
             input.attr("placeholder", "Please select an option...").attr("disabled", true);
         }
         handleEnableDownload();
+        handleMinQuestions();
     });
 
     $(element).find(".content-cell-new").bind('click', function (eventObject) {
@@ -400,8 +411,6 @@ function IterativeXBlockStudio(runtime, element, settings) {
         content_ui = makeContentUI();
         var handlerUrl = runtime.handlerUrl(element, 'studio_submit');
         var checkQuestionIDsUrl = runtime.handlerUrl(element, 'check_question_ids');
-        console.log(content_ui)
-        console.log(content_backend)
         var original_questions = getQuestionIDs(content_backend)
         var newQuestions = getQuestionIDs(content_ui).filter(function(questionId) {
             return !original_questions.includes(questionId);
@@ -409,13 +418,9 @@ function IterativeXBlockStudio(runtime, element, settings) {
         var removedQuestions = original_questions.filter(function(questionId) {
             return !getQuestionIDs(content_ui).includes(questionId);
         });
-        console.log(original_questions)
-        console.log(newQuestions)
-        console.log(removedQuestions)
         var data = {
             title: title.val(),
             style: style.val(),
-            gridlines: gridlines.val(),
             content: content_ui,
             submit_message: submit_message.val(),
             submitted_message: submitted_message.val(),
@@ -456,7 +461,6 @@ function IterativeXBlockStudio(runtime, element, settings) {
     function onLoad() {
         input_title.removeAttr("hidden");
         input_style.removeAttr("hidden");
-        input_gridlines.removeAttr("hidden");
         input_submit_message.removeAttr("hidden");
         input_submitted_message.removeAttr("hidden");
         input_display_message.removeAttr("hidden");
@@ -464,7 +468,6 @@ function IterativeXBlockStudio(runtime, element, settings) {
         input_min_questions.removeAttr("hidden");
         title.val(settings.title);
         style.val(settings.style);
-        gridlines.val(settings.gridlines);
         submit_message.val(settings.submit_message);
         submitted_message.val(settings.submitted_message);
         display_message.val(settings.display_message);
