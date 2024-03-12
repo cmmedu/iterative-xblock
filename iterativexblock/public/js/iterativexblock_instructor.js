@@ -9,6 +9,8 @@ function IterativeXBlockInstructor(runtime, element, settings) {
         $(element).find(".iterative-xblock-student-question").val("");
         $(element).find(".iterative-xblock-student-get-answer").show();
         $(element).find(".iterative-xblock-student-answer").val("");
+        console.log(selectedUser)
+        console.log(answers)
         if (selectedUser !== "none") {
             let selectedUserAnswers = answers.find(obj => obj.id_student === selectedUser);
             for (var key in selectedUserAnswers.answers) {
