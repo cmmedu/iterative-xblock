@@ -151,6 +151,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
             input_content_row.removeAttr("hidden");
         }
         content_ui = JSON.parse(JSON.stringify(content));
+        handleEnableDownload();
     }
 
     function getQuestionIDs(content) {
@@ -339,6 +340,18 @@ function IterativeXBlockStudio(runtime, element, settings) {
         $(element).find('.studio-warning-msg').html(msg);
     }
 
+    function handleEnableDownload() {
+        let content_ui = makeContentUI();
+        let questionIds = getQuestionIDs(content_ui);
+        if (questionIds.length > 0) {
+            enable_download.val("no");
+            input_enable_download.hide();
+        } else {
+            enable_download.val(settings.enable_download ? "yes" : "no");
+            input_enable_download.show();
+        }
+    }
+
     $(element).find(".iterative-content-type").bind('change', function (eventObject) {
         eventObject.preventDefault();
         let row = $(this).attr("id").split("_")[2];
@@ -354,6 +367,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
         } else {
             input.attr("placeholder", "Please select an option...").attr("disabled", true);
         }
+        handleEnableDownload();
     });
 
     $(element).find(".content-cell-new").bind('click', function (eventObject) {
@@ -448,7 +462,6 @@ function IterativeXBlockStudio(runtime, element, settings) {
         input_display_message.removeAttr("hidden");
         input_no_answer_message.removeAttr("hidden");
         input_min_questions.removeAttr("hidden");
-        input_enable_download.removeAttr("hidden");
         title.val(settings.title);
         style.val(settings.style);
         gridlines.val(settings.gridlines);
@@ -457,7 +470,6 @@ function IterativeXBlockStudio(runtime, element, settings) {
         display_message.val(settings.display_message);
         no_answer_message.val(settings.no_answer_message);
         min_questions.val(settings.min_questions);
-        enable_download.val(settings.enable_download ? "yes" : "no");
 
         applyContent(content_backend);
     }
