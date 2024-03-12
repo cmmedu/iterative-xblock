@@ -2,7 +2,6 @@ docker compose down && cd ../build/edx-staging/ && docker build . -t edx-staging
 
 todo:
 
-- author/instructor
 - more styles
 - conditional inputs on studio
 - pdf downloads
