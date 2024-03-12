@@ -78,6 +78,7 @@
 
 .iterative-xblock-style-redfid .iterative-xblock-student-answer-container {
     position: relative;
+    width: 100%;
 }
 
 .iterative-xblock-style-redfid .iterative-xblock-student-get-answer {

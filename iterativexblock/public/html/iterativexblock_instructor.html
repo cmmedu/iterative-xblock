@@ -1,13 +1,48 @@
 <div class="iterative-xblock-container_block xmodule_display xmodule_HtmlModule">
-    <div class="iterative-xblock iterative-xblock-style-{{style}}{% if gridlines %} iterative-xblock-gridlines{% endif %}" id="{{xblock.type}}{{location}}">
+    <div class="iterative-xblock iterative-xblock-style-{{style}}{% if gridlines %} iterative-xblock-gridlines{% endif %}"
+        id="{{xblock.type}}{{location}}">
         <div class="exptop">
-            <p class="iterative-xblock-title">{{title}}</p>
+            <h1 class="iterative-xblock-title">{{title}}</h1>
         </div>
         <div class="expmid">
             {% if not configured %}
-            <p class="centered">This XBlock has not been configured yet.</p>
+            <div class="iterative-xblock-not-created">
+                <p class="centered">This XBlock has not been configured yet.</p>
+            </div>
             {% else %}
-            <p class="centered">Configured.</p>
+            <div class="iterative-xblock-instructor-select-student-container">
+                <p>Student: </p>
+                <select id="iterative-xblock-instructor-select-student">
+                    <option value="none" disabled selected>Please select an option...</option>
+                    {% for student in students %}
+                    <option value="{{student.0}}">{{student.1}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% for row_id, row in content.items %}
+            {% if row_id != 'n_rows' %}
+            <div class="iterative-xblock-student-row">
+                {% for cell_id, cell in row.items %}
+                {% if cell_id != 'n_cells' %}
+                <div class="iterative-xblock-student-cell">
+                    {% if cell.type == 'text' %}
+                    <p>{{ cell.content }}</p>
+                    {% elif cell.type == 'question' %}
+                    <textarea type="text" class="iterative-xblock-student-question"
+                        id="iterative-xblock-student-question-{{ cell.content }}" ></textarea>
+                    {% elif cell.type == 'answer' %}
+                    <div class="iterative-xblock-student-answer-container">
+                        <span id="iterative-xblock-student-get-answer-{{ cell.content }}" class="iterative-xblock-student-get-answer">{{ display_message }}</span>
+                        <textarea disabled type="text" class="iterative-xblock-student-answer"
+                            id="iterative-xblock-student-answer-{{ cell.content }}" ></textarea>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endfor %}
             {% endif %}
             <div class="action">
             </div>

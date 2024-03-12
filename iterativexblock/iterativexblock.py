@@ -269,11 +269,42 @@ class IterativeXBlock(XBlock):
 
     def instructor_view(self, context={}):
         from django.contrib.auth.models import User
-        id_student = self.scope_ids.user_id
+        from .models import IterativeXBlockQuestion, IterativeXBlockAnswer
+        id_instructor = self.scope_ids.user_id
+        students = User.objects.filter(courseenrollment__course_id=self.course_id,courseenrollment__is_active=1).order_by('id').values('id' ,'first_name', 'last_name', 'email')
+        answers = []
+        for student in students:
+            id_student = student['id']
+            answers_student = {}
+            for id_question in self.get_question_ids():
+                try:
+                    question = IterativeXBlockQuestion.objects.get(id_course=self.course_id, id_xblock=str(self.location).split('@')[-1], id_question=id_question)
+                except IterativeXBlockQuestion.DoesNotExist:
+                    # handle case
+                    continue
+                try:
+                    answer = IterativeXBlockAnswer.objects.get(id_course=self.course_id, question=question, id_student=id_student)
+                except IterativeXBlockAnswer.DoesNotExist:
+                    answers_student[id_question] = ""
+                    continue
+                answers_student[id_question] = answer.answer
+            answers.append({
+                "id_student": id_student,
+                "first_name": student['first_name'],
+                "last_name": student['last_name'],
+                "email": student['email'],
+                "answers": answers_student
+            })
+        answers.sort(key=lambda x: x['last_name'])
         context = {
             "title": self.title,
             'location': str(self.location).split('@')[-1],
-            'configured': self.configured
+            'configured': self.configured,
+            'content': self.content,
+            'style': self.style,
+            'gridlines': self.gridlines,
+            'no_answer_message': self.no_answer_message,
+            'answers': answers
         }
         template = loader.render_django_template(
             'public/html/iterativexblock_student.html',
@@ -291,8 +322,9 @@ class IterativeXBlock(XBlock):
             ],
             settings={
                 "location": str(self.location).split('@')[-1],
-                "user_id": id_student,
+                "user_id": id_instructor,
                 "title": self.title, 
+                "answers": answers
             }
         )
         return frag
