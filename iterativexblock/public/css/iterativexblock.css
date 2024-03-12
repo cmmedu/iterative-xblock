@@ -44,23 +44,19 @@
   font-size: smaller;
 }
 
-.wrapper-comp-settings .setting-label {
+.wrapper-comp-setting .setting-label {
   width: 10%;
 }
 
-.wrapper-comp-settings .setting-input:not(.iterative-content-studio-input) {
+.wrapper-comp-setting .setting-input:not(.iterative-content-studio-input) {
   width: 80%;
 }
 
-.wrapper-comp-settings .setting-select-input:not(.iterative-content-studio-input) {
+.wrapper-comp-setting .setting-select-input:not(.iterative-content-studio-input) {
   width: 80%;
 }
 
-.wrapper-comp-settings .iterative-content-studio-input-container {
-  width: 70%;
-}
-
-.wrapper-comp-settings .iterative-content-studio-input-container {
+.wrapper-comp-setting .iterative-content-studio-input-container {
   width: 75%;
   display: flex;
   justify-content: start;
