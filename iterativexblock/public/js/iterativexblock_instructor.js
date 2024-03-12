@@ -1,4 +1,4 @@
-function IterativeAssessedActivityInstructor(runtime, element, settings) {
+function IterativeXBlockInstructor(runtime, element, settings) {
 
     let displayUrl = runtime.handlerUrl(element, 'fetch_previous_submission');
     let answers = settings.answers;

@@ -175,7 +175,7 @@ class IterativeXBlock(XBlock):
             id_student = user_id
         else:
             id_student = user_by_anonymous_id(user_id).id
-        for id_question in self.get_ids("questions"):
+        for id_question in self.get_ids("question"):
             if id_question is not None:
                 question = IterativeXBlockQuestion.objects.get(id_course=course_id, id_xblock=id_xblock, id_question=id_question)
                 answers = IterativeXBlockAnswer.objects.filter(question=question, id_student=id_student)
@@ -213,7 +213,7 @@ class IterativeXBlock(XBlock):
             'submitted_message': self.submitted_message,
             'display_message': self.display_message,
             'enable_download': self.enable_download,
-            'show_submit_button': len(self.get_ids("questions")) > 0
+            'show_submit_button': len(self.get_ids("question")) > 0
         }
         template = loader.render_django_template(
             'public/html/iterativexblock_student.html',
@@ -229,7 +229,7 @@ class IterativeXBlock(XBlock):
             id_xblock = str(self.location).split('@')[-1]
             id_student = self.scope_ids.user_id
             answers = {}
-            for id_question in self.get_ids("questions"):
+            for id_question in self.get_ids("question"):
                 try:
                     question = IterativeXBlockQuestion.objects.get(id_course=id_course, id_xblock=id_xblock, id_question=id_question)
                 except IterativeXBlockQuestion.DoesNotExist:
@@ -281,7 +281,7 @@ class IterativeXBlock(XBlock):
             for student in students:
                 id_student = student['id']
                 answers_student = {}
-                for id_question in self.get_ids("questions"):
+                for id_question in self.get_ids("question"):
                     try:
                         question = IterativeXBlockQuestion.objects.get(id_course=self.course_id, id_xblock=str(self.location).split('@')[-1], id_question=id_question)
                     except IterativeXBlockQuestion.DoesNotExist:
@@ -318,17 +318,16 @@ class IterativeXBlock(XBlock):
         )
         frag = self.build_fragment(
             template,
-            initialize_js_func='IterativeXBlockStudent',
+            initialize_js_func='IterativeXBlockInstructor',
             additional_css=[
                 'public/css/iterativexblock_{}.css'.format(self.style),
             ],
             additional_js=[
-                'public/js/iterativexblock_student.js',
+                'public/js/iterativexblock_instructor.js',
             ],
             settings={
                 "location": str(self.location).split('@')[-1],
                 "user_id": id_instructor,
-                "title": self.title, 
                 "answers": answers
             }
         )
