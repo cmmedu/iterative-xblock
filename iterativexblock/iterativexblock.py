@@ -497,7 +497,7 @@ class IterativeXBlock(XBlock):
         from .models import IterativeXBlockQuestion, IterativeXBlockAnswer
         id_course = self.course_id
         id_student_data = data["id_user"]
-        if id_student_data == "":
+        if id_student_data != "":
             id_student = id_student_data
         else:
             id_student = self.scope_ids.user_id
