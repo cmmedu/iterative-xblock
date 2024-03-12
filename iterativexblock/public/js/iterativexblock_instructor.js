@@ -37,14 +37,15 @@ function IterativeXBlockInstructor(runtime, element, settings) {
     $(element).find(".iterative-xblock-student-get-answer").on('click', function (eventObject) {
         var data = {
             "id_question": $(this).attr("id").split("iterative-xblock-student-get-answer-")[1],
-            "id_user": selectedUser
+            "id_user": parseInt(selectedUser)
         }
-        $.post(displayUrl, JSON.stringify(data)).done(function (response) {
-            afterDisplay(data["id_question"], response)
-        });
+        if (selectedUser !== "none") {
+            $.post(displayUrl, JSON.stringify(data)).done(function (response) {
+                afterDisplay(data["id_question"], response)
+            });
+        }
     });
 
     $(function ($) {
-        /* Here's where you'd do things on page load. */
     });
 }
