@@ -1,4 +1,4 @@
-.iterative-xblock-style-redfid .iterative-xblock-student-row {
+.iterative-xblock-style-red .iterative-xblock-student-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -6,11 +6,11 @@
     margin: 10px 0;
 }
 
-.iterative-xblock-style-redfid .iterative-xblock-student-row p {
+.iterative-xblock-style-red .iterative-xblock-student-row p {
     margin: 0 !important;
 }
 
-.iterative-xblock-style-redfid .iterative-xblock-student-cell {
+.iterative-xblock-style-red .iterative-xblock-student-cell {
     flex: 1;
     padding: 5px 10px;
     min-height: 30px;
@@ -19,24 +19,24 @@
     justify-content: center;
 }
 
-.iterative-xblock-style-redfid .iterative-xblock-student-cell textarea {
+.iterative-xblock-style-red .iterative-xblock-student-cell textarea {
     width: 100%;
     min-height: 100px;
     font-size: 0.9em;
 }
 
-.iterative-xblock-style-redfid {
+.iterative-xblock-style-red {
     border: 2px solid #ff595a;
     border-radius: 10px;
 }
 
-.iterative-xblock-style-redfid .exptop {
+.iterative-xblock-style-red .exptop {
     padding: 20px;
     background-color: #ff595a;
     border-radius: 3px;
 }
 
-.iterative-xblock-style-redfid .exptop h1 {
+.iterative-xblock-style-red .exptop h1 {
     font-size: 1.5em;
     color: white;
     margin-bottom: 0 !important;
@@ -44,16 +44,16 @@
     font-weight: normal;
 }
 
-.iterative-xblock-style-redfid .expmid {
+.iterative-xblock-style-red .expmid {
     padding: 20px;
 }
 
-.iterative-xblock-style-redfid .iterative-xblock-action {
+.iterative-xblock-style-red .iterative-xblock-action {
     text-align: center;
     margin-top: 20px;
 }
 
-.iterative-xblock-style-redfid .iterative-xblock-submit {
+.iterative-xblock-style-red .iterative-xblock-submit {
     background-color: #ff595a;
     background-image: none;
     color: white;
@@ -63,7 +63,7 @@
     padding: 15px 30px;
 }
 
-.iterative-xblock-style-redfid .iterative-xblock-submit:hover {
+.iterative-xblock-style-red .iterative-xblock-submit:hover {
     background-color: #ff595a !important;
     background-image: none !important;
     color: white;
@@ -72,18 +72,18 @@
     font-size: 1em;
 }
 
-.iterative-xblock-style-redfid .iterative-xblock-student-msg p {
+.iterative-xblock-style-red .iterative-xblock-student-msg p {
     color: red;
     text-align: center;
     margin-top: 30px;
 }
 
-.iterative-xblock-style-redfid .iterative-xblock-student-answer-container {
+.iterative-xblock-style-red .iterative-xblock-student-answer-container {
     position: relative;
     width: 100%;
 }
 
-.iterative-xblock-style-redfid .iterative-xblock-student-get-answer {
+.iterative-xblock-style-red .iterative-xblock-student-get-answer {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -104,14 +104,14 @@
     text-align: center;
 }
 
-.iterative-xblock-style-redfid .iterative-xblock-student-answer {
+.iterative-xblock-style-red .iterative-xblock-student-answer {
     width: 100%;
     z-index: 1;
     padding: 10px;
     resize: none;
 }
 
-.iterative-xblock-style-redfid .iterative-xblock-instructor-select-student-container {
+.iterative-xblock-style-red .iterative-xblock-instructor-select-student-container {
     display: flex;
     align-items: center;
     margin: 10px auto 30px auto;
@@ -120,13 +120,13 @@
 
 }
 
-.iterative-xblock-style-redfid .iterative-xblock-instructor-select-student-container p {
+.iterative-xblock-style-red .iterative-xblock-instructor-select-student-container p {
     margin-bottom: 0 !important;
     margin-right: 20px;
     font-weight: bold;
 
 }
 
-.iterative-xblock-style-redfid .iterative-xblock-instructor-select-student-container select {
+.iterative-xblock-style-red .iterative-xblock-instructor-select-student-container select {
     width: 100%;
 }

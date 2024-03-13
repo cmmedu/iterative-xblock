@@ -39,7 +39,7 @@ class IterativeXBlock(XBlock):
 
     style = String(
         default="basic",
-        values=["basic", "redfid", "blackwhite"],
+        values=["basic", "red", "blackwhite"],
         scope=Scope.settings,
         help="Style of this block."
     )

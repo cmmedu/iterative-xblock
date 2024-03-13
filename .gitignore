@@ -133,3 +133,5 @@ dmypy.json
 # openedx test files
 test_root/
 setup.cfg
+
+notas.txt
