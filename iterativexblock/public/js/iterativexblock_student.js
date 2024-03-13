@@ -1,5 +1,6 @@
 function IterativeXBlockStudent(runtime, element, settings) {
 
+    let statusDiv = $(element).find('.status');
     let buttonSubmit = $(element).find(".iterative-xblock-submit");
     let submitUrl = runtime.handlerUrl(element, 'student_submit');
     let displayUrl = runtime.handlerUrl(element, 'fetch_previous_submission');
@@ -38,7 +39,10 @@ function IterativeXBlockStudent(runtime, element, settings) {
     }
 
     function afterSubmission(result) {
+        statusDiv.removeClass("unanswered");
+        statusDiv.removeClass('correct');
         buttonSubmit.attr("disabled", true);
+        statusDiv.addClass(result.indicator_class);
         if (result["result"] === "repeated"){
             showErrorMessage("Ya se encuentra registrada una respuesta. Por favor, actualice la página.");
             buttonSubmit.removeAttr("disabled");

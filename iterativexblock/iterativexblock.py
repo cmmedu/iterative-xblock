@@ -161,6 +161,13 @@ class IterativeXBlock(XBlock):
             question.delete()
 
 
+    def get_indicator_class(self):
+        indicator_class = 'unanswered'
+        if self.score != 0:
+            indicator_class = 'correct'
+        return indicator_class
+
+
     def clear_student_state(self, user_id, course_id, item_id, requesting_user_id):
         from .models import IterativeXBlockQuestion, IterativeXBlockAnswer
         from common.djangoapps.student.models import user_by_anonymous_id
@@ -247,6 +254,7 @@ class IterativeXBlock(XBlock):
                         continue
                     answers[id_question] = answer.answer
                 completed =  True
+        context["indicator_class"] = self.get_indicator_class()
         frag = self.build_fragment(
             template,
             initialize_js_func='IterativeXBlockStudent',
