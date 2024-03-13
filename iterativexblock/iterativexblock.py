@@ -99,6 +99,12 @@ class IterativeXBlock(XBlock):
         help="Content of this XBlock: texts, questions and references."
     )
 
+    student_answers = Dict(
+        default={},
+        scope=Scope.user_state,
+        help="Answers given by the student."
+    )
+
     score = Float(
         default=0.0,
         scope=Scope.user_state,
@@ -182,6 +188,8 @@ class IterativeXBlock(XBlock):
                 answers = IterativeXBlockAnswer.objects.filter(question=question, id_student=id_student)
                 for answer in answers:
                     answer.delete()
+        self.score = 0.0
+        self.student_answers = {}
 
 
     def studio_post_duplicate(self, store, source_item):
@@ -250,6 +258,7 @@ class IterativeXBlock(XBlock):
                     'max_value': 1
                 }
             )
+            self.student_answers = {}
             answers = {}
             completed = False
         else:
@@ -500,6 +509,7 @@ class IterativeXBlock(XBlock):
                     'max_value': 1
                 }
             )
+            self.student_answers = data
             submission_time = datetime.datetime.now()
             for id_question, answer in data.items():
                 try:
