@@ -1,6 +1,5 @@
 import datetime
 from django.template.context import Context
-import json
 import pkg_resources
 import re
 from xblock.core import XBlock
@@ -191,9 +190,9 @@ class IterativeXBlock(XBlock):
         id_xblock = str(self.location).split('@')[-1]
         new_content = source_item.content.copy()
         for i in range(new_content["n_rows"]):
-            row = (i+1).toString()
+            row = str(i+1)
             for j in range(new_content[row]["n_cells"]):
-                cell = new_content[row][(j+1).toString()]
+                cell = new_content[row][str(j+1)]
                 if cell["type"] == "question":
                     id_question = cell["content"]
                     match = re.search(r'_(\d+)$', id_question)
@@ -286,17 +285,10 @@ class IterativeXBlock(XBlock):
                 'public/js/iterativexblock_student.js',
             ],
             settings={
-                "location": str(self.location).split('@')[-1],
-                "user_id": id_student,
                 "no_answer_message": self.no_answer_message,
-                "submit_message": self.submit_message,
-                "submitted_message": self.submitted_message,
-                "display_message": self.display_message,
-                "enable_download": self.enable_download,
                 "min_questions": self.min_questions,
                 "answers": answers,
                 "completed": completed,
-                "content": self.content,
                 "indicator_class": self.get_indicator_class()
             }
         )
@@ -361,8 +353,7 @@ class IterativeXBlock(XBlock):
                 'public/js/iterativexblock_instructor.js',
             ],
             settings={
-                "location": str(self.location).split('@')[-1],
-                "user_id": id_instructor,
+                "no_answer_message": self.no_answer_message,
                 "answers": answers
             }
         )
@@ -370,10 +361,7 @@ class IterativeXBlock(XBlock):
 
 
     def studio_view(self, context):
-        context = {
-            "title": self.title,
-            'location': str(self.location).split('@')[-1]
-        }
+        context = {}
         template = loader.render_django_template(
             'public/html/iterativexblock_studio.html',
             context=Context(context),
