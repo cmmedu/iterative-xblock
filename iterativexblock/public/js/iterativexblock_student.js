@@ -32,7 +32,11 @@ function IterativeXBlockStudent(runtime, element, settings) {
                 count++;
             }
         }
-        if (count < min_questions) {
+        if (min_questions === 0){
+            if (count < data.length){
+                error_msg = "Please answer all questions.";
+            }
+        } else if (count < min_questions) {
             error_msg = "Please answer at least " + min_questions + " questions.";
         }
         return error_msg;

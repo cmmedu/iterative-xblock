@@ -500,6 +500,16 @@ class IterativeXBlock(XBlock):
         if self.score != 0.0:
             return {"result": 'repeated', 'indicator_class': self.get_indicator_class()}
         else:
+            self.student_answers = data
+            answered = 0
+            for id_question, answer in data.items():
+                if answer != "":
+                    answered += 1
+            if self.min_questions > 0 and answered < self.min_questions:
+                return {"result": 'not_enough', 'indicator_class': self.get_indicator_class()}
+            if self.min_questions == 0:
+                if answered < len(self.get_ids("question")):
+                    return {"result": 'not_enough', 'indicator_class': self.get_indicator_class()}
             self.score = 1
             self.runtime.publish(
                 self,
@@ -509,7 +519,6 @@ class IterativeXBlock(XBlock):
                     'max_value': 1
                 }
             )
-            self.student_answers = data
             submission_time = datetime.datetime.now()
             for id_question, answer in data.items():
                 try:
