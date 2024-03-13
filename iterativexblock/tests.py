@@ -76,10 +76,8 @@ class IterativeXBlockTestCase(TransactionTestCase):
         self.assertEqual(self.xblock1.title, "Iterative XBlock")
         self.assertEqual(self.xblock1.style, "basic")
         self.assertEqual(self.xblock1.configured, False)
-        self.assertEqual(self.xblock1.gridlines, False)
         self.assertEqual(self.xblock1.no_answer_message, "You have not answered this question yet.")
         self.assertEqual(self.xblock1.submit_message, "Submit")
-        self.assertEqual(self.xblock1.submitted_message, "Done")
         self.assertEqual(self.xblock1.display_message, "Display")
         self.assertEqual(self.xblock1.min_questions, 0)
         self.assertEqual(self.xblock1.enable_download, False)
@@ -138,10 +136,8 @@ class IterativeXBlockTestCase(TransactionTestCase):
             "content": sample_content,
             "title": self.xblock1.title,
             "style": self.xblock1.style,
-            "gridlines": self.xblock1.gridlines,
             "no_answer_message": self.xblock1.no_answer_message,
             "submit_message": self.xblock1.submit_message,
-            "submitted_message": self.xblock1.submitted_message,
             "display_message": self.xblock1.display_message,
             "min_questions": self.xblock1.min_questions,
             "enable_download": self.xblock1.enable_download,
@@ -193,10 +189,8 @@ class IterativeXBlockTestCase(TransactionTestCase):
             "content": sample_content,
             "title": self.xblock2.title,
             "style": self.xblock2.style,
-            "gridlines": self.xblock2.gridlines,
             "no_answer_message": self.xblock2.no_answer_message,
             "submit_message": self.xblock2.submit_message,
-            "submitted_message": self.xblock2.submitted_message,
             "display_message": self.xblock2.display_message,
             "min_questions": self.xblock2.min_questions,
             "enable_download": self.xblock2.enable_download,
@@ -272,10 +266,8 @@ class IterativeXBlockTestCase(TransactionTestCase):
             "content": sample_content,
             "title": self.xblock3.title,
             "style": self.xblock3.style,
-            "gridlines": self.xblock3.gridlines,
             "no_answer_message": self.xblock3.no_answer_message,
             "submit_message": self.xblock3.submit_message,
-            "submitted_message": self.xblock3.submitted_message,
             "display_message": self.xblock3.display_message,
             "min_questions": self.xblock3.min_questions,
             "enable_download": self.xblock3.enable_download,
@@ -329,10 +321,8 @@ class IterativeXBlockTestCase(TransactionTestCase):
             "content": sample_content,
             "title": "Some other title",
             "style": "style2",
-            "gridlines": True,
             "no_answer_message": "Custom no answer message",
             "submit_message": "Custom submit message",
-            "submitted_message": "Custom submitted message",
             "display_message": "Custom display message",
             "min_questions": 1,
             "enable_download": self.xblock4.enable_download,
@@ -345,10 +335,8 @@ class IterativeXBlockTestCase(TransactionTestCase):
         self.assertEqual(response.json_body["result"], "success")
         self.assertEqual(self.xblock4.title, "Some other title")
         self.assertEqual(self.xblock4.style, "style2")
-        self.assertEqual(self.xblock4.gridlines, True)
         self.assertEqual(self.xblock4.no_answer_message, "Custom no answer message")
         self.assertEqual(self.xblock4.submit_message, "Custom submit message")
-        self.assertEqual(self.xblock4.submitted_message, "Custom submitted message")
         self.assertEqual(self.xblock4.display_message, "Custom display message")
         self.assertEqual(self.xblock4.min_questions, 1)
         self.assertEqual(self.xblock4.enable_download, False)
@@ -397,10 +385,8 @@ class IterativeXBlockTestCase(TransactionTestCase):
             "content": sample_content2,
             "title": self.xblock4.title,
             "style": self.xblock4.style,
-            "gridlines": self.xblock4.gridlines,
             "no_answer_message": self.xblock4.no_answer_message,
             "submit_message": self.xblock4.submit_message,
-            "submitted_message": self.xblock4.submitted_message,
             "display_message": self.xblock4.display_message,
             "min_questions": self.xblock4.min_questions,
             "enable_download": self.xblock4.enable_download,
@@ -461,10 +447,8 @@ class IterativeXBlockTestCase(TransactionTestCase):
             "content": sample_content,
             "title": self.xblock5.title,
             "style": self.xblock5.style,
-            "gridlines": self.xblock5.gridlines,
             "no_answer_message": self.xblock5.no_answer_message,
             "submit_message": self.xblock5.submit_message,
-            "submitted_message": self.xblock5.submitted_message,
             "display_message": self.xblock5.display_message,
             "min_questions": self.xblock5.min_questions,
             "enable_download": self.xblock5.enable_download,
@@ -535,10 +519,8 @@ class IterativeXBlockTestCase(TransactionTestCase):
             "content": sample_content,
             "title": self.xblock6.title,
             "style": self.xblock6.style,
-            "gridlines": self.xblock6.gridlines,
             "no_answer_message": self.xblock6.no_answer_message,
             "submit_message": self.xblock6.submit_message,
-            "submitted_message": self.xblock6.submitted_message,
             "display_message": self.xblock6.display_message,
             "min_questions": self.xblock6.min_questions,
             "enable_download": self.xblock6.enable_download,
@@ -568,10 +550,8 @@ class IterativeXBlockTestCase(TransactionTestCase):
             "content": sample_content2,
             "title": self.xblock7.title,
             "style": self.xblock7.style,
-            "gridlines": self.xblock7.gridlines,
             "no_answer_message": self.xblock7.no_answer_message,
             "submit_message": self.xblock7.submit_message,
-            "submitted_message": self.xblock7.submitted_message,
             "display_message": self.xblock7.display_message,
             "min_questions": self.xblock7.min_questions,
             "enable_download": self.xblock7.enable_download,
@@ -595,7 +575,8 @@ class IterativeXBlockTestCase(TransactionTestCase):
         display = TestRequest()
         display.method = 'POST'
         display.body = json.dumps({
-            "id_question": "q012"
+            "id_question": "q012",
+            "id_user": ""
         }).encode('utf-8')
         self.xblock7.scope_ids.user_id = "102"
         response4 = self.xblock7.fetch_previous_submission(display)
@@ -628,10 +609,8 @@ class IterativeXBlockTestCase(TransactionTestCase):
             "content": sample_content,
             "title": self.xblock8.title,
             "style": self.xblock8.style,
-            "gridlines": self.xblock8.gridlines,
             "no_answer_message": self.xblock8.no_answer_message,
             "submit_message": self.xblock8.submit_message,
-            "submitted_message": self.xblock8.submitted_message,
             "display_message": self.xblock8.display_message,
             "min_questions": self.xblock8.min_questions,
             "enable_download": self.xblock8.enable_download,
@@ -667,20 +646,35 @@ class IterativeXBlockTestCase(TransactionTestCase):
             self.assertEqual(IterativeXBlockAnswer.objects.filter(question=question, id_course=COURSE_ID).count(), 0)
 
 
-    # def test_duplicate(self):
-    #     #Duplicar el Xblock
-    #     self.assertEqual(IAAActivity.objects.all().count(), 0)
-    #     activity = IAAActivity.objects.create(id_course=COURSE_ID, activity_name='TestActivity')
-    #     stage = IAAStage.objects.create(activity=activity, stage_label='TestStageLabel1', stage_number='1')
-    #     fake_xblock =  Mock(
-    #         stage_number = stage.stage_number,
-    #         activity_name = activity.activity_name,
-    #         block_type = 'full'
-    #     )
-    #     duplicated = self.xblock5.studio_post_duplicate("", fake_xblock)
-    #     self.assertEqual(duplicated, True)
-    #     item = IAAActivity.objects.last()
-    #     random = item.id + 1
-    #     activity_name = 'TestActivity_copy{}'.format(random)
-    #     self.assertTrue(IAAActivity.objects.filter(activity_name=activity_name).exists())
+    def test_duplicate(self):
+        sample_content = {
+            "n_rows": 1,
+            "1": {
+                "n_cells": 2,
+                "1": {
+                    "type": "question",
+                    "content": "q018"
+                },
+                "2": {
+                    "type": "question",
+                    "content": "q019"
+                }
+            }
+        }
+        fake_xblock =  Mock(
+            content=sample_content,
+            title='TestTitle',
+            style='TestStyle',
+            no_answer_message='TestNoAnswerMessage',
+            submit_message='TestSubmitMessage',
+            display_message='TestDisplayMessage',
+            min_questions=1,
+            enable_download=True
+        )
+        duplicated = self.xblock9.studio_post_duplicate("", fake_xblock)
+        self.assertTrue(duplicated)
+        questions = IterativeXBlockQuestion.objects.filter(id_course=COURSE_ID, id_xblock=str(self.xblock9.location).split('@')[-1])
+        self.assertEqual(questions.count(), 2)
+        for question in ["q018", "q019"]:
+            self.assertTrue(questions.filter(id_question=question+"_1").exists())
 
