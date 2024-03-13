@@ -22,9 +22,9 @@ To incorporate an Iterative XBlock into your course, proceed to a specific unit 
 
 The structure of each Iterative XBlock resembles a table, allowing for the addition of up to 9 rows of content. Each row can consist of 1 to 4 cells, with each cell capable of containing one of the following types of content:
 
-- Fixed text: Simply text, utilized for providing context.
-- Question: An open-ended question assigned a unique ID within the course.
-- Answer: Corresponds to the ID of a question defined in another Iterative XBlock within the course. This enables the display of a student's answer to that specific question.
+- **Fixed text**: Simply text, utilized for providing context.
+- **Question**: An open-ended question assigned a unique ID within the course.
+- **Answer**: Corresponds to the ID of a question defined in another Iterative XBlock within the course. This enables the display of a student's answer to that specific question.
 
 ### Additional configuration
 
@@ -35,7 +35,6 @@ The customization of the Iterative XBlock can be done with the following options
 - **Min questions**: Sets the minimum number of questions a student is required to answer. Setting this value to 0 mandates that all questions must be answered. This option is accessible only when at least one question is defined.
 - **Enable download**: Allows for the downloading of the XBlock content as a PDF document. This functionality is only enabled if there are no questions within the module.
 - **Submit button message**: Defines the text displayed on the submit button.
-- **Submitted button message**: Indicates the text that appears on the submit button after a student submits an answer.
 - **Display button message**: Text displayed on buttons used to view previous answers.
 - **No answer message**: Message displayed in the event that no previous answer is available.
 

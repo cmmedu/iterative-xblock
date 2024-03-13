@@ -5,8 +5,6 @@ function IterativeXBlockStudio(runtime, element, settings) {
     let style = $(element).find("#style");
     let input_submit_message = $(element).find("#input_submit_message");
     let submit_message = $(element).find("#submit_message");
-    let input_submitted_message = $(element).find("#input_submitted_message");
-    let submitted_message = $(element).find("#submitted_message");
     let input_display_message = $(element).find("#input_display_message");
     let display_message = $(element).find("#display_message");
     let input_no_answer_message = $(element).find("#input_no_answer_message");
@@ -85,12 +83,6 @@ function IterativeXBlockStudio(runtime, element, settings) {
         }
         if (data["submit_message"].length > 30) {
             return "Submit message must be less than 30 characters."
-        }
-        if (data["submitted_message"] === "") {
-            return "Please provide a message for the submit button when the answer is submitted."
-        }
-        if (data["submitted_message"].length > 30) {
-            return "Submitted message must be less than 30 characters."
         }
         if (data["display_message"] === "") {
             return "Please provide a message for the display button."
@@ -423,7 +415,6 @@ function IterativeXBlockStudio(runtime, element, settings) {
             style: style.val(),
             content: content_ui,
             submit_message: submit_message.val(),
-            submitted_message: submitted_message.val(),
             display_message: display_message.val(),
             no_answer_message: no_answer_message.val(),
             min_questions: min_questions.val(),
@@ -462,14 +453,12 @@ function IterativeXBlockStudio(runtime, element, settings) {
         input_title.removeAttr("hidden");
         input_style.removeAttr("hidden");
         input_submit_message.removeAttr("hidden");
-        input_submitted_message.removeAttr("hidden");
         input_display_message.removeAttr("hidden");
         input_no_answer_message.removeAttr("hidden");
         input_min_questions.removeAttr("hidden");
         title.val(settings.title);
         style.val(settings.style);
         submit_message.val(settings.submit_message);
-        submitted_message.val(settings.submitted_message);
         display_message.val(settings.display_message);
         no_answer_message.val(settings.no_answer_message);
         min_questions.val(settings.min_questions);

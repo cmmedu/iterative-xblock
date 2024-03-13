@@ -105,7 +105,7 @@ function IterativeXBlockStudent(runtime, element, settings) {
     $(element).find(".iterative-xblock-student-get-answer").on('click', function (eventObject) {
         var data = {
             "id_question": $(this).attr("id").split("iterative-xblock-student-get-answer-")[1],
-            "id_student": ""
+            "id_user": ""
         }
         $.post(displayUrl, JSON.stringify(data)).done(function (response) {
             afterDisplay(data["id_question"], response)
