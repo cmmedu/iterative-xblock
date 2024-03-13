@@ -120,9 +120,9 @@ function IterativeXBlockStudent(runtime, element, settings) {
             }
             $(element).find(".iterative-xblock-student-question").attr("disabled", true);
             buttonSubmit.attr("disabled", true);
-            statusDiv.removeClass("unanswered");
-            statusDiv.addClass("correct");
         }
-
+        statusDiv.removeClass("unanswered");
+        statusDiv.addClass("correct");
+        statusDiv.addClass(settings.indicator_class);
     });
 }

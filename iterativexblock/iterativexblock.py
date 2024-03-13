@@ -275,7 +275,8 @@ class IterativeXBlock(XBlock):
                 "min_questions": self.min_questions,
                 "answers": answers,
                 "completed": completed,
-                "content": self.content
+                "content": self.content,
+                "indicator_class": self.get_indicator_class()
             }
         )
         return frag
