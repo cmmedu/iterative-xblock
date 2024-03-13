@@ -3,7 +3,6 @@ docker compose down && cd ../build/edx-staging/ && docker build . -t edx-staging
 todo:
 
 - more styles
-- ensure conditional is working
 - ensure duplication is working
 - ensure export/import is working
 

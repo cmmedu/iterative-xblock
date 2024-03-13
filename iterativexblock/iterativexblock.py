@@ -1,11 +1,12 @@
+import datetime
+from django.template.context import Context
 import json
 import pkg_resources
+import re
 from xblock.core import XBlock
-from django.template.context import Context
 from xblock.fields import String, Scope, Boolean, Float, Dict, Integer
 from xblockutils.resources import ResourceLoader
 from xblock.fragment import Fragment
-import datetime
 
 loader = ResourceLoader(__name__)
 
@@ -185,11 +186,31 @@ class IterativeXBlock(XBlock):
 
 
     def studio_post_duplicate(self, store, source_item):
-        # pendiente
         from .models import IterativeXBlockQuestion
-        content = source_item.content
         id_course = self.course_id
         id_xblock = str(self.location).split('@')[-1]
+        new_content = source_item.content.copy()
+        for i in range(new_content["n_rows"]):
+            row = (i+1).toString()
+            for j in range(new_content[row]["n_cells"]):
+                cell = new_content[row][(j+1).toString()]
+                if cell["type"] == "question":
+                    id_question = cell["content"]
+                    match = re.search(r'_(\d+)$', id_question)
+                    if match:
+                        base_question = id_question[:match.start()]
+                        num = int(match.group(1)) + 1
+                    else:
+                        base_question = id_question
+                        num = 1
+                    new_question_id = f"{base_question}_{num}"
+                    while IterativeXBlockQuestion.objects.filter(id_course=id_course, id_question=new_question_id).exists():
+                        num += 1
+                        new_question_id = f"{base_question}_{num}"
+                    new_question = IterativeXBlockQuestion(id_course=id_course, id_xblock=id_xblock, id_question=new_question_id)
+                    new_question.save()
+                    cell["content"] = new_question_id
+        self.content = new_content
         return True
 
 
