@@ -48,7 +48,7 @@ function IterativeXBlockStudent(runtime, element, settings) {
             buttonSubmit.removeAttr("disabled");
         } else if (result["result"] === "success") {
             $(element).find(".iterative-xblock-student-question").attr("disabled", true);
-            buttonSubmit.html("<span>" + settings.submitted_message + "</span>");
+            //buttonSubmit.html("<span>" + settings.submitted_message + "</span>");
             buttonSubmit.attr("disabled", true);
         } else {
             showErrorMessage("Algo salió mal.");
