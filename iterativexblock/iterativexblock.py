@@ -479,7 +479,7 @@ class IterativeXBlock(XBlock):
         id_xblock = str(self.location).split('@')[-1]
         id_student = self.scope_ids.user_id
         if self.score != 0.0:
-            return {"result": 'repeated'}
+            return {"result": 'repeated', 'indicator_class': self.get_indicator_class()}
         else:
             self.score = 1
             self.runtime.publish(
@@ -499,7 +499,7 @@ class IterativeXBlock(XBlock):
                     continue
                 new_answer = IterativeXBlockAnswer(question=question, id_course=id_course, id_student=id_student, answer=answer, timestamp=submission_time)
                 new_answer.save()
-            return {"result": 'success'}
+            return {"result": 'success', 'indicator_class': self.get_indicator_class()}
 
     
     @XBlock.json_handler
