@@ -11,6 +11,10 @@ function IterativeXBlockStudio(runtime, element, settings) {
     let no_answer_message = $(element).find("#no_answer_message");
     let input_min_questions = $(element).find("#input_min_questions");
     let min_questions = $(element).find("#min_questions");
+    let input_min_characters = $(element).find("#input_min_characters");
+    let min_characters = $(element).find("#min_characters");
+    let input_min_words = $(element).find("#input_min_words");
+    let min_words = $(element).find("#min_words");
     let input_enable_download = $(element).find("#input_enable_download");
     let enable_download = $(element).find("#enable_download");
     
@@ -108,6 +112,24 @@ function IterativeXBlockStudio(runtime, element, settings) {
         if (parseInt(data["min_questions"]) < 0) {
             return "Minimum number of questions must be a positive number."
         }
+        if (data["min_characters"] === "") {
+            return "Please provide a minimum number of characters for the answer."
+        }
+        if (isNaN(data["min_characters"])) {
+            return "Minimum number of characters must be a number."
+        }
+        if (parseInt(data["min_characters"]) < 0) {
+            return "Minimum number of characters must be a positive number."
+        }
+        if (data["min_words"] === "") {
+            return "Please provide a minimum number of words for the answer."
+        }
+        if (isNaN(data["min_words"])) {
+            return "Minimum number of words must be a number."
+        }
+        if (parseInt(data["min_words"]) < 0) {
+            return "Minimum number of words must be a positive number."
+        }
         if (data["enable_download"] == null) {
             return "Please select if you want to enable download of answers as a PDF file or not."
         }
@@ -138,8 +160,20 @@ function IterativeXBlockStudio(runtime, element, settings) {
             input_content_row.removeAttr("hidden");
         }
         content_ui = JSON.parse(JSON.stringify(content));
-        handleEnableDownload();
-        handleMinQuestions();
+        handleConditionalInputs();
+    }
+
+    function getAnswerIDs(content) {
+        let answerIds = [];
+        for (let i = 1; i <= content["n_rows"]; i++) {
+            for (let j = 1; j <= content[i.toString()]["n_cells"]; j++) {
+                let cell = content[i.toString()][j.toString()];
+                if (cell["type"] === "answer") {
+                    answerIds.push(cell["content"]);
+                }
+            }
+        }
+        return questionIds;
     }
 
     function getQuestionIDs(content) {
@@ -328,29 +362,43 @@ function IterativeXBlockStudio(runtime, element, settings) {
         $(element).find('.studio-warning-msg').html(msg);
     }
 
-    function handleEnableDownload() {
+    function handleConditionalInputs() {
         let content_ui = makeContentUI();
         let questionIds = getQuestionIDs(content_ui);
         if (questionIds.length > 0) {
             enable_download.val("no");
             input_enable_download.slideUp();
+            min_questions.val(settings.min_questions);
+            input_min_questions.slideDown();
+            min_characters.val(settings.min_characters);
+            input_min_characters.slideDown();
+            min_words.val(settings.min_words);
+            input_min_words.slideDown();
+            no_answer_message.val(settings.no_answer_message);
+            input_no_answer_message.slideDown();
+            submit_message.val(settings.submit_message);
+            input_submit_message.slideDown();
         } else {
             enable_download.val(settings.enable_download ? "yes" : "no");
             input_enable_download.slideDown();
-        }
-    }
-
-    function handleMinQuestions() {
-        let content_ui = makeContentUI();
-        let questionIds = getQuestionIDs(content_ui);
-        if (questionIds.length > 0) {
-            min_questions.val(settings.min_questions);
-            input_min_questions.slideDown();
-        } else {
             min_questions.val(0);
             min_questions.attr("min", '0');
             min_questions.attr("max", questionIds.length.toString());
             input_min_questions.slideUp();
+            min_characters.val(0);
+            input_min_characters.slideUp();
+            min_words.val(0);
+            input_min_words.slideUp();
+            input_no_answer_message.slideUp();
+            input_submit_message.slideUp();
+        }
+        let answerIds = getAnswerIDs(content_ui);
+        if (answerIds.length > 0) {
+            display_message.val(settings.display_message);
+            input_display_message.slideDown();
+        } else {
+            display_message.val("");
+            input_display_message.slideUp();
         }
     }
 
@@ -369,8 +417,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
         } else {
             input.attr("placeholder", "Please select an option...").attr("disabled", true);
         }
-        handleEnableDownload();
-        handleMinQuestions();
+        handleConditionalInputs();
     });
 
     $(element).find(".content-cell-new").bind('click', function (eventObject) {
@@ -418,6 +465,8 @@ function IterativeXBlockStudio(runtime, element, settings) {
             display_message: display_message.val(),
             no_answer_message: no_answer_message.val(),
             min_questions: min_questions.val(),
+            min_characters: min_characters.val(),
+            min_words: min_words.val(),
             enable_download: enable_download.val(),
             new_questions: newQuestions,
             removed_questions: removedQuestions
@@ -456,12 +505,16 @@ function IterativeXBlockStudio(runtime, element, settings) {
         input_display_message.removeAttr("hidden");
         input_no_answer_message.removeAttr("hidden");
         input_min_questions.removeAttr("hidden");
+        input_min_characters.removeAttr("hidden");
+        input_min_words.removeAttr("hidden");
         title.val(settings.title);
         style.val(settings.style);
         submit_message.val(settings.submit_message);
         display_message.val(settings.display_message);
         no_answer_message.val(settings.no_answer_message);
         min_questions.val(settings.min_questions);
+        min_characters.val(settings.min_characters);
+        min_words.val(settings.min_words);
 
         applyContent(content_backend);
     }

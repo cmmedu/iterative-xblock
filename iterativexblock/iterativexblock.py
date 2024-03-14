@@ -34,14 +34,14 @@ class IterativeXBlock(XBlock):
     title = String(
         default="Iterative XBlock",
         scope=Scope.settings,
-        help="Title of this activity."
+        help="Specifies the module's title. If this field is left blank, no title will be displayed."
     )
 
     style = String(
         default="basic",
         values=["basic", "red", "blackwhite"],
         scope=Scope.settings,
-        help="Style of this block."
+        help="Determines the module's appearance. A variety of stylesheets are available to choose from."
     )
 
     no_answer_message = String(
@@ -71,13 +71,25 @@ class IterativeXBlock(XBlock):
     min_questions = Integer(
         default=0,
         scope=Scope.settings,
-        help="Minimum number of questions to be answered. If 0, all questions must be answered."
+        help="Sets the minimum number of questions a student is required to answer. Setting this value to 0 mandates that all questions must be answered. This option is accessible only when at least one question is defined."
+    )
+
+    min_characters = Integer(
+        default=0,
+        scope=Scope.settings,
+        help="Specifies the minimum character count required for an answer to be deemed valid. A setting of 0 indicates no minimum requirement."
+    )
+
+    min_words = Integer(
+        default=0,
+        scope=Scope.settings,
+        help="Specifies the minimum word count required for an answer to be deemed valid. A setting of 0 indicates no minimum requirement."
     )
 
     enable_download = Boolean(
         default=False,
         scope=Scope.settings,
-        help="Wether to shown the download buttons or not."
+        help="Allows for the downloading of the XBlock content as a PDF document. This functionality is only enabled if there are no questions within the module."
     )
 
     content = Dict(
@@ -96,7 +108,7 @@ class IterativeXBlock(XBlock):
             }
         },
         scope=Scope.settings,
-        help="Content of this XBlock: texts, questions and references."
+        help="Content of this XBlock: texts, questions and references to previous answers."
     )
 
     student_answers = Dict(
@@ -296,6 +308,8 @@ class IterativeXBlock(XBlock):
             settings={
                 "no_answer_message": self.no_answer_message,
                 "min_questions": self.min_questions,
+                "min_characters": self.min_characters,
+                "min_words": self.min_words,
                 "answers": answers,
                 "completed": completed,
                 "indicator_class": self.get_indicator_class()
@@ -394,7 +408,9 @@ class IterativeXBlock(XBlock):
                 "submitted_message": self.submitted_message,
                 "display_message": self.display_message,
                 "enable_download": self.enable_download,
-                "min_questions": self.min_questions
+                "min_questions": self.min_questions,
+                "min_characters": self.min_characters,
+                "min_words": self.min_words
             }
         )
         return frag
@@ -484,6 +500,8 @@ class IterativeXBlock(XBlock):
         self.submitted_message = data.get('submitted_message')
         self.display_message = data.get('display_message')
         self.min_questions = data.get('min_questions')
+        self.min_characters = data.get('min_characters')
+        self.min_words = data.get('min_words')
         self.enable_download = data.get('enable_download')
         return {'result': 'success'}
 

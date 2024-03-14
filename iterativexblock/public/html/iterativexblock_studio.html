@@ -457,6 +457,20 @@
             </div>
             <span class="tip setting-help">Sets the minimum number of questions a student is required to answer. Setting this value to 0 mandates that all questions must be answered. This option is accessible only when at least one question is defined.</span>
         </li>
+        <li id="input_min_characters" class="field comp-setting-entry is-set" hidden>
+            <div class="wrapper-comp-setting">
+                <label class="label setting-label" for="min_characters">Minimum characters</label>
+                <input class="input setting-input" name="min_characters" id="min_characters" min="0" max="10000" value="" type="number" />
+            </div>
+            <span class="tip setting-help">Specify the minimum character count required for an answer to be deemed valid. A setting of 0 indicates no minimum requirement.</span>
+        </li>
+        <li id="input_min_words" class="field comp-setting-entry is-set" hidden>
+            <div class="wrapper-comp-setting">
+                <label class="label setting-label" for="min_words">Minimum words</label>
+                <input class="input setting-input" name="min_words" id="min_words" value="" min="0" max="5000" type="number" />
+            </div>
+            <span class="tip setting-help">Specify the minimum word count required for an answer to be deemed valid. A setting of 0 indicates no minimum requirement.</span>
+        </li>
         <li id="input_enable_download" class="field comp-setting-entry is-set" hidden>
             <div class="wrapper-comp-setting">
                 <label class="label setting-label" for="enable_download">Enable download</label>
@@ -467,6 +481,7 @@
             </div>
             <span class="tip setting-help">Allows for the downloading of the XBlock content as a PDF document. This functionality is only enabled if there are no questions within the module.</span>
         </li>
+        
         <li id="input_submit_message" class="field comp-setting-entry is-set" hidden>
             <div class="wrapper-comp-setting">
                 <label class="label setting-label" for="submit_message">Submit button message</label>

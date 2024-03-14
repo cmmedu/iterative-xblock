@@ -32,7 +32,9 @@ The customization of the Iterative XBlock can be done with the following options
 
 - **Title**: Specifies the module's title. If this field is left blank, no title will be displayed.
 - **Style**: Determines the module's appearance. A variety of stylesheets are available to choose from.
-- **Min questions**: Sets the minimum number of questions a student is required to answer. Setting this value to 0 mandates that all questions must be answered. This option is accessible only when at least one question is defined.
+- **Minimum questions**: Sets the minimum number of questions a student is required to answer. Setting this value to 0 mandates that all questions must be answered. This option is accessible only when at least one question is defined.
+- **Minimum characters**: Specify the minimum character count required for an answer to be deemed valid. A setting of 0 indicates no minimum requirement.
+- **Minimum words**: Specify the minimum word count required for an answer to be deemed valid. A setting of 0 indicates no minimum requirement.
 - **Enable download**: Allows for the downloading of the XBlock content as a PDF document. This functionality is only enabled if there are no questions within the module.
 - **Submit button message**: Defines the text displayed on the submit button.
 - **Display button message**: Text displayed on buttons used to view previous answers.
