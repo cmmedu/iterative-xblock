@@ -382,7 +382,6 @@ class IterativeXBlock(XBlock):
                 "answers": answers
             }
         )
-        frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js")
         return frag
 
 
