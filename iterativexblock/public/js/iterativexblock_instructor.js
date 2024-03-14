@@ -46,9 +46,11 @@ function IterativeXBlockInstructor(runtime, element, settings) {
     });
 
     $(element).find(".iterative-xblock-student-download-pdf").on('click', function (eventObject) {
-        $.post(pdfDisplayUrl, JSON.stringify({"id_user": parseInt(selectedUser)})).done(function (response) {
-            generatePDF(response["answers"]);
-        });
+        if (selectedUser !== "none") {
+            $.post(pdfDisplayUrl, JSON.stringify({"id_user": parseInt(selectedUser)})).done(function (response) {
+                generatePDF(response["answers"]);
+            });
+        }
     });
 
     function generatePDF(answers) {
@@ -67,9 +69,13 @@ function IterativeXBlockInstructor(runtime, element, settings) {
             var blockHeight = lines.length * lineHeight;
             doc.text(lines, x, y + (lineHeight / 2), {maxWidth: width, align: "justify"});
         };
-    
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(16);
+        let titleMarginBottom = 10;
+        doc.text(settings.title, margin, margin, { maxWidth: totalWidth, align: "center" });
+        let initialYPosition = margin + lineHeight + titleMarginBottom;
         for (var i = 1; i <= settings.content["n_rows"]; i++) {
-            line = (i - 1) * lineHeight + margin;
+            line = initialYPosition + (i - 1) * lineHeight;
             let n_cells = settings.content[i.toString()]["n_cells"];
             let cellWidth = (totalWidth - (cellMargin * (n_cells - 1))) / n_cells;
     
@@ -81,8 +87,9 @@ function IterativeXBlockInstructor(runtime, element, settings) {
                 } else if (cellContent["type"] === "answer") {
                     paragraph = answers[cellContent["content"]];
                 }
-    
                 let x = margin + (j - 1) * (cellWidth + cellMargin);
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(12);
                 processParagraph(paragraph, x, line, cellWidth);
             }
         }

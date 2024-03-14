@@ -313,7 +313,8 @@ class IterativeXBlock(XBlock):
                 "answers": answers,
                 "completed": completed,
                 "indicator_class": self.get_indicator_class(),
-                "content": self.content
+                "content": self.content,
+                "title": self.title
             }
         )
         frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js")
@@ -380,7 +381,9 @@ class IterativeXBlock(XBlock):
             ],
             settings={
                 "no_answer_message": self.no_answer_message,
-                "answers": answers
+                "answers": answers,
+                "content": self.content,
+                "title": self.title,
             }
         )
         frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js")
