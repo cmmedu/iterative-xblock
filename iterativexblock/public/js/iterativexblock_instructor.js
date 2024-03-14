@@ -61,6 +61,13 @@ function IterativeXBlockInstructor(runtime, element, settings) {
         let totalWidth = pageWidth - (2 * margin);
         let lineHeight = 10;
         let cellMargin = 10;
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(16);
+        let title = settings.title;
+        let titleWidth = doc.getStringUnitWidth(title) * 16 / doc.internal.scaleFactor;
+        let titleX = (pageWidth - titleWidth) / 2; 
+        doc.text(title, titleX, margin);
+        let startY = margin + 20;
         doc.setFont("helvetica", "normal");
         doc.setFontSize(12);
         var line;
@@ -69,16 +76,10 @@ function IterativeXBlockInstructor(runtime, element, settings) {
             var blockHeight = lines.length * lineHeight;
             doc.text(lines, x, y + (lineHeight / 2), {maxWidth: width, align: "justify"});
         };
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(16);
-        let titleMarginBottom = 10;
-        doc.text(settings.title, margin, margin, { maxWidth: totalWidth, align: "center" });
-        let initialYPosition = margin + lineHeight + titleMarginBottom;
         for (var i = 1; i <= settings.content["n_rows"]; i++) {
-            line = initialYPosition + (i - 1) * lineHeight;
+            line = startY + (i - 1) * lineHeight + margin;
             let n_cells = settings.content[i.toString()]["n_cells"];
             let cellWidth = (totalWidth - (cellMargin * (n_cells - 1))) / n_cells;
-    
             for (var j = 1; j <= n_cells; j++) {
                 var paragraph;
                 var cellContent = settings.content[i.toString()][j.toString()];
@@ -87,9 +88,8 @@ function IterativeXBlockInstructor(runtime, element, settings) {
                 } else if (cellContent["type"] === "answer") {
                     paragraph = answers[cellContent["content"]];
                 }
+    
                 let x = margin + (j - 1) * (cellWidth + cellMargin);
-                doc.setFont("helvetica", "normal");
-                doc.setFontSize(12);
                 processParagraph(paragraph, x, line, cellWidth);
             }
         }
