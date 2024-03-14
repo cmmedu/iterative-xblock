@@ -67,7 +67,7 @@ function IterativeXBlockInstructor(runtime, element, settings) {
         let titleWidth = doc.getStringUnitWidth(title) * 16 / doc.internal.scaleFactor;
         let titleX = (pageWidth - titleWidth) / 2; 
         doc.text(title, titleX, margin);
-        let startY = margin + 20;
+        let startY = margin;
         doc.setFont("helvetica", "normal");
         doc.setFontSize(12);
         var line;
