@@ -52,42 +52,40 @@ function IterativeXBlockInstructor(runtime, element, settings) {
     });
 
     function generatePDF(answers, settings) {
-        window.RequireJS.require(['https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'], () => {
-            var doc = new jsPDF();
-            let pageWidth = doc.internal.pageSize.getWidth();
-            let margin = 20;
-            let totalWidth = pageWidth - (2 * margin);
-            let lineHeight = 10;
-            let cellMargin = 5;
-            doc.setFont("helvetica", "normal");
-            var line;
-            var processParagraph = function(paragraph, x, y, width) {
-                var lines = doc.splitTextToSize(paragraph, width);
-                var blockHeight = lines.length * lineHeight;
-                doc.text(lines, x, y + (lineHeight / 2), {maxWidth: width, align: "justify"});
-            };
-        
-            for (var i = 1; i <= settings.content["n_rows"]; i++) {
-                line = (i - 1) * lineHeight + margin;
-                let n_cells = settings.content[i.toString()]["n_cells"];
-                let cellWidth = (totalWidth - (cellMargin * (n_cells - 1))) / n_cells;
-        
-                for (var j = 1; j <= n_cells; j++) {
-                    var paragraph;
-                    var cellContent = settings.content[i.toString()][j.toString()];
-                    if (cellContent["type"] === "text") {
-                        paragraph = cellContent["content"];
-                    } else if (cellContent["type"] === "answer") {
-                        paragraph = answers[cellContent["content"]];
-                    }
-        
-                    let x = margin + (j - 1) * (cellWidth + cellMargin);
-                    processParagraph(paragraph, x, line, cellWidth);
-                }
-            }
-            doc.save('document.pdf');
+        const { jsPDF } = jspdf;
+        var doc = new jsPDF();
+        let pageWidth = doc.internal.pageSize.getWidth();
+        let margin = 20;
+        let totalWidth = pageWidth - (2 * margin);
+        let lineHeight = 10;
+        let cellMargin = 5;
+        doc.setFont("helvetica", "normal");
+        var line;
+        var processParagraph = function(paragraph, x, y, width) {
+            var lines = doc.splitTextToSize(paragraph, width);
+            var blockHeight = lines.length * lineHeight;
+            doc.text(lines, x, y + (lineHeight / 2), {maxWidth: width, align: "justify"});
+        };
     
-        });
+        for (var i = 1; i <= settings.content["n_rows"]; i++) {
+            line = (i - 1) * lineHeight + margin;
+            let n_cells = settings.content[i.toString()]["n_cells"];
+            let cellWidth = (totalWidth - (cellMargin * (n_cells - 1))) / n_cells;
+    
+            for (var j = 1; j <= n_cells; j++) {
+                var paragraph;
+                var cellContent = settings.content[i.toString()][j.toString()];
+                if (cellContent["type"] === "text") {
+                    paragraph = cellContent["content"];
+                } else if (cellContent["type"] === "answer") {
+                    paragraph = answers[cellContent["content"]];
+                }
+    
+                let x = margin + (j - 1) * (cellWidth + cellMargin);
+                processParagraph(paragraph, x, line, cellWidth);
+            }
+        }
+        doc.save('document.pdf');
     }
 
     $(function ($) {
