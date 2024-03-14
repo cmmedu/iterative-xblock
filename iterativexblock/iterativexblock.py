@@ -323,7 +323,7 @@ class IterativeXBlock(XBlock):
         from django.contrib.auth.models import User
         from .models import IterativeXBlockQuestion, IterativeXBlockAnswer
         id_instructor = self.scope_ids.user_id
-        if len(self.get_ids("question")) == 0 and len(self.get_ids("answer")) == 0:
+        if len(self.get_ids("question")) == 0 and len(self.get_ids("answer")) == 0 and not self.enable_download:
             show_student_select = False
             answers = []
         else:
@@ -360,7 +360,8 @@ class IterativeXBlock(XBlock):
             'style': self.style,
             'no_answer_message': self.no_answer_message,
             'answers': answers,
-            'show_student_select': show_student_select
+            'show_student_select': show_student_select,
+            'enable_download': self.enable_download
         }
         template = loader.render_django_template(
             'public/html/iterativexblock_instructor.html',
@@ -374,13 +375,14 @@ class IterativeXBlock(XBlock):
                 'public/css/iterativexblock_{}.css'.format(self.style),
             ],
             additional_js=[
-                'public/js/iterativexblock_instructor.js',
+                'public/js/iterativexblock_instructor.js'
             ],
             settings={
                 "no_answer_message": self.no_answer_message,
                 "answers": answers
             }
         )
+        frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js")
         return frag
 
 
