@@ -312,7 +312,8 @@ class IterativeXBlock(XBlock):
                 "min_words": self.min_words,
                 "answers": answers,
                 "completed": completed,
-                "indicator_class": self.get_indicator_class()
+                "indicator_class": self.get_indicator_class(),
+                "content": self.content
             }
         )
         return frag
@@ -565,9 +566,37 @@ class IterativeXBlock(XBlock):
         try:
             question = IterativeXBlockQuestion.objects.get(id_course=id_course, id_question=id_question)
         except IterativeXBlockQuestion.DoesNotExist:
-            return {"result": 'failed', 'error': 501}
+            return {"result": "no_question"}
         try:
             answer = IterativeXBlockAnswer.objects.get(id_course=id_course, question=question, id_student=id_student)
         except IterativeXBlockAnswer.DoesNotExist:
             return {"result": 'no_answer'}
         return {"result": 'success', 'answer': answer.answer, 'answer_time': str(answer.timestamp)}
+
+
+    @XBlock.json_handler
+    def fetch_pdf_submissions(self, data, suffix=''):
+        """
+        Called when a user wants to download the submissions as a PDF file.
+        """
+        from .models import IterativeXBlockQuestion, IterativeXBlockAnswer
+        id_course = self.course_id
+        id_student_data = data["id_user"]
+        if id_student_data != "":
+            id_student = id_student_data
+        else:
+            id_student = self.scope_ids.user_id
+        questions = self.get_ids("answer")
+        answers = {}
+        for question in questions:
+            try:
+                question = IterativeXBlockQuestion.objects.get(id_course=id_course, id_question=question)
+            except IterativeXBlockQuestion.DoesNotExist:
+                answers[question] = "This question does not exist."
+            try:
+                answer = IterativeXBlockAnswer.objects.get(id_course=id_course, question=question, id_student=id_student)
+            except IterativeXBlockAnswer.DoesNotExist:
+                answers[question] = self.no_answer_message
+            answers[question] = answer.answer
+        return {"result": 'success', 'answers': answers}
+

@@ -1,3 +1,4 @@
+{% if configured %}
 <div class="iterative-xblock-container_block xmodule_display xmodule_HtmlModule">
     <div class="iterative-xblock iterative-xblock-style-{{style}}{% if gridlines %} iterative-xblock-gridlines{% endif %}"
         id="{{xblock.type}}{{location}}">
@@ -5,11 +6,6 @@
             <h1 class="iterative-xblock-title">{{title}}</h1>
         </div>
         <div class="expmid">
-            {% if not configured %}
-            <div class="iterative-xblock-not-created">
-                <p class="centered">This XBlock has not been configured yet.</p>
-            </div>
-            {% else %}
             {% if show_student_select %}
             <div class="iterative-xblock-instructor-select-student-container">
                 <p>Student: </p>
@@ -46,9 +42,17 @@
             </div>
             {% endif %}
             {% endfor %}
+            {% if enable_download}
+            <div class="centered">
+                <button class="iterative-xblock-student-download-pdf"
+                aria-describedby="iterative-xblock_download_{{ location }}">
+                    <span>PDF</span>
+                </button>
+            </div>
             {% endif %}
             <div class="action">
             </div>
         </div>
     </div>
 </div>
+{% endif %}

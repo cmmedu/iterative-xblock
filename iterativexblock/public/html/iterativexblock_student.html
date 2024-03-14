@@ -43,6 +43,14 @@
                 </button>
             </div>
             {% endif %}
+            {% if enable_download}
+            <div class="centered">
+                <button class="iterative-xblock-student-download-pdf"
+                aria-describedby="iterative-xblock_download_{{ location }}">
+                    <span>PDF</span>
+                </button>
+            </div>
+            {% endif %}
             <div class="iterative-xblock-student-msg">
                 <p id="iterative-xblock-student-error-msg" class="iterative-xblock-error-msg"></p>
             </div>

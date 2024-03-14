@@ -1,3 +1,7 @@
+.centered {
+    text-align: center;
+}
+
 .iterative-xblock-style-basic .iterative-xblock-student-row {
     display: flex;
     justify-content: space-between;
@@ -61,7 +65,26 @@
     padding: 15px 30px;
 }
 
+.iterative-xblock-style-basic .iterative-xblock-student-download-pdf {
+    background-color: #065683;
+    background-image: none;
+    color: white;
+    border: none;
+    text-shadow: none;
+    font-size: 1em;
+    padding: 15px 30px;
+}
+
 .iterative-xblock-style-basic .iterative-xblock-submit:hover {
+    background-color: #065683 !important;
+    background-image: none !important;
+    color: white;
+    border: none;
+    text-shadow: none;
+    font-size: 1em;
+}
+
+.iterative-xblock-style-basic .iterative-xblock-student-download-pdf:hover {
     background-color: #065683 !important;
     background-image: none !important;
     color: white;
