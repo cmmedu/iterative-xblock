@@ -173,7 +173,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 }
             }
         }
-        return questionIds;
+        return answerIds;
     }
 
     function getQuestionIDs(content) {
