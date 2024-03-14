@@ -76,62 +76,69 @@ function IterativeXBlockStudio(runtime, element, settings) {
     }
 
     function validate(data) {
+        let questionIds = getQuestionIDs(data["content"]);
+        let answerIds = getAnswerIDs(data["content"]);
         if (data["title"].length > 200) {
             return "Title must be less than 100 characters."
         }
         if (data["style"] == null) {
             return "Please select a style."
         }
-        if (data["submit_message"] === "") {
-            return "Please provide a message for the submit button."
+        if (questionIds.length !== 0) {
+            if (data["submit_message"] === "") {
+                return "Please provide a message for the submit button."
+            }
+            if (data["submit_message"].length > 30) {
+                return "Submit message must be less than 30 characters."
+            }
+            if (data["min_questions"] === "") {
+                return "Please provide a minimum number of questions to be answered."
+            }
+            if (isNaN(data["min_questions"])) {
+                return "Minimum number of questions must be a number."
+            }
+            if (data["min_questions"] > getQuestionIDs(data["content"]).length) {
+                return "Minimum number of questions must be less than or equal to the number of questions defined."
+            }
+            if (parseInt(data["min_questions"]) < 0) {
+                return "Minimum number of questions must be a positive number."
+            }
+            if (data["min_characters"] === "") {
+                return "Please provide a minimum number of characters for the answer."
+            }
+            if (isNaN(data["min_characters"])) {
+                return "Minimum number of characters must be a number."
+            }
+            if (parseInt(data["min_characters"]) < 0) {
+                return "Minimum number of characters must be a positive number."
+            }
+            if (data["min_words"] === "") {
+                return "Please provide a minimum number of words for the answer."
+            }
+            if (isNaN(data["min_words"])) {
+                return "Minimum number of words must be a number."
+            }
+            if (parseInt(data["min_words"]) < 0) {
+                return "Minimum number of words must be a positive number."
+            }
+        } else {
+            if (data["enable_download"] == null) {
+                return "Please select if you want to enable download of answers as a PDF file or not."
+            }
         }
-        if (data["submit_message"].length > 30) {
-            return "Submit message must be less than 30 characters."
-        }
-        if (data["display_message"] === "") {
-            return "Please provide a message for the display button."
-        }
-        if (data["display_message"].length > 30) {
-            return "Display message must be less than 30 characters."
-        }
-        if (data["no_answer_message"] === "") {
-            return "Please provide a message for when there is no answer."
-        }
-        if (data["no_answer_message"].length > 100) {
-            return "No answer message must be less than 100 characters."
-        }
-        if (data["min_questions"] === "") {
-            return "Please provide a minimum number of questions to be answered."
-        }
-        if (isNaN(data["min_questions"])) {
-            return "Minimum number of questions must be a number."
-        }
-        if (data["min_questions"] > getQuestionIDs(data["content"]).length) {
-            return "Minimum number of questions must be less than or equal to the number of questions defined."
-        }
-        if (parseInt(data["min_questions"]) < 0) {
-            return "Minimum number of questions must be a positive number."
-        }
-        if (data["min_characters"] === "") {
-            return "Please provide a minimum number of characters for the answer."
-        }
-        if (isNaN(data["min_characters"])) {
-            return "Minimum number of characters must be a number."
-        }
-        if (parseInt(data["min_characters"]) < 0) {
-            return "Minimum number of characters must be a positive number."
-        }
-        if (data["min_words"] === "") {
-            return "Please provide a minimum number of words for the answer."
-        }
-        if (isNaN(data["min_words"])) {
-            return "Minimum number of words must be a number."
-        }
-        if (parseInt(data["min_words"]) < 0) {
-            return "Minimum number of words must be a positive number."
-        }
-        if (data["enable_download"] == null) {
-            return "Please select if you want to enable download of answers as a PDF file or not."
+        if (answerIds.length !== 0) {
+            if (data["display_message"] === "") {
+                return "Please provide a message for the display button."
+            }
+            if (data["display_message"].length > 30) {
+                return "Display message must be less than 30 characters."
+            }
+            if (data["no_answer_message"] === "") {
+                return "Please provide a message for when there is no answer."
+            }
+            if (data["no_answer_message"].length > 100) {
+                return "No answer message must be less than 100 characters."
+            }
         }
         return validateContent(data["content"]);
     }
