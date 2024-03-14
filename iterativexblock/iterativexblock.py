@@ -503,7 +503,7 @@ class IterativeXBlock(XBlock):
         self.min_questions = data.get('min_questions')
         self.min_characters = data.get('min_characters')
         self.min_words = data.get('min_words')
-        self.enable_download = data.get('enable_download')
+        self.enable_download = data.get('enable_download') == "yes"
         return {'result': 'success'}
 
 

@@ -386,7 +386,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
             submit_message.val(settings.submit_message);
             input_submit_message.slideDown();
         } else {
-            enable_download.val(settings.enable_download === "yes");
+            enable_download.val(settings.enable_download ? "yes" : "no");
             input_enable_download.slideDown();
             min_questions.val(0);
             min_questions.attr("min", '0');
