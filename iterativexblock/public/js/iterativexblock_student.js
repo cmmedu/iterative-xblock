@@ -141,8 +141,9 @@ function IterativeXBlockStudent(runtime, element, settings) {
         let margin = 20;
         let totalWidth = pageWidth - (2 * margin);
         let lineHeight = 10;
-        let cellMargin = 5;
+        let cellMargin = 10;
         doc.setFont("helvetica", "normal");
+        doc.setFontSize(12);
         var line;
         var processParagraph = function(paragraph, x, y, width) {
             var lines = doc.splitTextToSize(paragraph, width);
