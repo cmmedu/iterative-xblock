@@ -51,7 +51,7 @@ function IterativeXBlockInstructor(runtime, element, settings) {
         });
     });
 
-    function generatePDF(answers, settings) {
+    function generatePDF(answers) {
         const { jsPDF } = jspdf;
         var doc = new jsPDF();
         let pageWidth = doc.internal.pageSize.getWidth();
