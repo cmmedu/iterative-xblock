@@ -16,7 +16,7 @@
             <div class="iterative-xblock-student-row">
                 {% for cell_id, cell in row.items %}
                 {% if cell_id != 'n_cells' %}
-                <div class="iterative-xblock-student-cell">
+                <div class="iterative-xblock-student-cell iterative-xblock-cell-{{ cell.type }}">
                     {% if cell.type == 'text' %}
                     <p>{{ cell.content }}</p>
                     {% elif cell.type == 'question' %}

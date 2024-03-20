@@ -17,6 +17,7 @@ iterativexblock.egg-info/top_level.txt
 iterativexblock/public/css/iterativexblock.css
 iterativexblock/public/css/iterativexblock_basic.css
 iterativexblock/public/css/iterativexblock_blackwhite.css
+iterativexblock/public/css/iterativexblock_nostyle.css
 iterativexblock/public/css/iterativexblock_red.css
 iterativexblock/public/html/iterativexblock_author.html
 iterativexblock/public/html/iterativexblock_instructor.html

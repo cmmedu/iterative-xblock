@@ -39,7 +39,7 @@ class IterativeXBlock(XBlock):
 
     style = String(
         default="basic",
-        values=["basic", "red", "blackwhite"],
+        values=["basic", "red", "blackwhite", "nostyle"],
         scope=Scope.settings,
         help="Determines the module's appearance. A variety of stylesheets are available to choose from."
     )

@@ -78,3 +78,62 @@
 .iterative-content-row .wrapper-comp-setting {
   display: flex !important;
 }
+
+.iterative-xblock-cell-title p {
+  text-align: center;
+  font-weight: bold;
+}
+
+.iterative-xblock-cell-subtitle p {
+  text-align: left;
+  font-weight: bold;
+}
+
+.iterative-xblock-cell-paragraph p {
+  text-align: center;
+}
+
+.iterative-xblock-cell-subparagraph p {
+  text-align: left;
+}
+
+.iterative-xblock-student-cell textarea {
+  width: 100%;
+  min-height: 100px;
+  font-size: 0.9em;
+}
+
+.iterative-xblock-student-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 10px 0;
+}
+
+.iterative-xblock-student-row p {
+  margin: 0 !important;
+}
+
+.iterative-xblock-student-cell {
+  flex: 1;
+  padding: 5px 10px;
+  min-height: 30px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.expmid {
+  padding: 20px;
+}
+
+.iterative-xblock-action {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.iterative-xblock-student-answer-container {
+  position: relative;
+  width: 100%;
+}
