@@ -179,6 +179,7 @@
 
 .iterative-content-iconset i {
   color: #c5c5c5;
+  cursor: pointer;
 }
 
 .iterative-content-iconset .icon-chosen {

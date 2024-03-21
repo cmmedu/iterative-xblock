@@ -151,8 +151,57 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 let cell = input_content_cells.eq(j-1);
                 let cell_type = cell.find(".iterative-content-type");
                 let cell_input = cell.find("input");
+                let cell_text_left = cell.find(".fa-align-left");
+                let cell_text_center = cell.find(".fa-align-center");
+                let cell_text_right = cell.find(".fa-align-right");
+                let cell_text_justify = cell.find(".fa-align-justify");
+                let cell_text_bold = cell.find(".fa-bold");
+                let cell_text_italic = cell.find(".fa-italic");
+                let cell_text_underline = cell.find(".fa-underline");
+                let cell_text_strikethrough = cell.find(".fa-strikethrough");                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
                 cell_type.val(content[i.toString()][j.toString()]["type"]);
                 cell_input.val(content[i.toString()][j.toString()]["content"]);
+                if(content[i.toString()][j.toString()]["alignment"] === "left") {
+                    cell_text_left.addClass("icon-chosen");
+                    cell_text_center.removeClass("icon-chosen");
+                    cell_text_right.removeClass("icon-chosen");
+                    cell_text_justify.removeClass("icon-chosen");
+                } else if(content[i.toString()][j.toString()]["alignment"] === "center") {
+                    cell_text_left.removeClass("icon-chosen");
+                    cell_text_center.addClass("icon-chosen");
+                    cell_text_right.removeClass("icon-chosen");
+                    cell_text_justify.removeClass("icon-chosen");
+                } else if(content[i.toString()][j.toString()]["alignment"] === "right") {
+                    cell_text_left.removeClass("icon-chosen");
+                    cell_text_center.removeClass("icon-chosen");
+                    cell_text_right.addClass("icon-chosen");
+                    cell_text_justify.removeClass("icon-chosen");
+                } else {
+                    cell_text_left.removeClass("icon-chosen");
+                    cell_text_center.removeClass("icon-chosen");
+                    cell_text_right.removeClass("icon-chosen");
+                    cell_text_justify.addClass("icon-chosen");
+                }
+                if(content[i.toString()][j.toString()]["bold"]) {
+                    cell_text_bold.addClass("icon-chosen");
+                } else {
+                    cell_text_bold.removeClass("icon-chosen");
+                }
+                if(content[i.toString()][j.toString()]["italic"]) {
+                    cell_text_italic.addClass("icon-chosen");
+                } else {
+                    cell_text_italic.removeClass("icon-chosen");
+                }
+                if(content[i.toString()][j.toString()]["underline"]) {
+                    cell_text_underline.addClass("icon-chosen");
+                } else {
+                    cell_text_underline.removeClass("icon-chosen");
+                }
+                if(content[i.toString()][j.toString()]["strikethrough"]) {
+                    cell_text_strikethrough.addClass("icon-chosen");
+                } else {
+                    cell_text_strikethrough.removeClass("icon-chosen");
+                }
                 if (content[i.toString()][j.toString()]["type"] === "text") {
                     cell_input.attr("placeholder", "Enter text here").removeAttr("disabled");
                 } else if (content[i.toString()][j.toString()]["type"] === "question") {
@@ -168,6 +217,38 @@ function IterativeXBlockStudio(runtime, element, settings) {
         }
         content_ui = JSON.parse(JSON.stringify(content));
         handleConditionalInputs();
+    }
+
+    function handleIcons(row, cell, icon) {
+        let container = $(element).find("content_" + row + "_" + cell);
+        if (icon === "align-left") {
+            $(container).find(".fa-align-left").addClass("icon-chosen");
+            $(container).find(".fa-align-center").removeClass("icon-chosen");
+            $(container).find(".fa-align-right").removeClass("icon-chosen");
+            $(container).find(".fa-align-justify").removeClass("icon-chosen");
+        } else if (icon === "align-center") {
+            $(container).find(".fa-align-left").removeClass("icon-chosen");
+            $(container).find(".fa-align-center").addClass("icon-chosen");
+            $(container).find(".fa-align-right").removeClass("icon-chosen");
+            $(container).find(".fa-align-justify").removeClass("icon-chosen");
+        } else if (icon === "align-right") {
+            $(container).find(".fa-align-left").removeClass("icon-chosen");
+            $(container).find(".fa-align-center").removeClass("icon-chosen");
+            $(container).find(".fa-align-right").addClass("icon-chosen");
+            $(container).find(".fa-align-justify").removeClass("icon-chosen");
+        } else if (icon === "align-justify") {
+            $(container).find(".fa-align-left").removeClass("icon-chosen");
+            $(container).find(".fa-align-center").removeClass("icon-chosen");
+            $(container).find(".fa-align-right").removeClass("icon-chosen");
+            $(container).find(".fa-align-justify").addClass("icon-chosen");
+        } else {
+            if ($(container).find(".fa-" + icon).hasClass("icon-chosen")) {
+                $(container).find(icon).removeClass("icon-chosen");
+            } else {
+                $(container).find(icon).addClass("icon-chosen");
+            
+            }
+        }
     }
 
     function getAnswerIDs(content) {
@@ -256,11 +337,21 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 "n_cells": 2,
                 "1": {
                     "type": "none",
-                    "content": ""
+                    "content": "",
+                    "alignment": "left",
+                    "bold": false,
+                    "italic": false,
+                    "underline": false,
+                    "strikethrough": false
                 },
                 "2": {
                     "type": "none",
-                    "content": ""
+                    "content": "",
+                    "alignment": "left",
+                    "bold": false,
+                    "italic": false,
+                    "underline": false,
+                    "strikethrough": false
                 },
             }
         } else {
@@ -311,9 +402,95 @@ function IterativeXBlockStudio(runtime, element, settings) {
                         }
                         let cellValue = currentCells.eq(q).find("input").val();
                         previousCells.eq(q).find("input").val(cellValue);
+                        let cellIcons = currentCells.eq(q).find("i");
+                        let previousIcons = previousCells.eq(q).find("i");
+                        var alignment = "left";
+                        var bold = false;
+                        var italic = false;
+                        var underline = false;
+                        var strikethrough = false;
+                        for (let k = 0; k < 8; k++) {
+                            let icon = cellIcons[k];
+                            if (icon.hasClass("icon-chosen")) {
+                                if (icon.hasClass("fa-align-left")) {
+                                    alignment = "left";
+                                } else if (icon.hasClass("fa-align-center")) {
+                                    alignment = "center";
+                                } else if (icon.hasClass("fa-align-right")) {
+                                    alignment = "right";
+                                } else if (icon.hasClass("fa-align-justify")) {
+                                    alignment = "justify";
+                                } else if (icon.hasClass("fa-bold")) {
+                                    bold = true;
+                                } else if (icon.hasClass("fa-italic")) {
+                                    italic = true;
+                                } else if (icon.hasClass("fa-underline")) {
+                                    underline = true;
+                                } else if (icon.hasClass("fa-strikethrough")) {
+                                    strikethrough = true;
+                                }
+                            }
+                        }
+                        for (let k = 0; k < 8; k++) {
+                            let icon = previousIcons[k];
+                            if (icon.hasClass("fa-align-left")) {
+                                if (alignment === "left") {
+                                    icon.addClass("icon-chosen");
+                                } else {
+                                    icon.removeClass("icon-chosen");
+                                }
+                            } else if (icon.hasClass("fa-align-center")) {
+                                if (alignment === "center") {
+                                    icon.addClass("icon-chosen");
+                                } else {
+                                    icon.removeClass("icon-chosen");
+                                }
+                            } else if (icon.hasClass("fa-align-right")) {
+                                if (alignment === "right") {
+                                    icon.addClass("icon-chosen");
+                                } else {
+                                    icon.removeClass("icon-chosen");
+                                }
+                            } else if (icon.hasClass("fa-align-justify")) {
+                                if (alignment === "justify") {
+                                    icon.addClass("icon-chosen");
+                                } else {
+                                    icon.removeClass("icon-chosen");
+                                }
+                            } else if (icon.hasClass("fa-bold")) {
+                                if (bold) {
+                                    icon.addClass("icon-chosen");
+                                } else {
+                                    icon.removeClass("icon-chosen");
+                                }
+                            } else if (icon.hasClass("fa-italic")) {
+                                if (italic) {
+                                    icon.addClass("icon-chosen");
+                                } else {
+                                    icon.removeClass("icon-chosen");
+                                }
+                            } else if (icon.hasClass("fa-underline")) {
+                                if (underline) {
+                                    icon.addClass("icon-chosen");
+                                } else {
+                                    icon.removeClass("icon-chosen");
+                                }
+                            } else if (icon.hasClass("fa-strikethrough")) {
+                                if (strikethrough) {
+                                    icon.addClass("icon-chosen");
+                                } else {
+                                    icon.removeClass("icon-chosen");
+                                }
+                            }
+                        }
                         content_ui[(i-1).toString()][(q+1).toString()] = {
                             "type": cellType,
-                            "content": cellValue
+                            "content": cellValue,
+                            "alignment": alignment,
+                            "bold": bold,
+                            "italic": italic,
+                            "underline": underline,
+                            "strikethrough": strikethrough
                         }
                         if (q < content_ui[i.toString()]["n_cells"]) {
                             previousCells.eq(q).removeAttr("hidden", true);
@@ -352,9 +529,42 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 "n_cells": content_ui[i.toString()]["n_cells"]
             }
             for (let j = 1; j <= content_ui[i.toString()]["n_cells"]; j++) {
+                let icons = $(element).find("#content_" + i + "_" + j).find("i");
+                for (let k = 0; k < 8; k++) {
+                    let icon = icons[k];
+                    var alignment = "left";
+                    var bold = false;
+                    var italic = false;
+                    var underline = false;
+                    var strikethrough = false;
+                    if (icon.hasClass("icon-chosen")) {
+                        if (icon.hasClass("fa-align-left")) {
+                            alignment = "left";
+                        } else if (icon.hasClass("fa-align-center")) {
+                            alignment = "center";
+                        } else if (icon.hasClass("fa-align-right")) {
+                            alignment = "right";
+                        } else if (icon.hasClass("fa-align-justify")) {
+                            alignment = "justify";
+                        } else if (icon.hasClass("fa-bold")) {
+                            bold = true;
+                        } else if (icon.hasClass("fa-italic")) {
+                            italic = true;
+                        } else if (icon.hasClass("fa-underline")) {
+                            underline = true;
+                        } else if (icon.hasClass("fa-strikethrough")) {
+                            strikethrough = true;
+                        }
+                    }
+                }
                 content[i.toString()][j.toString()] = {
                     "type": $(element).find("#content_type_" + i + "_" + j).val(),
-                    "content": $(element).find("#content_row_" + i + "_" + j).val()
+                    "content": $(element).find("#content_row_" + i + "_" + j).val(),
+                    "alignment": alignment,
+                    "bold": bold,
+                    "italic": italic,
+                    "underline": underline,
+                    "strikethrough": strikethrough
                 }
             }
         }
@@ -504,7 +714,6 @@ function IterativeXBlockStudio(runtime, element, settings) {
         runtime.notify('cancel', {});
     });
     
-
     function onLoad() {
         input_title.removeAttr("hidden");
         input_style.removeAttr("hidden");
