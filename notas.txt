@@ -1,5 +1,9 @@
 docker compose down && cd ../build/edx-staging/ && docker build . -t edx-staging:koa --target base && cd ../../sandbox && make migrate && make assets && cd ../no-certificates && docker compose up -d --force-recreate && cd ../sandbox && docker compose up -d
 
+last:
+- fix js line 715 studio
+Uncaught TypeError: $(...).parent().parent().attr(...).split(...)[1] is undefined
+
 todo:
 - finish styling
 - expand testing
