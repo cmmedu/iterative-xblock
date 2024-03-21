@@ -410,7 +410,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
                         var underline = false;
                         var strikethrough = false;
                         for (let k = 0; k < 8; k++) {
-                            let icon = cellIcons[k];
+                            let icon = $(cellIcons[k]);
                             if (icon.hasClass("icon-chosen")) {
                                 if (icon.hasClass("fa-align-left")) {
                                     alignment = "left";
@@ -432,7 +432,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
                             }
                         }
                         for (let k = 0; k < 8; k++) {
-                            let icon = previousIcons[k];
+                            let icon = $(previousIcons[k]);
                             if (icon.hasClass("fa-align-left")) {
                                 if (alignment === "left") {
                                     icon.addClass("icon-chosen");
@@ -531,7 +531,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
             for (let j = 1; j <= content_ui[i.toString()]["n_cells"]; j++) {
                 let icons = $(element).find(".content_" + i + "_" + j).find("i");
                 for (let k = 0; k < 8; k++) {
-                    let icon = icons[k];
+                    let icon = $(icons[k]);
                     var alignment = "left";
                     var bold = false;
                     var italic = false;
