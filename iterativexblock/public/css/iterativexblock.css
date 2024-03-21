@@ -137,3 +137,29 @@
   position: relative;
   width: 100%;
 }
+
+.iterative-xblock-student-get-answer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  background-image: none;
+  border: none;
+  text-shadow: none;
+  font-size: 1em;
+  padding: 8px 15px;
+  font-weight: bold;
+  margin: auto;
+  cursor: pointer;
+  min-width: 100px;
+  text-align: center;
+}
+
+.iterative-xblock-instructor-select-student-container {
+  display: flex;
+  align-items: center;
+  margin: 10px auto 30px auto;
+  justify-content: space-between;
+  max-width: 500px;
+}

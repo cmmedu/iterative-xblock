@@ -60,23 +60,8 @@
 }
 
 .iterative-xblock-style-basic .iterative-xblock-student-get-answer {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 2;
     background-color: #065683;
-    background-image: none;
     color: white;
-    border: none;
-    text-shadow: none;
-    font-size: 1em;
-    padding: 8px 15px;
-    font-weight: bold;
-    margin: auto;
-    cursor: pointer;
-    min-width: 100px;
-    text-align: center;
 }
 
 .iterative-xblock-style-basic .iterative-xblock-student-answer {
@@ -84,15 +69,6 @@
     z-index: 1;
     padding: 10px;
     resize: none;
-}
-
-.iterative-xblock-style-basic .iterative-xblock-instructor-select-student-container {
-    display: flex;
-    align-items: center;
-    margin: 10px auto 30px auto;
-    justify-content: space-between;
-    max-width: 500px;
-
 }
 
 .iterative-xblock-style-basic .iterative-xblock-instructor-select-student-container p {

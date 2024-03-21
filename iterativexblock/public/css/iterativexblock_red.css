@@ -62,24 +62,8 @@
 }
 
 .iterative-xblock-style-red .iterative-xblock-student-get-answer {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 2;
     background-color: #ff595a;
-    background-image: none;
     color: white;
-    border: none;
-    text-shadow: none;
-    font-size: 1em;
-    padding: 8px 15px;
-    border-radius: 3px;
-    font-weight: bold;
-    margin: auto;
-    cursor: pointer;
-    min-width: 100px;
-    text-align: center;
 }
 
 .iterative-xblock-style-red .iterative-xblock-student-answer {
@@ -87,15 +71,6 @@
     z-index: 1;
     padding: 10px;
     resize: none;
-}
-
-.iterative-xblock-style-red .iterative-xblock-instructor-select-student-container {
-    display: flex;
-    align-items: center;
-    margin: 10px auto 30px auto;
-    justify-content: space-between;
-    max-width: 500px;
-
 }
 
 .iterative-xblock-style-red .iterative-xblock-instructor-select-student-container p {
