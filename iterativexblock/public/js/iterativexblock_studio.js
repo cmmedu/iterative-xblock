@@ -529,7 +529,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 "n_cells": content_ui[i.toString()]["n_cells"]
             }
             for (let j = 1; j <= content_ui[i.toString()]["n_cells"]; j++) {
-                let icons = $(element).find("#content_" + i + "_" + j).find("i");
+                let icons = $(element).find(".content_" + i + "_" + j).find("i");
                 for (let k = 0; k < 8; k++) {
                     let icon = icons[k];
                     var alignment = "left";
@@ -707,6 +707,14 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 }
             });
         }
+    });
+
+    $(element).find('i').bind('click', function (eventObject) {
+        eventObject.preventDefault();
+        let icon = $(this).attr("class").split(" ")[1].split("fa-")[1];
+        let row = $(this).parent().parent().attr("class").split(" ")[1].split("_")[1];
+        let cell = $(this).parent().parent().attr("class").split(" ")[1].split("_")[2];
+        handleIcons(row, cell, icon);
     });
 
     $(element).find('.cancel-button').bind('click', function (eventObject) {
