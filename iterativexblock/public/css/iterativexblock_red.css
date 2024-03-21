@@ -73,13 +73,6 @@
     resize: none;
 }
 
-.iterative-xblock-style-red .iterative-xblock-instructor-select-student-container p {
-    margin-bottom: 0 !important;
-    margin-right: 20px;
-    font-weight: bold;
-
-}
-
 .iterative-xblock-style-red .iterative-xblock-instructor-select-student-container select {
     width: 100%;
 }

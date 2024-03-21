@@ -301,6 +301,7 @@ class IterativeXBlock(XBlock):
             initialize_js_func='IterativeXBlockStudent',
             additional_css=[
                 'public/css/iterativexblock_{}.css'.format(self.style),
+                'public/css/iterativexblock.css'
             ],
             additional_js=[
                 'public/js/iterativexblock_student.js',
@@ -318,13 +319,13 @@ class IterativeXBlock(XBlock):
             }
         )
         frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js")
+        frag.add_css_url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css")
         return frag
     
 
     def instructor_view(self, context={}):
         from django.contrib.auth.models import User
         from .models import IterativeXBlockQuestion, IterativeXBlockAnswer
-        id_instructor = self.scope_ids.user_id
         if len(self.get_ids("question")) == 0 and len(self.get_ids("answer")) == 0 and not self.enable_download:
             show_student_select = False
             answers = []
@@ -375,6 +376,7 @@ class IterativeXBlock(XBlock):
             initialize_js_func='IterativeXBlockInstructor',
             additional_css=[
                 'public/css/iterativexblock_{}.css'.format(self.style),
+                'public/css/iterativexblock.css'
             ],
             additional_js=[
                 'public/js/iterativexblock_instructor.js'
@@ -387,6 +389,7 @@ class IterativeXBlock(XBlock):
             }
         )
         frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js")
+        frag.add_css_url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css")
         return frag
 
 
@@ -420,6 +423,7 @@ class IterativeXBlock(XBlock):
                 "min_words": self.min_words
             }
         )
+        frag.add_css_url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css")
         return frag
 
 
@@ -441,11 +445,13 @@ class IterativeXBlock(XBlock):
             initialize_js_func='IterativeXBlockAuthor',
             additional_css=[
                 'public/css/iterativexblock_{}.css'.format(self.style),
+                'public/css/iterativexblock.css'
             ],
             additional_js=[
                 'public/js/iterativexblock_author.js',
             ]
         )
+        frag.add_css_url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css")
         return frag
 
 

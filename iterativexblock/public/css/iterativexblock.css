@@ -163,3 +163,24 @@
   justify-content: space-between;
   max-width: 500px;
 }
+
+.iterative-xblock-instructor-select-student-container p {
+  margin-bottom: 0 !important;
+  margin-right: 20px;
+  font-weight: bold;
+}
+
+.iterative-content-iconset {
+  justify-content: space-evenly;
+  display: flex;
+  max-width: 80%;
+  margin: 10px auto;
+}
+
+.iterative-content-iconset i {
+  color: #c5c5c5;
+}
+
+.iterative-content-iconset .icon-chosen {
+  color: #333;
+}
