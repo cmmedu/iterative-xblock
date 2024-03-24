@@ -221,6 +221,9 @@ function IterativeXBlockStudio(runtime, element, settings) {
 
     function handleIcons(row, cell, icon) {
         let container = $(element).find("content_" + row + "_" + cell);
+        console.log(row)
+        console.log(cell)
+        console.log(icon)
         if (icon === "align-left") {
             $(container).find(".fa-align-left").addClass("icon-chosen");
             $(container).find(".fa-align-center").removeClass("icon-chosen");
@@ -286,6 +289,8 @@ function IterativeXBlockStudio(runtime, element, settings) {
             input_content_cells.eq(nth_element).find("input").val("");
             input_content_cells.eq(nth_element).find("input").attr("placeholder", "Please select an option...").attr("disabled", true);
             input_content_cells.eq(nth_element).find("select").val("none");
+            let justifyIcon = input_content_cells.eq(nth_element).find(".fa-align-justify");
+            justifyIcon.addClass("icon-chosen");
             content_ui[row]["n_cells"] += 1;
         } else {
             setStudioWarningMessage("Maximum number of cells per row is 4.")
