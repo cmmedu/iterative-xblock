@@ -18,30 +18,34 @@
             </div>
             <hr>
             {% endif %}
+            <table>
             {% for row_id, row in content.items %}
             {% if row_id != 'n_rows' %}
-            <div class="iterative-xblock-student-row">
+            <tr class="iterative-xblock-student-row">
                 {% for cell_id, cell in row.items %}
                 {% if cell_id != 'n_cells' %}
-                <div class="iterative-xblock-student-cell">
+                <td class="iterative-xblock-student-cell">
                     {% if cell.type == 'text' %}
-                    <p>{{ cell.content }}</p>
+                    <p style="text-align: {{ cell.alignment }};{% if cell.bold %}font-weight: bold;{% endif %}{% if cell.italic %}font-style: italic;{% endif %}text-decoration: {% if cell.underline %}underline {% endif %}{% if cell.strikethrough %}line-through{% endif %}">{{ cell.content }}</p>
                     {% elif cell.type == 'question' %}
                     <textarea disabled type="text" class="iterative-xblock-student-question"
+                        style="text-align: {{ cell.alignment }};{% if cell.bold %}font-weight: bold;{% endif %}{% if cell.italic %}font-style: italic;{% endif %}text-decoration: {% if cell.underline %}underline {% endif %}{% if cell.strikethrough %}line-through{% endif %}"
                         id="iterative-xblock-student-question-{{ cell.content }}" ></textarea>
                     {% elif cell.type == 'answer' %}
                     <div class="iterative-xblock-student-answer-container">
                         <span id="iterative-xblock-student-get-answer-{{ cell.content }}" class="iterative-xblock-student-get-answer">{{ cell.content }}</span>
                         <textarea disabled type="text" class="iterative-xblock-student-answer"
+                            style="text-align: {{ cell.alignment }};{% if cell.bold %}font-weight: bold;{% endif %}{% if cell.italic %}font-style: italic;{% endif %}text-decoration: {% if cell.underline %}underline {% endif %}{% if cell.strikethrough %}line-through{% endif %}"
                             id="iterative-xblock-student-answer-{{ cell.content }}" ></textarea>
                     </div>
                     {% endif %}
-                </div>
+                </td>
                 {% endif %}
                 {% endfor %}
-            </div>
+            </tr>
             {% endif %}
             {% endfor %}
+            </table>
             {% if enable_download %}
             <div class="centered">
                 <button class="iterative-xblock-student-download-pdf"

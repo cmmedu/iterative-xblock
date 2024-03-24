@@ -108,7 +108,7 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin: 10px 0;
+  margin: 0;
 }
 
 .iterative-xblock-student-row p {
@@ -117,11 +117,8 @@
 
 .iterative-xblock-student-cell {
   flex: 1;
-  padding: 5px 10px;
+  padding: 0px 4px;
   min-height: 30px;
-  align-items: center;
-  display: flex;
-  justify-content: center;
 }
 
 .expmid {
@@ -184,4 +181,9 @@
 
 .iterative-content-iconset .icon-chosen {
   color: #333;
+}
+
+.expmid table {
+  width: 100%;
+  border-collapse: collapse;
 }

@@ -9,28 +9,31 @@
                 <p class="centered">This XBlock has not been configured yet.</p>
             </div>
             {% else %}
+            <table>
             {% for row_id, row in content.items %}
             {% if row_id != 'n_rows' %}
-            <div class="iterative-xblock-student-row">
+            <tr class="iterative-xblock-student-row">
                 {% for cell_id, cell in row.items %}
                 {% if cell_id != 'n_cells' %}
-                <div class="iterative-xblock-student-cell">
+                <td class="iterative-xblock-student-cell">
                     {% if cell.type == 'text' %}
-                    <p>{{ cell.content }}</p>
+                    <p style="text-align: {{ cell.alignment }};{% if cell.bold %}font-weight: bold;{% endif %}{% if cell.italic %}font-style: italic;{% endif %}text-decoration: {% if cell.underline %}underline {% endif %}{% if cell.strikethrough %}line-through{% endif %}">{{ cell.content }}</p>
                     {% elif cell.type == 'question' %}
                     <textarea disabled type="text" class="iterative-xblock-student-question"
+                        style="text-align: {{ cell.alignment }};{% if cell.bold %}font-weight: bold;{% endif %}{% if cell.italic %}font-style: italic;{% endif %}text-decoration: {% if cell.underline %}underline {% endif %}{% if cell.strikethrough %}line-through{% endif %}"
                         id="iterative-xblock-student-question-{{ cell.content }}" >{{ cell.content }}</textarea>
                     {% elif cell.type == 'answer' %}
                     <div class="iterative-xblock-student-answer-container">
                         <button id="iterative-xblock-student-get-answer-{{ cell.content }}" class="iterative-xblock-student-get-answer">{{ cell.content }}</button>
                     </div>
                     {% endif %}
-                </div>
+                </td>
                 {% endif %}
                 {% endfor %}
-            </div>
+            </tr>
             {% endif %}
             {% endfor %}
+            </table>
             {% endif %}
         </div>
     </div>

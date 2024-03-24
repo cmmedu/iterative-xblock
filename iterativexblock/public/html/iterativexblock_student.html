@@ -11,30 +11,35 @@
             {% else %}
             <div class="status " id="status_{{ location }}"></div>
             {% endif %}
+            <table>
             {% for row_id, row in content.items %}
             {% if row_id != 'n_rows' %}
-            <div class="iterative-xblock-student-row">
+            <tr class="iterative-xblock-student-row">
                 {% for cell_id, cell in row.items %}
                 {% if cell_id != 'n_cells' %}
-                <div class="iterative-xblock-student-cell iterative-xblock-cell-{{ cell.type }}">
+                <td class="iterative-xblock-student-cell iterative-xblock-cell-{{ cell.type }}" >
                     {% if cell.type == 'text' %}
-                    <p>{{ cell.content }}</p>
+                    <p style="text-align: {{ cell.alignment }};{% if cell.bold %}font-weight: bold;{% endif %}{% if cell.italic %}font-style: italic;{% endif %}text-decoration: {% if cell.underline %}underline {% endif %}{% if cell.strikethrough %}line-through{% endif %}">{{ cell.content }}</p>
                     {% elif cell.type == 'question' %}
                     <textarea type="text" class="iterative-xblock-student-question"
-                        id="iterative-xblock-student-question-{{ cell.content }}" ></textarea>
+                        id="iterative-xblock-student-question-{{ cell.content }}" 
+                        style="text-align: {{ cell.alignment }};{% if cell.bold %}font-weight: bold;{% endif %}{% if cell.italic %}font-style: italic;{% endif %}text-decoration: {% if cell.underline %}underline {% endif %}{% if cell.strikethrough %}line-through{% endif %}"
+                        ></textarea>
                     {% elif cell.type == 'answer' %}
                     <div class="iterative-xblock-student-answer-container">
                         <span id="iterative-xblock-student-get-answer-{{ cell.content }}" class="iterative-xblock-student-get-answer">{{ display_message }}</span>
                         <textarea disabled type="text" class="iterative-xblock-student-answer"
+                            style="text-align: {{ cell.alignment }};{% if cell.bold %}font-weight: bold;{% endif %}{% if cell.italic %}font-style: italic;{% endif %}text-decoration: {% if cell.underline %}underline {% endif %}{% if cell.strikethrough %}line-through{% endif %}"
                             id="iterative-xblock-student-answer-{{ cell.content }}" ></textarea>
                     </div>
                     {% endif %}
-                </div>
+                </td>
                 {% endif %}
                 {% endfor %}
-            </div>
+            </tr>
             {% endif %}
             {% endfor %}
+            </table>
             {% if show_submit_button %}
             <div class="action iterative-xblock-action">
                 <button class="iterative-xblock-submit submit Submit"

@@ -319,6 +319,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
             input_content_cells.eq(nth_element).find("input").attr("placeholder", "Please select an option...").attr("disabled", true);
             input_content_cells.eq(nth_element).find("select").val("none");
             content_ui[row]["n_cells"] -= 1;
+            delete content_ui[row][content_ui[row]["n_cells"].toString()];
         } else {
             removeRow(row);
         }
@@ -550,7 +551,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 let icons = $(element).find(".content_" + i + "_" + j).find("i");
                 for (let k = 0; k < 8; k++) {
                     let icon = $(icons[k]);
-                    var alignment = "left";
+                    var alignment = "justify";
                     var bold = false;
                     var italic = false;
                     var underline = false;
