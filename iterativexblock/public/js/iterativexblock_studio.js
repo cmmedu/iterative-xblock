@@ -220,7 +220,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
     }
 
     function handleIcons(row, cell, icon) {
-        let container = $(element).find("content_" + row + "_" + cell);
+        let container = $(element).find(".content_" + row + "_" + cell);
         console.log(row)
         console.log(cell)
         console.log(icon)
