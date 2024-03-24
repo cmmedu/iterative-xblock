@@ -246,9 +246,9 @@ function IterativeXBlockStudio(runtime, element, settings) {
             $(container).find(".fa-align-justify").addClass("icon-chosen");
         } else {
             if ($(container).find(".fa-" + icon).hasClass("icon-chosen")) {
-                $(container).find(icon).removeClass("icon-chosen");
+                $(container).find(".fa-" + icon).removeClass("icon-chosen");
             } else {
-                $(container).find(icon).addClass("icon-chosen");
+                $(container).find(".fa-" + icon).addClass("icon-chosen");
             
             }
         }
@@ -292,6 +292,15 @@ function IterativeXBlockStudio(runtime, element, settings) {
             let justifyIcon = input_content_cells.eq(nth_element).find(".fa-align-justify");
             justifyIcon.addClass("icon-chosen");
             content_ui[row]["n_cells"] += 1;
+            content_ui[row][content_ui[row]["n_cells"].toString()] = {
+                "type": "none",
+                "content": "",
+                "alignment": "justify",
+                "bold": false,
+                "italic": false,
+                "underline": false,
+                "strikethrough": false
+            }
         } else {
             setStudioWarningMessage("Maximum number of cells per row is 4.")
             setTimeout(function() {
@@ -324,18 +333,22 @@ function IterativeXBlockStudio(runtime, element, settings) {
             input_content_cells.eq(0).find("input").val("");
             input_content_cells.eq(0).find("input").attr("placeholder", "Please select an option...").attr("disabled", true);
             input_content_cells.eq(0).find("select").val("none");
+            input_content_cells.eq(0).find(".fa-align-justify").addClass("icon-chosen");
             input_content_cells.eq(1).removeAttr("hidden");
             input_content_cells.eq(1).find("input").val("");
             input_content_cells.eq(1).find("input").attr("placeholder", "Please select an option...").attr("disabled", true);
             input_content_cells.eq(1).find("select").val("none");
+            input_content_cells.eq(1).find(".fa-align-justify").addClass("icon-chosen");
             input_content_cells.eq(2).attr("hidden");
             input_content_cells.eq(2).find("input").val("");
             input_content_cells.eq(2).find("input").attr("placeholder", "Please select an option...").attr("disabled", true);
             input_content_cells.eq(2).find("select").val("none");
+            input_content_cells.eq(2).find(".fa-align-justify").addClass("icon-chosen");
             input_content_cells.eq(3).attr("hidden");
             input_content_cells.eq(3).find("input").val("");
             input_content_cells.eq(3).find("input").attr("placeholder", "Please select an option...").attr("disabled", true);
             input_content_cells.eq(3).find("select").val("none");
+            input_content_cells.eq(3).find(".fa-align-justify").addClass("icon-chosen");
             input_content_row.removeAttr("hidden");
             content_ui["n_rows"] += 1;
             content_ui[nth_element] = {
@@ -343,7 +356,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 "1": {
                     "type": "none",
                     "content": "",
-                    "alignment": "left",
+                    "alignment": "justify",
                     "bold": false,
                     "italic": false,
                     "underline": false,
@@ -352,7 +365,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 "2": {
                     "type": "none",
                     "content": "",
-                    "alignment": "left",
+                    "alignment": "justify",
                     "bold": false,
                     "italic": false,
                     "underline": false,
@@ -409,7 +422,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
                         previousCells.eq(q).find("input").val(cellValue);
                         let cellIcons = currentCells.eq(q).find("i");
                         let previousIcons = previousCells.eq(q).find("i");
-                        var alignment = "left";
+                        var alignment = "justify";
                         var bold = false;
                         var italic = false;
                         var underline = false;
