@@ -303,7 +303,8 @@ class IterativeXBlock(XBlock):
                 'public/css/iterativexblock_{}.css'.format(self.style),
             ],
             additional_js=[
-                'public/js/iterativexblock_student.js',
+                'public/js/mathJax.js',
+                'public/js/iterativexblock_student.js'
             ],
             settings={
                 "no_answer_message": self.no_answer_message,
@@ -377,6 +378,7 @@ class IterativeXBlock(XBlock):
                 'public/css/iterativexblock_{}.css'.format(self.style),
             ],
             additional_js=[
+                'public/js/mathJax.js',
                 'public/js/iterativexblock_instructor.js'
             ],
             settings={
@@ -443,6 +445,7 @@ class IterativeXBlock(XBlock):
                 'public/css/iterativexblock_{}.css'.format(self.style),
             ],
             additional_js=[
+                'public/js/mathJax.js',
                 'public/js/iterativexblock_author.js',
             ]
         )
