@@ -17,6 +17,15 @@
     margin-top: 30px;
 }
 
+.iterative-xblock-style-nostyle .iterative-xblock-student-download-pdf {
+    background-color: #999 !important;
+    background-image: none !important;
+    color: white;
+    border: none;
+    text-shadow: none;
+    font-size: 1em;
+  }
+
 .iterative-xblock-style-nostyle .iterative-xblock-student-download-pdf:hover {
     background-color: #999 !important;
     background-image: none !important;
