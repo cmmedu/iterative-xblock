@@ -7,8 +7,8 @@
 }
 
 .iterative-xblock-style-nostyle .iterative-xblock-student-get-answer {
-    background-color: #b7b7b7;
-    color: #646464;
+    background-color: #646464;
+    color: white;
 }
 
 .iterative-xblock-style-nostyle .iterative-xblock-student-msg p {
@@ -18,7 +18,7 @@
 }
 
 .iterative-xblock-style-nostyle .iterative-xblock-student-download-pdf {
-    background-color: #999 !important;
+    background-color: #646464 !important;
     background-image: none !important;
     color: white;
     border: none;
@@ -27,7 +27,7 @@
   }
 
 .iterative-xblock-style-nostyle .iterative-xblock-student-download-pdf:hover {
-    background-color: #999 !important;
+    background-color: #646464 !important;
     background-image: none !important;
     color: white;
     border: none;

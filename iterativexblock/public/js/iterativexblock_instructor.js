@@ -79,8 +79,8 @@ function IterativeXBlockInstructor(runtime, element, settings) {
         for (var i = 1; i <= settings.content["n_rows"]; i++) {
             line = startY + (i - 1) * lineHeight + margin;
             let n_cells = settings.content[i.toString()]["n_cells"];
-            let cellWidth = (totalWidth - (cellMargin * (n_cells - 1))) / n_cells;
-            var cellsWidth = [];
+            var x = margin;
+            var widths = [];
             for (var j = 1; j <= n_cells; j++) {
                 var paragraph;
                 var cellContent = settings.content[i.toString()][j.toString()];
@@ -89,13 +89,11 @@ function IterativeXBlockInstructor(runtime, element, settings) {
                 } else if (cellContent["type"] === "answer") {
                     paragraph = answers[cellContent["content"]];
                 }
-                cellsWidth[j - 1] = 0;
-                var x = 0;
-                for(let p = 0; p < j; p++){
-                    x += margin;
-                    x += cellsWidth[p]
-                }
+                let cellObject = document.querySelector("#iterative-xblock-student-cell-" + i + "-" + j);
+                cellWidth = cellObject.offsetWidth*0.75;
                 processParagraph(paragraph, x, line, cellWidth);
+                x += cellWidth;
+                x += cellMargin;
             }
         }
         doc.save(settings.download_name + '.pdf');

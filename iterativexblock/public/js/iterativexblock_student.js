@@ -161,6 +161,7 @@ function IterativeXBlockStudent(runtime, element, settings) {
             line = startY + (i - 1) * lineHeight + margin;
             let n_cells = settings.content[i.toString()]["n_cells"];
             var x = margin;
+            var widths = [];
             for (var j = 1; j <= n_cells; j++) {
                 var paragraph;
                 var cellContent = settings.content[i.toString()][j.toString()];
