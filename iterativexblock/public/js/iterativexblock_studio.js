@@ -549,13 +549,13 @@ function IterativeXBlockStudio(runtime, element, settings) {
             }
             for (let j = 1; j <= content_ui[i.toString()]["n_cells"]; j++) {
                 let icons = $(element).find(".content_" + i + "_" + j).find("i");
+                var alignment = "justify";
+                var bold = false;
+                var italic = false;
+                var underline = false;
+                var strikethrough = false;
                 for (let k = 0; k < 8; k++) {
                     let icon = $(icons[k]);
-                    var alignment = "justify";
-                    var bold = false;
-                    var italic = false;
-                    var underline = false;
-                    var strikethrough = false;
                     if (icon.hasClass("icon-chosen")) {
                         if (icon.hasClass("fa-align-left")) {
                             alignment = "left";
@@ -632,9 +632,13 @@ function IterativeXBlockStudio(runtime, element, settings) {
         if (answerIds.length > 0) {
             display_message.val(settings.display_message);
             input_display_message.slideDown();
+            no_answer_message.val(settings.no_answer_message);
+            input_no_answer_message.slideDown();
         } else {
             display_message.val("");
             input_display_message.slideUp();
+            no_answer_message.val("");
+            input_no_answer_message.slideUp();
         }
     }
 
