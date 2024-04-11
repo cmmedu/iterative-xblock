@@ -431,11 +431,13 @@ class IterativeXBlock(XBlock):
                 "content": self.content,
                 "title": self.title,
                 "style": self.style,
+                "gridlines": self.gridlines,
                 "no_answer_message": self.no_answer_message,
                 "submit_message": self.submit_message,
                 "submitted_message": self.submitted_message,
                 "display_message": self.display_message,
                 "enable_download": self.enable_download,
+                "download_name": self.download_name,
                 "min_questions": self.min_questions,
                 "min_characters": self.min_characters,
                 "min_words": self.min_words
