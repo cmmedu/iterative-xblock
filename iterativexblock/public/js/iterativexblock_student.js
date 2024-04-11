@@ -170,9 +170,10 @@ function IterativeXBlockStudent(runtime, element, settings) {
                     paragraph = answers[cellContent["content"]];
                 }
                 let cellObject = document.querySelector("#iterative-xblock-student-cell-" + i + "-" + j);
-                x += cellMargin;
-                x += cellObject.offsetWidth*0.75;
+                cellWidth = cellObject.offsetWidth*0.75;
                 processParagraph(paragraph, x, line, cellWidth);
+                x += cellWidth;
+                x += cellMargin;
             }
         }
         doc.save(settings.download_name + '.pdf');
