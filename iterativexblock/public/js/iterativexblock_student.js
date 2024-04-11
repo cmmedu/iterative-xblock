@@ -160,8 +160,7 @@ function IterativeXBlockStudent(runtime, element, settings) {
         for (var i = 1; i <= settings.content["n_rows"]; i++) {
             line = startY + (i - 1) * lineHeight + margin;
             let n_cells = settings.content[i.toString()]["n_cells"];
-            let cellWidth = (totalWidth - (cellMargin * (n_cells - 1))) / n_cells;
-            var cellsWidth = [];
+            var x = margin;
             for (var j = 1; j <= n_cells; j++) {
                 var paragraph;
                 var cellContent = settings.content[i.toString()][j.toString()];
@@ -171,14 +170,8 @@ function IterativeXBlockStudent(runtime, element, settings) {
                     paragraph = answers[cellContent["content"]];
                 }
                 let cellObject = document.querySelector("#iterative-xblock-student-cell-" + i + "-" + j);
-                cellsWidth[j - 1] = cellObject.offsetWidth;
-
-
-                var x = margin;
-                for(let p = 1; p < j; p++){
-                    x += cellMargin;
-                    x += cellsWidth[p-1]
-                }
+                x += cellMargin;
+                x += cellObject.offsetWidth*0.75;
                 processParagraph(paragraph, x, line, cellWidth);
             }
         }
