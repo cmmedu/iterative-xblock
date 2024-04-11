@@ -172,10 +172,12 @@ function IterativeXBlockStudent(runtime, element, settings) {
                 }
                 let cellObject = document.querySelector("#iterative-xblock-student-cell-" + i + "-" + j);
                 cellsWidth[j - 1] = cellObject.offsetWidth;
+
+
                 var x = margin;
-                for(let p = 0; p < j; p++){
+                for(let p = 1; p < j; p++){
                     x += cellMargin;
-                    x += cellsWidth[p]
+                    x += cellsWidth[p-1]
                 }
                 processParagraph(paragraph, x, line, cellWidth);
             }
