@@ -3,6 +3,8 @@ function IterativeXBlockStudio(runtime, element, settings) {
     let title = $(element).find("#title");
     let input_style = $(element).find("#input_style");
     let style = $(element).find("#style");
+    let input_gridlines = $(element).find("#input_gridlines");
+    let gridlines = $(element).find("#gridlines");
     let input_submit_message = $(element).find("#input_submit_message");
     let submit_message = $(element).find("#submit_message");
     let input_display_message = $(element).find("#input_display_message");
@@ -17,6 +19,8 @@ function IterativeXBlockStudio(runtime, element, settings) {
     let min_words = $(element).find("#min_words");
     let input_enable_download = $(element).find("#input_enable_download");
     let enable_download = $(element).find("#enable_download");
+    let input_download_name = $(element).find("#input_download_name");
+    let download_name = $(element).find("#download_name");
     
     var content_ui;
     let content_backend  = settings.content
@@ -83,6 +87,9 @@ function IterativeXBlockStudio(runtime, element, settings) {
         }
         if (data["style"] == null) {
             return "Please select a style."
+        }
+        if (data["gridlines"] == null) {
+            return "Please select if you want to display gridlines or not."
         }
         if (questionIds.length !== 0) {
             if (data["submit_message"] === "") {
@@ -604,6 +611,8 @@ function IterativeXBlockStudio(runtime, element, settings) {
         if (questionIds.length > 0) {
             enable_download.val("no");
             input_enable_download.slideUp();
+            download_name.val("")
+            input_download_name.slideUp();
             min_questions.val(settings.min_questions);
             input_min_questions.slideDown();
             min_characters.val(settings.min_characters);
@@ -617,6 +626,8 @@ function IterativeXBlockStudio(runtime, element, settings) {
         } else {
             enable_download.val(settings.enable_download ? "yes" : "no");
             input_enable_download.slideDown();
+            download_name.val(settings.download_name);
+            input_download_name.slideDown();
             min_questions.val(0);
             min_questions.attr("min", '0');
             min_questions.attr("max", questionIds.length.toString());
@@ -700,6 +711,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
         var data = {
             title: title.val(),
             style: style.val(),
+            gridlines: gridlines.val(),
             content: content_ui,
             submit_message: submit_message.val(),
             display_message: display_message.val(),
@@ -708,6 +720,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
             min_characters: min_characters.val(),
             min_words: min_words.val(),
             enable_download: enable_download.val(),
+            download_name: download_name.val(),
             new_questions: newQuestions,
             removed_questions: removedQuestions
         };
@@ -748,6 +761,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
     function onLoad() {
         input_title.removeAttr("hidden");
         input_style.removeAttr("hidden");
+        input_gridlines.removeAttr("hidden");
         input_submit_message.removeAttr("hidden");
         input_display_message.removeAttr("hidden");
         input_no_answer_message.removeAttr("hidden");
@@ -756,6 +770,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
         input_min_words.removeAttr("hidden");
         title.val(settings.title);
         style.val(settings.style);
+        gridlines.val(settings.gridlines ? "yes" : "no");
         submit_message.val(settings.submit_message);
         display_message.val(settings.display_message);
         no_answer_message.val(settings.no_answer_message);

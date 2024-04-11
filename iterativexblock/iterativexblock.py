@@ -44,6 +44,12 @@ class IterativeXBlock(XBlock):
         help="Determines the module's appearance. A variety of stylesheets are available to choose from."
     )
 
+    gridlines = Boolean(
+        default=False,
+        scope=Scope.settings,
+        help="Determines whether the module's table will have gridlines or not."
+    )
+
     no_answer_message = String(
         default="You have not answered this question yet.",
         scope=Scope.settings,
@@ -90,6 +96,12 @@ class IterativeXBlock(XBlock):
         default=False,
         scope=Scope.settings,
         help="Allows for the downloading of the XBlock content as a PDF document. This functionality is only enabled if there are no questions within the module."
+    )
+
+    download_name = String(
+        default="document",
+        scope=Scope.settings,
+        help="Name of the file to be downloaded."
     )
 
     content = Dict(
@@ -245,6 +257,7 @@ class IterativeXBlock(XBlock):
         context = {
             "title": self.title,
             "style": self.style,
+            "gridlines": self.gridlines,
             'location': str(self.location).split('@')[-1],
             'configured': self.configured,
             'content': self.content,
@@ -316,7 +329,8 @@ class IterativeXBlock(XBlock):
                 "completed": completed,
                 "indicator_class": self.get_indicator_class(),
                 "content": self.content,
-                "title": self.title
+                "title": self.title,
+                "download_name": self.download_name
             }
         )
         frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js")
@@ -362,6 +376,7 @@ class IterativeXBlock(XBlock):
             'configured': self.configured,
             'content': self.content,
             'style': self.style,
+            'gridlines': self.gridlines,
             'no_answer_message': self.no_answer_message,
             'answers': answers,
             'show_student_select': show_student_select,
@@ -388,6 +403,7 @@ class IterativeXBlock(XBlock):
                 "answers": answers,
                 "content": self.content,
                 "title": self.title,
+                "download_name": self.download_name
             }
         )
         frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js")
@@ -435,7 +451,8 @@ class IterativeXBlock(XBlock):
             'location': str(self.location).split('@')[-1],
             'configured': self.configured,
             "content": self.content,
-            "style": self.style
+            "style": self.style,
+            "gridlines": self.gridlines
         }
         template = loader.render_django_template(
             'public/html/iterativexblock_author.html',
@@ -511,6 +528,7 @@ class IterativeXBlock(XBlock):
         self.content = data.get('content')
         self.title = data.get('title')
         self.style = data.get('style')
+        self.gridlines = data.get('gridlines') == "yes"
         self.no_answer_message = data.get('no_answer_message')
         self.submit_message = data.get('submit_message')
         self.submitted_message = data.get('submitted_message')
@@ -519,6 +537,7 @@ class IterativeXBlock(XBlock):
         self.min_characters = data.get('min_characters')
         self.min_words = data.get('min_words')
         self.enable_download = data.get('enable_download') == "yes"
+        self.download_name = data.get('download_name')
         return {'result': 'success'}
 
 
