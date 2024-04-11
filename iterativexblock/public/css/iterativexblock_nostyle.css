@@ -10,3 +10,9 @@
     background-color: #b7b7b7;
     color: #646464;
 }
+
+.iterative-xblock-style-red .iterative-xblock-student-msg p {
+    color: red;
+    text-align: center;
+    margin-top: 30px;
+}

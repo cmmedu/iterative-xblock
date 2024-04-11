@@ -603,15 +603,15 @@ class IterativeXBlock(XBlock):
             id_student = self.scope_ids.user_id
         questions = self.get_ids("answer")
         answers = {}
-        for question in questions:
+        for id_question in questions:
             try:
-                question = IterativeXBlockQuestion.objects.get(id_course=id_course, id_question=question)
+                question = IterativeXBlockQuestion.objects.get(id_course=id_course, id_question=id_question)
             except IterativeXBlockQuestion.DoesNotExist:
                 answers[question] = "This question does not exist."
             try:
                 answer = IterativeXBlockAnswer.objects.get(id_course=id_course, question=question, id_student=id_student)
             except IterativeXBlockAnswer.DoesNotExist:
                 answers[question] = self.no_answer_message
-            answers[question] = answer.answer
+            answers[id_question] = answer.answer
         return {"result": 'success', 'answers': answers}
 
