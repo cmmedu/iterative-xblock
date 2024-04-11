@@ -161,6 +161,7 @@ function IterativeXBlockStudent(runtime, element, settings) {
             line = startY + (i - 1) * lineHeight + margin;
             let n_cells = settings.content[i.toString()]["n_cells"];
             let cellWidth = (totalWidth - (cellMargin * (n_cells - 1))) / n_cells;
+            var cellsWidth = [];
             for (var j = 1; j <= n_cells; j++) {
                 var paragraph;
                 var cellContent = settings.content[i.toString()][j.toString()];
@@ -169,12 +170,16 @@ function IterativeXBlockStudent(runtime, element, settings) {
                 } else if (cellContent["type"] === "answer") {
                     paragraph = answers[cellContent["content"]];
                 }
-    
-                let x = margin + (j - 1) * (cellWidth + cellMargin);
+                cellsWidth[j - 1] = 0;
+                var x = 0;
+                for(let p = 0; p < j; p++){
+                    x += margin;
+                    x += cellsWidth[p]
+                }
                 processParagraph(paragraph, x, line, cellWidth);
             }
         }
-        doc.save('document.pdf');
+        doc.save(settings.download_name + '.pdf');
     }
 
     $(function ($) {

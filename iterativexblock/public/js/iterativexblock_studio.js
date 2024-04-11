@@ -609,10 +609,6 @@ function IterativeXBlockStudio(runtime, element, settings) {
         let content_ui = makeContentUI();
         let questionIds = getQuestionIDs(content_ui);
         if (questionIds.length > 0) {
-            enable_download.val("no");
-            input_enable_download.slideUp();
-            download_name.val("")
-            input_download_name.slideUp();
             min_questions.val(settings.min_questions);
             input_min_questions.slideDown();
             min_characters.val(settings.min_characters);
@@ -624,10 +620,6 @@ function IterativeXBlockStudio(runtime, element, settings) {
             submit_message.val(settings.submit_message);
             input_submit_message.slideDown();
         } else {
-            enable_download.val(settings.enable_download ? "yes" : "no");
-            input_enable_download.slideDown();
-            download_name.val(settings.download_name);
-            input_download_name.slideDown();
             min_questions.val(0);
             min_questions.attr("min", '0');
             min_questions.attr("max", questionIds.length.toString());
@@ -641,11 +633,19 @@ function IterativeXBlockStudio(runtime, element, settings) {
         }
         let answerIds = getAnswerIDs(content_ui);
         if (answerIds.length > 0) {
+            enable_download.val(settings.enable_download ? "yes" : "no");
+            input_enable_download.slideDown();
+            download_name.val(settings.download_name);
+            input_download_name.slideDown();
             display_message.val(settings.display_message);
             input_display_message.slideDown();
             no_answer_message.val(settings.no_answer_message);
             input_no_answer_message.slideDown();
         } else {
+            enable_download.val("no");
+            input_enable_download.slideUp();
+            download_name.val("");
+            input_download_name.slideUp();
             display_message.val("");
             input_display_message.slideUp();
             no_answer_message.val("");
