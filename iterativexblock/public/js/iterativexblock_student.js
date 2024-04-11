@@ -171,9 +171,9 @@ function IterativeXBlockStudent(runtime, element, settings) {
                     paragraph = answers[cellContent["content"]];
                 }
                 cellsWidth[j - 1] = 0;
-                var x = 0;
+                var x = margin;
                 for(let p = 0; p < j; p++){
-                    x += margin;
+                    x += cellMargin;
                     x += cellsWidth[p]
                 }
                 processParagraph(paragraph, x, line, cellWidth);
