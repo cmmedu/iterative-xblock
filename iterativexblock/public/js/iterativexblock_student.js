@@ -25,24 +25,24 @@ function IterativeXBlockStudent(runtime, element, settings) {
         let error_msg = "";
         let count = 0;
         for (let key in data) {
-            if (data[key].length > 10000) {
-                error_msg = "The answer is too long. Please keep it under 10000 characters.";
-                break;
-            }
-            if (settings.min_characters !== 0){
-                if (data[key].length < settings.min_characters) {
-                    error_msg = "The answer is too short. Please use at least " + settings.min_characters + " characters (used: " + data[key].length + ").";
-                    break;
-                }
-            }
-            if (settings.min_words !== 0) {
-                if (data[key].split(" ").length < settings.min_words) {
-                    error_msg = "The answer is too short. Please use at least " + settings.min_words + " words (" + data[key].split(" ").length + ").";
-                    break;
-                }
-            } 
             if (data[key].length > 0){ 
                 count++;
+                if (data[key].length > 10000) {
+                    error_msg = "The answer is too long. Please keep it under 10000 characters.";
+                    break;
+                }
+                if (settings.min_characters !== 0){
+                    if (data[key].length < settings.min_characters) {
+                        error_msg = "The answer is too short. Please use at least " + settings.min_characters + " characters (used: " + data[key].length + ").";
+                        break;
+                    }
+                }
+                if (settings.min_words !== 0) {
+                    if (data[key].split(" ").length < settings.min_words) {
+                        error_msg = "The answer is too short. Please use at least " + settings.min_words + " words (" + data[key].split(" ").length + ").";
+                        break;
+                    }
+                } 
             }
         }
         if (min_questions === 0){
