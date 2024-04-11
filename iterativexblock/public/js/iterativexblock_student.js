@@ -170,7 +170,8 @@ function IterativeXBlockStudent(runtime, element, settings) {
                 } else if (cellContent["type"] === "answer") {
                     paragraph = answers[cellContent["content"]];
                 }
-                cellsWidth[j - 1] = 0;
+                let cellObject = document.querySelector("#iterative-xblock-student-cell-" + i + "-" + j);
+                cellsWidth[j - 1] = cellObject.offsetWidth;
                 var x = margin;
                 for(let p = 0; p < j; p++){
                     x += cellMargin;
