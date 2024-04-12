@@ -1,9 +1,7 @@
-docker compose down && cd ../build/edx-staging/ && docker build . -t edx-staging:koa --target base && cd ../../sandbox && make migrate && make assets && cd ../no-certificates && docker compose up -d --force-recreate && cd ../sandbox && docker compose up -d
+docker compose down && cd ../build/edx-staging/ && docker build . -t edx-staging:koa --target base && cd ../../sandbox && make migrate && make assets && cd ../self-certificate && docker compose up -d --force-recreate && cd ../sandbox && docker compose up -d
 
 todo:
 - correct pdf downloads
-- error messages in spanish (fork)
-- check consistency of word and character validation, combined with min_questions
 - cell background color attribute?
 - cell width rule attribute?
 
