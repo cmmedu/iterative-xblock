@@ -180,6 +180,13 @@ function IterativeXBlockStudent(runtime, element, settings) {
         doc.save(settings.download_name + '.pdf');
     }
 
+    $(".iterative-xblock-student-question").each(function(index, e) {
+        $(e).on('input', function() {
+            this.style.height = 'auto';
+            this.style.height = this.scrollHeight + 'px';
+        });
+    });
+
     $(function ($) {
         if (settings.completed) {
             var answers = settings.answers;
