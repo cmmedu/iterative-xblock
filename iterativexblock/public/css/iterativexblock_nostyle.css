@@ -24,7 +24,7 @@
     border: none;
     text-shadow: none;
     font-size: 1em;
-  }
+}
 
 .iterative-xblock-style-nostyle .iterative-xblock-student-download-pdf:hover {
     background-color: #646464 !important;
@@ -33,4 +33,8 @@
     border: none;
     text-shadow: none;
     font-size: 1em;
-  }
+}
+
+.iterative-xblock-style-nostyle .iterative-xblock-title {
+    text-align: center;
+}
