@@ -116,8 +116,8 @@ function IterativeXBlockStudent(runtime, element, settings) {
         } else {
             area.val(result["error"]);
         }
-        area.style.height = 'auto';
-        area.style.height = area.scrollHeight + 'px';
+        area.css('height', 'auto');
+        area.css('height', area.scrollHeight + 'px');
     }
 
     $(element).find(".iterative-xblock-student-get-answer").on('click', function (eventObject) {
