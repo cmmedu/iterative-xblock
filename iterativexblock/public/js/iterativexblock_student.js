@@ -28,18 +28,18 @@ function IterativeXBlockStudent(runtime, element, settings) {
             if (data[key].length > 0){ 
                 count++;
                 if (data[key].length > 10000) {
-                    error_msg = "The answer is too long. Please keep it under 10000 characters.";
+                    error_msg = "La respuesta es muy larga. Por favor, utilice menos de 10000 caracteres (usados: " + data[key].length + ").";
                     break;
                 }
                 if (settings.min_characters !== 0){
                     if (data[key].length < settings.min_characters) {
-                        error_msg = "The answer is too short. Please use at least " + settings.min_characters + " characters (used: " + data[key].length + ").";
+                        error_msg = "La respuesta es muy corta. Por favor, utilice al menos " + settings.min_characters + " caracteres (usados: " + data[key].length + ").";
                         break;
                     }
                 }
                 if (settings.min_words !== 0) {
                     if (data[key].split(" ").length < settings.min_words) {
-                        error_msg = "The answer is too short. Please use at least " + settings.min_words + " words (" + data[key].split(" ").length + ").";
+                        error_msg = "La respuesta es muy corta. Por favor, utilice al menos " + settings.min_words + " palabras (usadas: " + data[key].split(" ").length + ").";
                         break;
                     }
                 } 
@@ -47,10 +47,10 @@ function IterativeXBlockStudent(runtime, element, settings) {
         }
         if (min_questions === 0){
             if (count < data.length){
-                error_msg = "Please answer all questions.";
+                error_msg = "Por favor, responda todas las preguntas.";
             }
         } else if (count < min_questions) {
-            error_msg = "Please answer at least " + min_questions + " questions.";
+            error_msg = "Por favor, responda al menos " + min_questions + " preguntas.";
         }
         return error_msg;
     }
@@ -61,7 +61,7 @@ function IterativeXBlockStudent(runtime, element, settings) {
         buttonSubmit.attr("disabled", true);
         statusDiv.addClass(result.indicator_class);
         if (result["result"] === "repeated"){
-            showErrorMessage("Ya se encuentra registrada una respuesta. Por favor, actualice la página.");
+            showErrorMessage("Ya has respondido a esta pregunta. Por favor, actualice la página.");
             buttonSubmit.removeAttr("disabled");
         } else if (result["result"] === "success") {
             $(element).find(".iterative-xblock-student-question").attr("disabled", true);

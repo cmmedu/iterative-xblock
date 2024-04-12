@@ -38,31 +38,31 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 let cell_input = cell.find("input");
                 if (cell_type === "text") {
                     if (cell_input.val().length > 1000) {
-                        error_msg = "Text must be less than 1000 characters for the cell at row " + i + " and cell " + (j + 1) + ".";
+                        error_msg = "El texto debe tener menos de 1000 caracteres en la fila " + i + ", celda " + (j + 1) + ".";
                         break;
                     }
                 } else if (cell_type === "question") {
                     if (cell_input.val() === "") {
-                        error_msg = "Please provide a question ID for the cell at row " + i + " and cell " + (j + 1) + ".";
+                        error_msg = "Por favor proporcione un ID de pregunta en la fila " + i + ", celda " + (j + 1) + ".";
                         break;
                     }
                     if (cell_input.val().length > 30 || cell_input.val().length < 3 || !cell_input.val().match(/^[a-zA-Z0-9_]+$/)) {
-                        error_msg = "Question ID must be between 3 and 30 characters and can only contain letters, numbers, and underscores for the cell at row " + i + " and cell " + (j + 1) + ".";
+                        error_msg = "El ID de pregunta debe tener entre 3 y 30 caracteres, y solo puede contener letras, números, y guiones bajos (fila " + i + ", celda " + (j + 1) + ").";
                         break;
                     }
                     if (questions.includes(cell_input.val())) {
-                        error_msg = "Question ID " + cell_input.val() + " is already used to define another question.";
+                        error_msg = "El ID de pregunta " + cell_input.val() + " ya ha sido usado para definir otra pregunta en este Iterative XBlock.";
                         break;
                     }
                     questions.push(cell_input.val());
                 } else if (cell_type === "answer") {
                     if (cell_input.val().length > 30 || cell_input.val().length < 3 || !cell_input.val().match(/^[a-zA-Z0-9_]+$/)) {
-                        error_msg = "Question ID must be between 3 and 30 characters and can only contain letters, numbers, and underscores for the cell at row " + i + " and cell " + (j + 1) + ".";
+                        error_msg = "El ID de pregunta debe tener entre 3 y 30 caracteres, y solo puede contener letras, números, y guiones bajos (fila " + i + ", celda " + (j + 1) + ").";
                         break;
                     }
                     answers.push(cell_input.val());
                 } else {
-                    error_msg = "Please select a type for the content at row " + i + " and cell " + (j + 1) + ".";
+                    error_msg = "Por favor seleccione un tipo de contenido para la fila " + i + ", celda " + (j + 1) + ".";
                     break;
                 }
             }
@@ -72,7 +72,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
         }
         for(let q of questions) {
             if (answers.includes(q)) {
-                error_msg = "You cannot get the answer from a question defined at the same Iterative XBlock (" + q + ").";
+                error_msg = "No se puede obtener la respuesta de una pregunta definida en este mismo Iterative XBlock (" + q + ").";
                 break;
             }
         }
@@ -83,68 +83,68 @@ function IterativeXBlockStudio(runtime, element, settings) {
         let questionIds = getQuestionIDs(data["content"]);
         let answerIds = getAnswerIDs(data["content"]);
         if (data["title"].length > 200) {
-            return "Title must be less than 100 characters."
+            return "El título debe tener un máximo de 200 caracteres."
         }
         if (data["style"] == null) {
-            return "Please select a style."
+            return "Por favor seleccione un estilo."
         }
         if (data["gridlines"] == null) {
-            return "Please select if you want to display gridlines or not."
+            return "Por favor seleccione si desea mostrar las líneas de la cuadrícula o no."
         }
         if (questionIds.length !== 0) {
             if (data["submit_message"] === "") {
-                return "Please provide a message for the submit button."
+                return "Por favor proporcione un mensaje para el botón de envío."
             }
             if (data["submit_message"].length > 30) {
-                return "Submit message must be less than 30 characters."
+                return "El mensaje del botón de envío debe tener menos de 30 caracteres."
             }
             if (data["min_questions"] === "") {
-                return "Please provide a minimum number of questions to be answered."
+                return "Por favor proporcione un número mínimo de preguntas que deben ser respondidas."
             }
             if (isNaN(data["min_questions"])) {
-                return "Minimum number of questions must be a number."
+                return "El número mínimo de preguntas debe ser un número."
             }
             if (data["min_questions"] > getQuestionIDs(data["content"]).length) {
-                return "Minimum number of questions must be less than or equal to the number of questions defined."
+                return "El número mínimo de preguntas no puede ser mayor que el número de preguntas definidas."
             }
             if (parseInt(data["min_questions"]) < 0) {
-                return "Minimum number of questions must be a positive number."
+                return "El número mínimo de preguntas debe ser un número positivo."
             }
             if (data["min_characters"] === "") {
-                return "Please provide a minimum number of characters for the answer."
+                return "Por favor proporcione un número mínimo de caracteres para las respuestas."
             }
             if (isNaN(data["min_characters"])) {
-                return "Minimum number of characters must be a number."
+                return "El número mínimo de caracteres debe ser un número."
             }
             if (parseInt(data["min_characters"]) < 0) {
-                return "Minimum number of characters must be a positive number."
+                return "El número mínimo de caracteres debe ser un número positivo."
             }
             if (data["min_words"] === "") {
-                return "Please provide a minimum number of words for the answer."
+                return "Por favor proporcione un número mínimo de palabras para las respuestas."
             }
             if (isNaN(data["min_words"])) {
-                return "Minimum number of words must be a number."
+                return "El número mínimo de palabras debe ser un número."
             }
             if (parseInt(data["min_words"]) < 0) {
-                return "Minimum number of words must be a positive number."
+                return "El número mínimo de palabras debe ser un número positivo."
             }
         } else {
             if (data["enable_download"] == null) {
-                return "Please select if you want to enable download of answers as a PDF file or not."
+                return "Por favor seleccione si desea habilitar la descarga de respuestas en PDF, o no."
             }
         }
         if (answerIds.length !== 0) {
             if (data["display_message"] === "") {
-                return "Please provide a message for the display button."
+                return "Por favor proporcione un mensaje para el botón que despliega respuestas anteriores."
             }
             if (data["display_message"].length > 30) {
-                return "Display message must be less than 30 characters."
+                return "El mensaje del botón que despliega respuestas anteriores debe tener un máximo de 30 caracteres."
             }
             if (data["no_answer_message"] === "") {
-                return "Please provide a message for when there is no answer."
+                return "Por favor proporcione un mensaje para cuando no hay respuestas anteriores."
             }
             if (data["no_answer_message"].length > 100) {
-                return "No answer message must be less than 100 characters."
+                return "El mensaje para cuando no hay respuestas anteriores debe tener un máximo de 100 caracteres."
             }
         }
         return validateContent(data["content"]);
@@ -210,13 +210,13 @@ function IterativeXBlockStudio(runtime, element, settings) {
                     cell_text_strikethrough.removeClass("icon-chosen");
                 }
                 if (content[i.toString()][j.toString()]["type"] === "text") {
-                    cell_input.attr("placeholder", "Enter text here").removeAttr("disabled");
+                    cell_input.attr("placeholder", "Ingrese texto aquí...").removeAttr("disabled");
                 } else if (content[i.toString()][j.toString()]["type"] === "question") {
-                    cell_input.attr("placeholder", "Question ID").removeAttr("disabled");
+                    cell_input.attr("placeholder", "ID de pregunta").removeAttr("disabled");
                 } else if (content[i.toString()][j.toString()]["type"] === "answer") {
-                    cell_input.attr("placeholder", "Question ID").removeAttr("disabled");
+                    cell_input.attr("placeholder", "ID de pregunta").removeAttr("disabled");
                 } else {
-                    cell_input.attr("placeholder", "Please select an option...").attr("disabled", true);
+                    cell_input.attr("placeholder", "Por favor seleccione una opción...").attr("disabled", true);
                 }
                 cell.removeAttr("hidden");
             }
@@ -294,7 +294,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
             let nth_element = content_ui[row]["n_cells"];
             input_content_cells.eq(nth_element).removeAttr("hidden");
             input_content_cells.eq(nth_element).find("input").val("");
-            input_content_cells.eq(nth_element).find("input").attr("placeholder", "Please select an option...").attr("disabled", true);
+            input_content_cells.eq(nth_element).find("input").attr("placeholder", "Por favor seleccione una opción...").attr("disabled", true);
             input_content_cells.eq(nth_element).find("select").val("none");
             let justifyIcon = input_content_cells.eq(nth_element).find(".fa-align-justify");
             justifyIcon.addClass("icon-chosen");
@@ -309,7 +309,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 "strikethrough": false
             }
         } else {
-            setStudioWarningMessage("Maximum number of cells per row is 4.")
+            setStudioWarningMessage("El número máximo de celdas por fila es 4.")
             setTimeout(function() {
                 setStudioWarningMessage("");
             }, 3000);
@@ -323,7 +323,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
             let nth_element = content_ui[row]["n_cells"] - 1;
             input_content_cells.eq(nth_element).attr("hidden", true);
             input_content_cells.eq(nth_element).find("input").val("");
-            input_content_cells.eq(nth_element).find("input").attr("placeholder", "Please select an option...").attr("disabled", true);
+            input_content_cells.eq(nth_element).find("input").attr("placeholder", "Por favor seleccione una opción...").attr("disabled", true);
             input_content_cells.eq(nth_element).find("select").val("none");
             content_ui[row]["n_cells"] -= 1;
             delete content_ui[row][content_ui[row]["n_cells"].toString()];
@@ -339,22 +339,22 @@ function IterativeXBlockStudio(runtime, element, settings) {
             let input_content_cells = input_content_row.find(".iterative-content-studio-input");
             input_content_cells.eq(0).removeAttr("hidden");
             input_content_cells.eq(0).find("input").val("");
-            input_content_cells.eq(0).find("input").attr("placeholder", "Please select an option...").attr("disabled", true);
+            input_content_cells.eq(0).find("input").attr("placeholder", "Por favor seleccione una opción...").attr("disabled", true);
             input_content_cells.eq(0).find("select").val("none");
             input_content_cells.eq(0).find(".fa-align-justify").addClass("icon-chosen");
             input_content_cells.eq(1).removeAttr("hidden");
             input_content_cells.eq(1).find("input").val("");
-            input_content_cells.eq(1).find("input").attr("placeholder", "Please select an option...").attr("disabled", true);
+            input_content_cells.eq(1).find("input").attr("placeholder", "Por favor seleccione una opción...").attr("disabled", true);
             input_content_cells.eq(1).find("select").val("none");
             input_content_cells.eq(1).find(".fa-align-justify").addClass("icon-chosen");
             input_content_cells.eq(2).attr("hidden");
             input_content_cells.eq(2).find("input").val("");
-            input_content_cells.eq(2).find("input").attr("placeholder", "Please select an option...").attr("disabled", true);
+            input_content_cells.eq(2).find("input").attr("placeholder", "Por favor seleccione una opción...").attr("disabled", true);
             input_content_cells.eq(2).find("select").val("none");
             input_content_cells.eq(2).find(".fa-align-justify").addClass("icon-chosen");
             input_content_cells.eq(3).attr("hidden");
             input_content_cells.eq(3).find("input").val("");
-            input_content_cells.eq(3).find("input").attr("placeholder", "Please select an option...").attr("disabled", true);
+            input_content_cells.eq(3).find("input").attr("placeholder", "Por favor seleccione una opción...").attr("disabled", true);
             input_content_cells.eq(3).find("select").val("none");
             input_content_cells.eq(3).find(".fa-align-justify").addClass("icon-chosen");
             input_content_row.removeAttr("hidden");
@@ -381,7 +381,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 },
             }
         } else {
-            setStudioWarningMessage("Maximum number of rows is 9.")
+            setStudioWarningMessage("El número máximo de filas es 9.")
             setTimeout(function() {
                 setStudioWarningMessage("");
             }, 3000);
@@ -395,7 +395,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 let input_content_cells = input_content_row.find(".iterative-content-studio-input");
                 for (let i = 0; i < 4; i++) {
                     input_content_cells.eq(i).find("input").val("");
-                    input_content_cells.eq(i).find("input").attr("placeholder", "Please select an option...").attr("disabled", true);
+                    input_content_cells.eq(i).find("input").attr("placeholder", "Por favor seleccione una opción...").attr("disabled", true);
                     input_content_cells.eq(i).find("select").val("none");
                     input_content_cells.eq(i).attr("hidden", true);
                 }
@@ -418,13 +418,13 @@ function IterativeXBlockStudio(runtime, element, settings) {
                         }
                         previousCells.eq(q).find("select").val(cellType);
                         if (cellType === "text") {
-                            previousCells.eq(q).find("input").attr("placeholder", "Enter text here").removeAttr("disabled");
+                            previousCells.eq(q).find("input").attr("placeholder", "Ingrese texto aquí...").removeAttr("disabled");
                         } else if (cellType === "question") {
-                            previousCells.eq(q).find("input").attr("placeholder", "Question ID").removeAttr("disabled");
+                            previousCells.eq(q).find("input").attr("placeholder", "ID de pregunta").removeAttr("disabled");
                         } else if (cellType === "answer") {
-                            previousCells.eq(q).find("input").attr("placeholder", "Question ID").removeAttr("disabled");
+                            previousCells.eq(q).find("input").attr("placeholder", "ID de pregunta").removeAttr("disabled");
                         } else {
-                            previousCells.eq(q).find("input").attr("placeholder", "Please select an option...").attr("disabled", true);
+                            previousCells.eq(q).find("input").attr("placeholder", "Por favor seleccione una opción...").attr("disabled", true);
                         }
                         let cellValue = currentCells.eq(q).find("input").val();
                         previousCells.eq(q).find("input").val(cellValue);
@@ -528,7 +528,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
                     if (i === content_ui["n_rows"]) {
                         for (let j = 0; j < 4; j++) {
                             currentCells.eq(j).find("input").val("");
-                            currentCells.eq(j).find("input").attr("placeholder", "Please select an option...").attr("disabled", true);
+                            currentCells.eq(j).find("input").attr("placeholder", "Por favor seleccione una opción...").attr("disabled", true);
                             currentCells.eq(j).find("select").val("none");
                             currentCells.eq(j).attr("hidden", true);
                         }
@@ -539,7 +539,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 content_ui["n_rows"] -= 1;
             }
         } else {
-            setStudioWarningMessage("Minimum number of rows is 1.")
+            setStudioWarningMessage("El número mínimo de filas es 1.")
             setTimeout(function() {
                 setStudioWarningMessage("");
             }, 3000);
@@ -660,13 +660,13 @@ function IterativeXBlockStudio(runtime, element, settings) {
         let value = $(this).val();
         let input = $(element).find("#content_row_" + row + "_" + cell);
         if (value === "text") {
-            input.attr("placeholder", "Enter text here").removeAttr("disabled");
+            input.attr("placeholder", "Ingrese texto aquí...").removeAttr("disabled");
         } else if (value === "question") {
-            input.attr("placeholder", "Question ID").removeAttr("disabled");
+            input.attr("placeholder", "ID de pregunta").removeAttr("disabled");
         } else if (value === "answer") {
-            input.attr("placeholder", "Question ID").removeAttr("disabled");
+            input.attr("placeholder", "ID de pregunta").removeAttr("disabled");
         } else {
-            input.attr("placeholder", "Please select an option...").attr("disabled", true);
+            input.attr("placeholder", "Por favor seleccione una opción...").attr("disabled", true);
         }
         handleConditionalInputs();
     });
@@ -730,7 +730,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
         } else {
             $.post(checkQuestionIDsUrl, JSON.stringify(newQuestions)).done(function (response) {
                 if(response["result"] === "failed") {
-                    setStudioErrorMessage("The following new questions IDs already exist at another Iterative XBlock: " + response["question_ids"].join(", "));
+                    setStudioErrorMessage("Las siguientes preguntas ya existen en otro Iterative XBlock: " + response["question_ids"].join(", "));
                 } else {
                     if ($.isFunction(runtime.notify)) {
                         runtime.notify('save', { state: 'start' });
