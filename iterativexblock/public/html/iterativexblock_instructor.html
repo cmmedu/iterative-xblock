@@ -27,7 +27,7 @@
             <tr class="iterative-xblock-student-row">
                 {% for cell_id, cell in row.items %}
                 {% if cell_id != 'n_cells' %}
-                <td class="iterative-xblock-student-cell">
+                <td id="iterative-xblock-student-cell-{{ row_id }}-{{ cell_id }}" class="iterative-xblock-student-cell">
                     {% if cell.type == 'text' %}
                     <p style="text-align: {{ cell.alignment }};{% if cell.bold %}font-weight: bold;{% endif %}{% if cell.italic %}font-style: italic;{% endif %}text-decoration: {% if cell.underline %}underline {% endif %}{% if cell.strikethrough %}line-through{% endif %}">{{ cell.content }}</p>
                     {% elif cell.type == 'question' %}

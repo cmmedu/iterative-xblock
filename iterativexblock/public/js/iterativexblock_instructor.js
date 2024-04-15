@@ -65,7 +65,7 @@ function IterativeXBlockInstructor(runtime, element, settings) {
         let pageWidth = doc.internal.pageSize.getWidth();
         let margin = 20;
         let totalWidth = pageWidth - (2 * margin);
-        let lineHeight = 10;
+        let lineHeight = 8;
         doc.setFont("helvetica", "bold");
         doc.setFontSize(16);
         let title = settings.title;
