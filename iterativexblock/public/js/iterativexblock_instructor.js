@@ -65,7 +65,7 @@ function IterativeXBlockInstructor(runtime, element, settings) {
         let pageWidth = doc.internal.pageSize.getWidth();
         let margin = 20;
         let totalWidth = pageWidth - (2 * margin);
-        let lineHeight = 8;
+        let lineHeight = 5;
         doc.setFont("helvetica", "bold");
         doc.setFontSize(16);
         let title = settings.title;
@@ -115,7 +115,7 @@ function IterativeXBlockInstructor(runtime, element, settings) {
                     paragraph = answers[cellContent["content"]];
                 }
                 cellWidth = proportionalWidths[j-1]-4;
-                this_y = processParagraph(paragraph, x+2, y, cellWidth, cellContent["alignment"]);
+                this_y = processParagraph(paragraph, x+2, y, cellWidth, cellContent["alignment"] !== "right" ? cellContent["alignment"] : "center");
                 console.log(y)
                 console.log(this_y)
                 next_y = Math.max(next_y, this_y);
