@@ -38,3 +38,10 @@
 .iterative-xblock-style-nostyle .iterative-xblock-title {
     text-align: center;
 }
+
+.iterative-xblock-style-nostyle .iterative-xblock-student-answer {
+    width: 100%;
+    z-index: 1;
+    padding: 10px;
+    resize: none;
+}

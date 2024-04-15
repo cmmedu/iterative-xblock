@@ -53,6 +53,12 @@ function IterativeXBlockInstructor(runtime, element, settings) {
         }
     });
 
+    $(".iterative-xblock-student-answer").each(function(index, e) {
+        $(e).on('load', function() {
+            this.style.height = this.scrollHeight + 'px';
+        });
+    });
+
     function generatePDF(answers) {
         const { jsPDF } = jspdf;
         var doc = new jsPDF();
@@ -60,7 +66,6 @@ function IterativeXBlockInstructor(runtime, element, settings) {
         let margin = 20;
         let totalWidth = pageWidth - (2 * margin);
         let lineHeight = 10;
-        let cellMargin = 10;
         doc.setFont("helvetica", "bold");
         doc.setFontSize(16);
         let title = settings.title;
@@ -68,33 +73,55 @@ function IterativeXBlockInstructor(runtime, element, settings) {
         let titleX = (pageWidth - titleWidth) / 2; 
         doc.text(title, titleX, margin);
         let startY = margin;
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(12);
-        var line;
-        var processParagraph = function(paragraph, x, y, width) {
+        doc.setFontSize(10);
+        var y = startY + margin;
+        var processParagraph = function(paragraph, x, y, width, alignment) {
             var lines = doc.splitTextToSize(paragraph, width);
             var blockHeight = lines.length * lineHeight;
-            doc.text(lines, x, y + (lineHeight / 2), {maxWidth: width, align: "justify"});
+            doc.text(lines, x, y + (lineHeight / 2), {maxWidth: width, align: alignment});
+            return blockHeight;
         };
         for (var i = 1; i <= settings.content["n_rows"]; i++) {
-            line = startY + (i - 1) * lineHeight + margin;
             let n_cells = settings.content[i.toString()]["n_cells"];
-            var x = margin;
             var widths = [];
+            var totalOffsetWidth = 0;
+            for (var j = 1; j <= n_cells; j++) {
+                var cellObject = document.querySelector("#iterative-xblock-student-cell-" + i + "-" + j);
+                widths.push(cellObject.offsetWidth);
+                totalOffsetWidth += cellObject.offsetWidth;
+            }
+            var proportionalWidths = widths.map(function(width) {
+                return Math.floor(width*totalWidth / totalOffsetWidth);
+            });
+            var x = margin;
+            var next_y = 0;
             for (var j = 1; j <= n_cells; j++) {
                 var paragraph;
                 var cellContent = settings.content[i.toString()][j.toString()];
+                var stylestring = ""
+                if (cellContent["bold"]) {
+                    stylestring += "bold";
+                }
+                if (cellContent["italic"]) {
+                    stylestring += "italic";
+                }
+                if (stylestring === "") {
+                    stylestring = "normal";
+                }
+                doc.setFont("helvetica", stylestring);
                 if (cellContent["type"] === "text") {
                     paragraph = cellContent["content"];
                 } else if (cellContent["type"] === "answer") {
                     paragraph = answers[cellContent["content"]];
                 }
-                let cellObject = document.querySelector("#iterative-xblock-student-cell-" + i + "-" + j);
-                cellWidth = cellObject.offsetWidth*0.75;
-                processParagraph(paragraph, x, line, cellWidth);
-                x += cellWidth;
-                x += cellMargin;
+                cellWidth = proportionalWidths[j-1]-4;
+                this_y = processParagraph(paragraph, x+2, y, cellWidth, cellContent["alignment"]);
+                console.log(y)
+                console.log(this_y)
+                next_y = Math.max(next_y, this_y);
+                x += proportionalWidths[j-1];
             }
+            y += next_y;
         }
         doc.save(settings.download_name + '.pdf');
     }
