@@ -317,7 +317,6 @@ class IterativeXBlock(XBlock):
                 'public/css/iterativexblock.css'
             ],
             additional_js=[
-                'public/js/mathjax.js',
                 'public/js/iterativexblock_student.js'
             ],
             settings={
