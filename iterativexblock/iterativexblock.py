@@ -393,7 +393,6 @@ class IterativeXBlock(XBlock):
                 'public/css/iterativexblock.css'
             ],
             additional_js=[
-                'public/js/mathjax.js',
                 'public/js/iterativexblock_instructor.js'
             ],
             settings={
@@ -465,7 +464,6 @@ class IterativeXBlock(XBlock):
                 'public/css/iterativexblock.css'
             ],
             additional_js=[
-                'public/js/mathjax.js',
                 'public/js/iterativexblock_author.js',
             ]
         )

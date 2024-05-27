@@ -228,9 +228,6 @@ function IterativeXBlockStudio(runtime, element, settings) {
 
     function handleIcons(row, cell, icon) {
         let container = $(element).find(".content_" + row + "_" + cell);
-        console.log(row)
-        console.log(cell)
-        console.log(icon)
         if (icon === "align-left") {
             $(container).find(".fa-align-left").addClass("icon-chosen");
             $(container).find(".fa-align-center").removeClass("icon-chosen");
