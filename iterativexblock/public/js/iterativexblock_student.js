@@ -1,5 +1,6 @@
 function IterativeXBlockStudent(runtime, element, settings) {
 
+
     let statusDiv = $(element).find('.status');
     let buttonSubmit = $(element).find(".iterative-xblock-submit");
     let submitUrl = runtime.handlerUrl(element, 'student_submit');
@@ -219,6 +220,7 @@ function IterativeXBlockStudent(runtime, element, settings) {
     });
 
     $(function ($) {
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub]); 
         if (settings.completed) {
             var answers = settings.answers;
             for (var key in answers) {

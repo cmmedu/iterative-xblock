@@ -333,7 +333,6 @@ class IterativeXBlock(XBlock):
             }
         )
         frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js")
-        #frag.add_css_url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css")
         return frag
     
 
@@ -406,7 +405,6 @@ class IterativeXBlock(XBlock):
             }
         )
         frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js")
-        #frag.add_css_url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css")
         return frag
 
 
@@ -442,7 +440,6 @@ class IterativeXBlock(XBlock):
                 "min_words": self.min_words
             }
         )
-        #frag.add_css_url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css")
         return frag
 
 
@@ -472,7 +469,6 @@ class IterativeXBlock(XBlock):
                 'public/js/iterativexblock_author.js',
             ]
         )
-        #frag.add_css_url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css")
         return frag
 
 

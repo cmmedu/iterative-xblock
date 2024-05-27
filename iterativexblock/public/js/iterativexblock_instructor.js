@@ -127,5 +127,6 @@ function IterativeXBlockInstructor(runtime, element, settings) {
     }
 
     $(function ($) {
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub]); 
     });
 }
