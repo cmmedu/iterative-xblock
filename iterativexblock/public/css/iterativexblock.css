@@ -79,6 +79,10 @@
   display: flex !important;
 }
 
+.iterative-content-row select {
+  width: 100% !important;
+}
+
 .iterative-xblock-cell-title p {
   text-align: center;
   font-weight: bold;

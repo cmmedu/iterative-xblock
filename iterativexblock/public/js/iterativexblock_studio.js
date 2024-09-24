@@ -1,22 +1,5 @@
 function IterativeXBlockStudio(runtime, element, settings) {
-    let input_title = $(element).find("#input_title");
     let title = $(element).find("#title");
-    let input_style = $(element).find("#input_style");
-    let style = $(element).find("#style");
-    let input_gridlines = $(element).find("#input_gridlines");
-    let gridlines = $(element).find("#gridlines");
-    let input_submit_message = $(element).find("#input_submit_message");
-    let submit_message = $(element).find("#submit_message");
-    let input_display_message = $(element).find("#input_display_message");
-    let display_message = $(element).find("#display_message");
-    let input_no_answer_message = $(element).find("#input_no_answer_message");
-    let no_answer_message = $(element).find("#no_answer_message");
-    let input_min_questions = $(element).find("#input_min_questions");
-    let min_questions = $(element).find("#min_questions");
-    let input_min_characters = $(element).find("#input_min_characters");
-    let min_characters = $(element).find("#min_characters");
-    let input_min_words = $(element).find("#input_min_words");
-    let min_words = $(element).find("#min_words");
     let input_enable_download = $(element).find("#input_enable_download");
     let enable_download = $(element).find("#enable_download");
     let input_download_name = $(element).find("#input_download_name");
@@ -25,672 +8,139 @@ function IterativeXBlockStudio(runtime, element, settings) {
     var content_ui;
     let content_backend  = settings.content
 
-    function validateContent(content) {
-        let error_msg = "";
-        let questions = [];
-        let answers = [];
-        for (let i = 1; i <= content["n_rows"]; i++) {
-            let input_content_row = $(element).find("#input_content_row_" + i);
-            let input_content_cells = input_content_row.find(".iterative-content-studio-input");
-            for (let j = 0; j < content[i.toString()]["n_cells"]; j++) {
-                let cell = input_content_cells.eq(j);
-                let cell_type = cell.find(".iterative-content-type").val();
-                let cell_input = cell.find("input");
-                if (cell_type === "text") {
-                    if (cell_input.val().length > 1000) {
-                        error_msg = "El texto debe tener menos de 1000 caracteres en la fila " + i + ", celda " + (j + 1) + ".";
-                        break;
-                    }
-                } else if (cell_type === "question") {
-                    if (cell_input.val() === "") {
-                        error_msg = "Por favor proporcione un ID de pregunta en la fila " + i + ", celda " + (j + 1) + ".";
-                        break;
-                    }
-                    if (cell_input.val().length > 30 || cell_input.val().length < 3 || !cell_input.val().match(/^[a-zA-Z0-9_]+$/)) {
-                        error_msg = "El ID de pregunta debe tener entre 3 y 30 caracteres, y solo puede contener letras, números, y guiones bajos (fila " + i + ", celda " + (j + 1) + ").";
-                        break;
-                    }
-                    if (questions.includes(cell_input.val())) {
-                        error_msg = "El ID de pregunta " + cell_input.val() + " ya ha sido usado para definir otra pregunta en este Iterative XBlock.";
-                        break;
-                    }
-                    questions.push(cell_input.val());
-                } else if (cell_type === "answer") {
-                    if (cell_input.val().length > 30 || cell_input.val().length < 3 || !cell_input.val().match(/^[a-zA-Z0-9_]+$/)) {
-                        error_msg = "El ID de pregunta debe tener entre 3 y 30 caracteres, y solo puede contener letras, números, y guiones bajos (fila " + i + ", celda " + (j + 1) + ").";
-                        break;
-                    }
-                    answers.push(cell_input.val());
-                } else {
-                    error_msg = "Por favor seleccione un tipo de contenido para la fila " + i + ", celda " + (j + 1) + ".";
-                    break;
-                }
-            }
-            if (error_msg !== "") {
-                break;
-            }
-        }
-        for(let q of questions) {
-            if (answers.includes(q)) {
-                error_msg = "No se puede obtener la respuesta de una pregunta definida en este mismo Iterative XBlock (" + q + ").";
-                break;
-            }
-        }
-        return error_msg;
-    }
-
-    function validate(data) {
-        let questionIds = getQuestionIDs(data["content"]);
-        let answerIds = getAnswerIDs(data["content"]);
-        if (data["title"].length > 200) {
-            return "El título debe tener un máximo de 200 caracteres."
-        }
-        if (data["style"] == null) {
-            return "Por favor seleccione un estilo."
-        }
-        if (data["gridlines"] == null) {
-            return "Por favor seleccione si desea mostrar las líneas de la cuadrícula o no."
-        }
-        if (questionIds.length !== 0) {
-            if (data["submit_message"] === "") {
-                return "Por favor proporcione un mensaje para el botón de envío."
-            }
-            if (data["submit_message"].length > 30) {
-                return "El mensaje del botón de envío debe tener menos de 30 caracteres."
-            }
-            if (data["min_questions"] === "") {
-                return "Por favor proporcione un número mínimo de preguntas que deben ser respondidas."
-            }
-            if (isNaN(data["min_questions"])) {
-                return "El número mínimo de preguntas debe ser un número."
-            }
-            if (data["min_questions"] > getQuestionIDs(data["content"]).length) {
-                return "El número mínimo de preguntas no puede ser mayor que el número de preguntas definidas."
-            }
-            if (parseInt(data["min_questions"]) < 0) {
-                return "El número mínimo de preguntas debe ser un número positivo."
-            }
-            if (data["min_characters"] === "") {
-                return "Por favor proporcione un número mínimo de caracteres para las respuestas."
-            }
-            if (isNaN(data["min_characters"])) {
-                return "El número mínimo de caracteres debe ser un número."
-            }
-            if (parseInt(data["min_characters"]) < 0) {
-                return "El número mínimo de caracteres debe ser un número positivo."
-            }
-            if (data["min_words"] === "") {
-                return "Por favor proporcione un número mínimo de palabras para las respuestas."
-            }
-            if (isNaN(data["min_words"])) {
-                return "El número mínimo de palabras debe ser un número."
-            }
-            if (parseInt(data["min_words"]) < 0) {
-                return "El número mínimo de palabras debe ser un número positivo."
-            }
-        } else {
-            if (data["enable_download"] == null) {
-                return "Por favor seleccione si desea habilitar la descarga de respuestas en PDF, o no."
-            }
-        }
-        if (answerIds.length !== 0) {
-            if (data["display_message"] === "") {
-                return "Por favor proporcione un mensaje para el botón que despliega respuestas anteriores."
-            }
-            if (data["display_message"].length > 30) {
-                return "El mensaje del botón que despliega respuestas anteriores debe tener un máximo de 30 caracteres."
-            }
-            if (data["no_answer_message"] === "") {
-                return "Por favor proporcione un mensaje para cuando no hay respuestas anteriores."
-            }
-            if (data["no_answer_message"].length > 100) {
-                return "El mensaje para cuando no hay respuestas anteriores debe tener un máximo de 100 caracteres."
-            }
-        }
-        return validateContent(data["content"]);
-    }
-
-    function applyContent(content) {
-        for (let i = 1; i <= content["n_rows"]; i++) {
-            let input_content_row = $(element).find("#input_content_row_" + i);
-            let input_content_cells = input_content_row.find(".iterative-content-studio-input");
-            for (let j = 1; j <= content[i.toString()]["n_cells"]; j++) {
-                let cell = input_content_cells.eq(j-1);
-                let cell_type = cell.find(".iterative-content-type");
-                let cell_input = cell.find("input");
-                let cell_text_left = cell.find(".fa-align-left");
-                let cell_text_center = cell.find(".fa-align-center");
-                let cell_text_right = cell.find(".fa-align-right");
-                let cell_text_justify = cell.find(".fa-align-justify");
-                let cell_text_bold = cell.find(".fa-bold");
-                let cell_text_italic = cell.find(".fa-italic");
-                let cell_text_underline = cell.find(".fa-underline");
-                let cell_text_strikethrough = cell.find(".fa-strikethrough");                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
-                cell_type.val(content[i.toString()][j.toString()]["type"]);
-                cell_input.val(content[i.toString()][j.toString()]["content"]);
-                if(content[i.toString()][j.toString()]["alignment"] === "left") {
-                    cell_text_left.addClass("icon-chosen");
-                    cell_text_center.removeClass("icon-chosen");
-                    cell_text_right.removeClass("icon-chosen");
-                    cell_text_justify.removeClass("icon-chosen");
-                } else if(content[i.toString()][j.toString()]["alignment"] === "center") {
-                    cell_text_left.removeClass("icon-chosen");
-                    cell_text_center.addClass("icon-chosen");
-                    cell_text_right.removeClass("icon-chosen");
-                    cell_text_justify.removeClass("icon-chosen");
-                } else if(content[i.toString()][j.toString()]["alignment"] === "right") {
-                    cell_text_left.removeClass("icon-chosen");
-                    cell_text_center.removeClass("icon-chosen");
-                    cell_text_right.addClass("icon-chosen");
-                    cell_text_justify.removeClass("icon-chosen");
-                } else {
-                    cell_text_left.removeClass("icon-chosen");
-                    cell_text_center.removeClass("icon-chosen");
-                    cell_text_right.removeClass("icon-chosen");
-                    cell_text_justify.addClass("icon-chosen");
-                }
-                if(content[i.toString()][j.toString()]["bold"]) {
-                    cell_text_bold.addClass("icon-chosen");
-                } else {
-                    cell_text_bold.removeClass("icon-chosen");
-                }
-                if(content[i.toString()][j.toString()]["italic"]) {
-                    cell_text_italic.addClass("icon-chosen");
-                } else {
-                    cell_text_italic.removeClass("icon-chosen");
-                }
-                if(content[i.toString()][j.toString()]["underline"]) {
-                    cell_text_underline.addClass("icon-chosen");
-                } else {
-                    cell_text_underline.removeClass("icon-chosen");
-                }
-                if(content[i.toString()][j.toString()]["strikethrough"]) {
-                    cell_text_strikethrough.addClass("icon-chosen");
-                } else {
-                    cell_text_strikethrough.removeClass("icon-chosen");
-                }
-                if (content[i.toString()][j.toString()]["type"] === "text") {
-                    cell_input.attr("placeholder", "Ingrese texto aquí...").removeAttr("disabled");
-                } else if (content[i.toString()][j.toString()]["type"] === "question") {
-                    cell_input.attr("placeholder", "ID de pregunta").removeAttr("disabled");
-                } else if (content[i.toString()][j.toString()]["type"] === "answer") {
-                    cell_input.attr("placeholder", "ID de pregunta").removeAttr("disabled");
-                } else {
-                    cell_input.attr("placeholder", "Por favor seleccione una opción...").attr("disabled", true);
-                }
-                cell.removeAttr("hidden");
-            }
-            input_content_row.removeAttr("hidden");
-        }
-        content_ui = JSON.parse(JSON.stringify(content));
-        handleConditionalInputs();
-    }
-
-    function handleIcons(row, cell, icon) {
-        let container = $(element).find(".content_" + row + "_" + cell);
-        if (icon === "align-left") {
-            $(container).find(".fa-align-left").addClass("icon-chosen");
-            $(container).find(".fa-align-center").removeClass("icon-chosen");
-            $(container).find(".fa-align-right").removeClass("icon-chosen");
-            $(container).find(".fa-align-justify").removeClass("icon-chosen");
-        } else if (icon === "align-center") {
-            $(container).find(".fa-align-left").removeClass("icon-chosen");
-            $(container).find(".fa-align-center").addClass("icon-chosen");
-            $(container).find(".fa-align-right").removeClass("icon-chosen");
-            $(container).find(".fa-align-justify").removeClass("icon-chosen");
-        } else if (icon === "align-right") {
-            $(container).find(".fa-align-left").removeClass("icon-chosen");
-            $(container).find(".fa-align-center").removeClass("icon-chosen");
-            $(container).find(".fa-align-right").addClass("icon-chosen");
-            $(container).find(".fa-align-justify").removeClass("icon-chosen");
-        } else if (icon === "align-justify") {
-            $(container).find(".fa-align-left").removeClass("icon-chosen");
-            $(container).find(".fa-align-center").removeClass("icon-chosen");
-            $(container).find(".fa-align-right").removeClass("icon-chosen");
-            $(container).find(".fa-align-justify").addClass("icon-chosen");
-        } else {
-            if ($(container).find(".fa-" + icon).hasClass("icon-chosen")) {
-                $(container).find(".fa-" + icon).removeClass("icon-chosen");
-            } else {
-                $(container).find(".fa-" + icon).addClass("icon-chosen");
-            
-            }
-        }
-    }
-
-    function getAnswerIDs(content) {
-        let answerIds = [];
-        for (let i = 1; i <= content["n_rows"]; i++) {
-            for (let j = 1; j <= content[i.toString()]["n_cells"]; j++) {
-                let cell = content[i.toString()][j.toString()];
-                if (cell["type"] === "answer") {
-                    answerIds.push(cell["content"]);
-                }
-            }
-        }
-        return answerIds;
-    }
-
-    function getQuestionIDs(content) {
-        let questionIds = [];
-        for (let i = 1; i <= content["n_rows"]; i++) {
-            for (let j = 1; j <= content[i.toString()]["n_cells"]; j++) {
-                let cell = content[i.toString()][j.toString()];
-                if (cell["type"] === "question") {
-                    questionIds.push(cell["content"]);
-                }
-            }
-        }
-        return questionIds;
-    }
-
-    function addNewCell(row) {
-        if(content_ui[row]["n_cells"] < 4) {
-            let input_content_row = $(element).find("#input_content_row_" + row);
-            let input_content_cells = input_content_row.find(".iterative-content-studio-input");
-            let nth_element = content_ui[row]["n_cells"];
-            input_content_cells.eq(nth_element).removeAttr("hidden");
-            input_content_cells.eq(nth_element).find("input").val("");
-            input_content_cells.eq(nth_element).find("input").attr("placeholder", "Por favor seleccione una opción...").attr("disabled", true);
-            input_content_cells.eq(nth_element).find("select").val("none");
-            let justifyIcon = input_content_cells.eq(nth_element).find(".fa-align-justify");
-            justifyIcon.addClass("icon-chosen");
-            content_ui[row]["n_cells"] += 1;
-            content_ui[row][content_ui[row]["n_cells"].toString()] = {
-                "type": "none",
-                "content": "",
-                "alignment": "justify",
-                "bold": false,
-                "italic": false,
-                "underline": false,
-                "strikethrough": false
-            }
-        } else {
-            setStudioWarningMessage("El número máximo de celdas por fila es 4.")
-            setTimeout(function() {
-                setStudioWarningMessage("");
-            }, 3000);
-        }
-    }
-    
-    function removeCell(row) {
-        if(content_ui[row]["n_cells"] > 1) {
-            let input_content_row = $(element).find("#input_content_row_" + row);
-            let input_content_cells = input_content_row.find(".iterative-content-studio-input");
-            let nth_element = content_ui[row]["n_cells"] - 1;
-            input_content_cells.eq(nth_element).attr("hidden", true);
-            input_content_cells.eq(nth_element).find("input").val("");
-            input_content_cells.eq(nth_element).find("input").attr("placeholder", "Por favor seleccione una opción...").attr("disabled", true);
-            input_content_cells.eq(nth_element).find("select").val("none");
-            content_ui[row]["n_cells"] -= 1;
-            delete content_ui[row][content_ui[row]["n_cells"].toString()];
-        } else {
-            removeRow(row);
-        }
-    }
-
-    function addNewRow() {
-        if(content_ui["n_rows"] < 9) {
-            let nth_element = content_ui["n_rows"] + 1;
-            let input_content_row = $(element).find("#input_content_row_" + nth_element);
-            let input_content_cells = input_content_row.find(".iterative-content-studio-input");
-            input_content_cells.eq(0).removeAttr("hidden");
-            input_content_cells.eq(0).find("input").val("");
-            input_content_cells.eq(0).find("input").attr("placeholder", "Por favor seleccione una opción...").attr("disabled", true);
-            input_content_cells.eq(0).find("select").val("none");
-            input_content_cells.eq(0).find(".fa-align-justify").addClass("icon-chosen");
-            input_content_cells.eq(1).removeAttr("hidden");
-            input_content_cells.eq(1).find("input").val("");
-            input_content_cells.eq(1).find("input").attr("placeholder", "Por favor seleccione una opción...").attr("disabled", true);
-            input_content_cells.eq(1).find("select").val("none");
-            input_content_cells.eq(1).find(".fa-align-justify").addClass("icon-chosen");
-            input_content_cells.eq(2).attr("hidden");
-            input_content_cells.eq(2).find("input").val("");
-            input_content_cells.eq(2).find("input").attr("placeholder", "Por favor seleccione una opción...").attr("disabled", true);
-            input_content_cells.eq(2).find("select").val("none");
-            input_content_cells.eq(2).find(".fa-align-justify").addClass("icon-chosen");
-            input_content_cells.eq(3).attr("hidden");
-            input_content_cells.eq(3).find("input").val("");
-            input_content_cells.eq(3).find("input").attr("placeholder", "Por favor seleccione una opción...").attr("disabled", true);
-            input_content_cells.eq(3).find("select").val("none");
-            input_content_cells.eq(3).find(".fa-align-justify").addClass("icon-chosen");
-            input_content_row.removeAttr("hidden");
-            content_ui["n_rows"] += 1;
-            content_ui[nth_element] = {
-                "n_cells": 2,
-                "1": {
-                    "type": "none",
-                    "content": "",
-                    "alignment": "justify",
-                    "bold": false,
-                    "italic": false,
-                    "underline": false,
-                    "strikethrough": false
-                },
-                "2": {
-                    "type": "none",
-                    "content": "",
-                    "alignment": "justify",
-                    "bold": false,
-                    "italic": false,
-                    "underline": false,
-                    "strikethrough": false
-                },
-            }
-        } else {
-            setStudioWarningMessage("El número máximo de filas es 9.")
-            setTimeout(function() {
-                setStudioWarningMessage("");
-            }, 3000);
-        }
-    }
-
-    function removeRow(row) {
-        if (content_ui["n_rows"] > 1) {
-            if (parseInt(row) === content_ui["n_rows"]) {
-                let input_content_row = $(element).find("#input_content_row_" + row);
-                let input_content_cells = input_content_row.find(".iterative-content-studio-input");
-                for (let i = 0; i < 4; i++) {
-                    input_content_cells.eq(i).find("input").val("");
-                    input_content_cells.eq(i).find("input").attr("placeholder", "Por favor seleccione una opción...").attr("disabled", true);
-                    input_content_cells.eq(i).find("select").val("none");
-                    input_content_cells.eq(i).attr("hidden", true);
-                }
-                input_content_row.attr("hidden", true);
-                delete content_ui[content_ui["n_rows"].toString()];
-                content_ui["n_rows"] -= 1;
-            } else {
-                for (let i = parseInt(row)+1; i <= content_ui["n_rows"]; i++) {
-                    let currentRow = $(element).find("#input_content_row_" + i);
-                    let previousRow = $(element).find("#input_content_row_" + (i - 1));
-                    let currentCells = currentRow.find(".iterative-content-studio-input");
-                    let previousCells = previousRow.find(".iterative-content-studio-input");
-                    for(let q = 0; q < 4; q++) {
-                        var cellType = currentCells.eq(q).find("select").val()
-                        if (cellType == null) {
-                            cellType = "none";
-                        }
-                        if (cellType === "") {
-                            cellType = "none";
-                        }
-                        previousCells.eq(q).find("select").val(cellType);
-                        if (cellType === "text") {
-                            previousCells.eq(q).find("input").attr("placeholder", "Ingrese texto aquí...").removeAttr("disabled");
-                        } else if (cellType === "question") {
-                            previousCells.eq(q).find("input").attr("placeholder", "ID de pregunta").removeAttr("disabled");
-                        } else if (cellType === "answer") {
-                            previousCells.eq(q).find("input").attr("placeholder", "ID de pregunta").removeAttr("disabled");
-                        } else {
-                            previousCells.eq(q).find("input").attr("placeholder", "Por favor seleccione una opción...").attr("disabled", true);
-                        }
-                        let cellValue = currentCells.eq(q).find("input").val();
-                        previousCells.eq(q).find("input").val(cellValue);
-                        let cellIcons = currentCells.eq(q).find("i");
-                        let previousIcons = previousCells.eq(q).find("i");
-                        var alignment = "justify";
-                        var bold = false;
-                        var italic = false;
-                        var underline = false;
-                        var strikethrough = false;
-                        for (let k = 0; k < 8; k++) {
-                            let icon = $(cellIcons[k]);
-                            if (icon.hasClass("icon-chosen")) {
-                                if (icon.hasClass("fa-align-left")) {
-                                    alignment = "left";
-                                } else if (icon.hasClass("fa-align-center")) {
-                                    alignment = "center";
-                                } else if (icon.hasClass("fa-align-right")) {
-                                    alignment = "right";
-                                } else if (icon.hasClass("fa-align-justify")) {
-                                    alignment = "justify";
-                                } else if (icon.hasClass("fa-bold")) {
-                                    bold = true;
-                                } else if (icon.hasClass("fa-italic")) {
-                                    italic = true;
-                                } else if (icon.hasClass("fa-underline")) {
-                                    underline = true;
-                                } else if (icon.hasClass("fa-strikethrough")) {
-                                    strikethrough = true;
-                                }
-                            }
-                        }
-                        for (let k = 0; k < 8; k++) {
-                            let icon = $(previousIcons[k]);
-                            if (icon.hasClass("fa-align-left")) {
-                                if (alignment === "left") {
-                                    icon.addClass("icon-chosen");
-                                } else {
-                                    icon.removeClass("icon-chosen");
-                                }
-                            } else if (icon.hasClass("fa-align-center")) {
-                                if (alignment === "center") {
-                                    icon.addClass("icon-chosen");
-                                } else {
-                                    icon.removeClass("icon-chosen");
-                                }
-                            } else if (icon.hasClass("fa-align-right")) {
-                                if (alignment === "right") {
-                                    icon.addClass("icon-chosen");
-                                } else {
-                                    icon.removeClass("icon-chosen");
-                                }
-                            } else if (icon.hasClass("fa-align-justify")) {
-                                if (alignment === "justify") {
-                                    icon.addClass("icon-chosen");
-                                } else {
-                                    icon.removeClass("icon-chosen");
-                                }
-                            } else if (icon.hasClass("fa-bold")) {
-                                if (bold) {
-                                    icon.addClass("icon-chosen");
-                                } else {
-                                    icon.removeClass("icon-chosen");
-                                }
-                            } else if (icon.hasClass("fa-italic")) {
-                                if (italic) {
-                                    icon.addClass("icon-chosen");
-                                } else {
-                                    icon.removeClass("icon-chosen");
-                                }
-                            } else if (icon.hasClass("fa-underline")) {
-                                if (underline) {
-                                    icon.addClass("icon-chosen");
-                                } else {
-                                    icon.removeClass("icon-chosen");
-                                }
-                            } else if (icon.hasClass("fa-strikethrough")) {
-                                if (strikethrough) {
-                                    icon.addClass("icon-chosen");
-                                } else {
-                                    icon.removeClass("icon-chosen");
-                                }
-                            }
-                        }
-                        content_ui[(i-1).toString()][(q+1).toString()] = {
-                            "type": cellType,
-                            "content": cellValue,
-                            "alignment": alignment,
-                            "bold": bold,
-                            "italic": italic,
-                            "underline": underline,
-                            "strikethrough": strikethrough
-                        }
-                        if (q < content_ui[i.toString()]["n_cells"]) {
-                            previousCells.eq(q).removeAttr("hidden", true);
-                        } else {
-                            previousCells.eq(q).attr("hidden", true);
-                        }
-                    }
-                    content_ui[(i-1).toString()]["n_cells"] = content_ui[i.toString()]["n_cells"];
-                    if (i === content_ui["n_rows"]) {
-                        for (let j = 0; j < 4; j++) {
-                            currentCells.eq(j).find("input").val("");
-                            currentCells.eq(j).find("input").attr("placeholder", "Por favor seleccione una opción...").attr("disabled", true);
-                            currentCells.eq(j).find("select").val("none");
-                            currentCells.eq(j).attr("hidden", true);
-                        }
-                        currentRow.attr("hidden", true);
-                    }
-                }
-                delete content_ui[content_ui["n_rows"].toString()];
-                content_ui["n_rows"] -= 1;
-            }
-        } else {
-            setStudioWarningMessage("El número mínimo de filas es 1.")
-            setTimeout(function() {
-                setStudioWarningMessage("");
-            }, 3000);
-        }
-    }
-
-    function makeContentUI() {
-        let content = {
-            "n_rows": content_ui["n_rows"]
-        }
-        for (let i = 1; i <= content_ui["n_rows"]; i++) {
-            content[i.toString()] = {
-                "n_cells": content_ui[i.toString()]["n_cells"]
-            }
-            for (let j = 1; j <= content_ui[i.toString()]["n_cells"]; j++) {
-                let icons = $(element).find(".content_" + i + "_" + j).find("i");
-                var alignment = "justify";
-                var bold = false;
-                var italic = false;
-                var underline = false;
-                var strikethrough = false;
-                for (let k = 0; k < 8; k++) {
-                    let icon = $(icons[k]);
-                    if (icon.hasClass("icon-chosen")) {
-                        if (icon.hasClass("fa-align-left")) {
-                            alignment = "left";
-                        } else if (icon.hasClass("fa-align-center")) {
-                            alignment = "center";
-                        } else if (icon.hasClass("fa-align-right")) {
-                            alignment = "right";
-                        } else if (icon.hasClass("fa-align-justify")) {
-                            alignment = "justify";
-                        } else if (icon.hasClass("fa-bold")) {
-                            bold = true;
-                        } else if (icon.hasClass("fa-italic")) {
-                            italic = true;
-                        } else if (icon.hasClass("fa-underline")) {
-                            underline = true;
-                        } else if (icon.hasClass("fa-strikethrough")) {
-                            strikethrough = true;
-                        }
-                    }
-                }
-                content[i.toString()][j.toString()] = {
-                    "type": $(element).find("#content_type_" + i + "_" + j).val(),
-                    "content": $(element).find("#content_row_" + i + "_" + j).val(),
-                    "alignment": alignment,
-                    "bold": bold,
-                    "italic": italic,
-                    "underline": underline,
-                    "strikethrough": strikethrough
-                }
-            }
-        }
-        return content;
-    }
-
     function setStudioErrorMessage(msg) {
         $(element).find('.studio-error-msg').html(msg);
     }
 
-    function setStudioWarningMessage(msg) {
-        $(element).find('.studio-warning-msg').html(msg);
+    function makeGrid() {
+        let grid = [];
+        for (let i = 1; i <= 10; i++) {
+            let row = [];
+            for (let j = 1; j <= 10; j++) {
+                let inputId = `content-${i}-${j}`;
+                let input = $(`#${inputId}`);
+                row.push(input.val());
+            }
+            grid.push(row);
+        }
+        return grid;
     }
 
-    function handleConditionalInputs() {
-        let content_ui = makeContentUI();
-        let questionIds = getQuestionIDs(content_ui);
-        if (questionIds.length > 0) {
-            min_questions.val(settings.min_questions);
-            input_min_questions.slideDown();
-            min_characters.val(settings.min_characters);
-            input_min_characters.slideDown();
-            min_words.val(settings.min_words);
-            input_min_words.slideDown();
-            no_answer_message.val(settings.no_answer_message);
-            input_no_answer_message.slideDown();
-            submit_message.val(settings.submit_message);
-            input_submit_message.slideDown();
-        } else {
-            min_questions.val(0);
-            min_questions.attr("min", '0');
-            min_questions.attr("max", questionIds.length.toString());
-            input_min_questions.slideUp();
-            min_characters.val(0);
-            input_min_characters.slideUp();
-            min_words.val(0);
-            input_min_words.slideUp();
-            input_no_answer_message.slideUp();
-            input_submit_message.slideUp();
+    function validateGrid(grid) {
+        for (let i = 0; i < grid.length; i++) {
+            for (let j = 0; j < grid[i].length; j++) {
+                let cell = grid[i][j];
+                if (!/^[a-z.]?$/.test(cell)) {
+                    return null;
+                }
+            }
         }
-        let answerIds = getAnswerIDs(content_ui);
-        if (answerIds.length > 0) {
-            enable_download.val(settings.enable_download ? "yes" : "no");
-            input_enable_download.slideDown();
-            download_name.val(settings.download_name);
-            input_download_name.slideDown();
-            display_message.val(settings.display_message);
-            input_display_message.slideDown();
-            no_answer_message.val(settings.no_answer_message);
-            input_no_answer_message.slideDown();
-        } else {
-            enable_download.val("no");
-            input_enable_download.slideUp();
-            download_name.val("");
-            input_download_name.slideUp();
-            display_message.val("");
-            input_display_message.slideUp();
-            no_answer_message.val("");
-            input_no_answer_message.slideUp();
+        const visited = Array.from({ length: 10 }, () => Array(10).fill(false));
+        const validatedLetters = new Set();
+        function isRectangle(i, j, letter) {
+            let minRow = i, maxRow = i, minCol = j, maxCol = j;
+            for (let r = i; r < 10 && grid[r][j] === letter; r++) maxRow = r;
+            for (let c = j; c < 10 && grid[i][c] === letter; c++) maxCol = c;
+            for (let r = minRow; r <= maxRow; r++) {
+                for (let c = minCol; c <= maxCol; c++) {
+                    if (grid[r][c] !== letter || visited[r][c]) {
+                        return false;
+                    }
+                    visited[r][c] = true;
+                }
+            }
+            return true;
+        }
+        for (let i = 0; i < 10; i++) {
+            for (let j = 0; j < 10; j++) {
+                if (/[a-z]/.test(grid[i][j]) && !visited[i][j]) {
+                    let letter = grid[i][j];
+                    if (validatedLetters.has(letter)) {
+                        return null;
+                    }
+                    if (!isRectangle(i, j, letter)) {
+                        return null;
+                    }
+                    validatedLetters.add(letter);
+                }
+            }
+        }
+        for (let i = 0; i < 10; i++) {
+            let usedInRow = grid[i].some(cell => cell !== '');
+            let nextRowsUsed = grid.slice(i + 1).some(row => row.some(cell => cell !== ''));
+            if (!usedInRow && nextRowsUsed) {
+                return null;
+            }
+        }
+        for (let j = 0; j < 10; j++) {
+            let usedInColumn = grid.some(row => row[j] !== '');
+            let nextColumnsUsed = grid.some(row => row.slice(j + 1).some(cell => cell !== ''));
+            if (!usedInColumn && nextColumnsUsed) {
+                return null;
+            }
+        }
+        if (validatedLetters.size === 0) {
+            return null;
+        }
+        return validatedLetters;
+    }
+
+    function makeContentUI() {
+        return {
+            "grid": Array.from({ length: 10 }, () => Array(10).fill("")),
+            "content": {}
         }
     }
 
-    $(element).find(".iterative-content-type").bind('change', function (eventObject) {
-        eventObject.preventDefault();
-        let row = $(this).attr("id").split("_")[2];
-        let cell = $(this).attr("id").split("_")[3];
-        let value = $(this).val();
-        let input = $(element).find("#content_row_" + row + "_" + cell);
-        if (value === "text") {
-            input.attr("placeholder", "Ingrese texto aquí...").removeAttr("disabled");
-        } else if (value === "question") {
-            input.attr("placeholder", "ID de pregunta").removeAttr("disabled");
-        } else if (value === "answer") {
-            input.attr("placeholder", "ID de pregunta").removeAttr("disabled");
-        } else {
-            input.attr("placeholder", "Por favor seleccione una opción...").attr("disabled", true);
+    function applyContent(content) {
+        for (let i = 0; i < content.length; i++) {
+            for (let j = 0; j < content[i].length; j++) {
+                let inputId = `content-${i + 1}-${j + 1}`;
+                $(`#${inputId}`).val(content[i][j]);
+            }
         }
-        handleConditionalInputs();
-    });
+    }
 
-    $(element).find(".content-cell-new").bind('click', function (eventObject) {
+    function displayCellsInputs(letters) {
+        let container = $(element).find(`.settings-list`);
+        for (let letter of letters) {
+            let letterContainer = $(`<li id="input_cell_${letter}" class="field comp-setting-entry is-set iterative-content-row"></li>`);
+            let wrapper = $(`<div class="wrapper-comp-setting"></div>`);
+            let label = $(`<label class="label setting-label" for="cell_${letter}">Celda ${letter}</label>`);
+            wrapper.append(label);
+            let inputsContainer = $(`<div class="inputs-container"></div>`);
+            let typeInput = $(`<select id="cell_${letter}_type" class="setting-select-input cell_${letter}_type"></select>`);
+            typeInput.append($(`<option value="none">Seleccione una opción...</option>`));
+            typeInput.append($(`<option value="text">Texto</option>`));
+            typeInput.append($(`<option value="iframe">Iframe</option>`));
+            typeInput.append($(`<option value="question">Pregunta</option>`));
+            typeInput.append($(`<option value="answer">Respuesta</option>`));
+            inputsContainer.append(typeInput);
+            wrapper.append(inputsContainer);
+            letterContainer.append(wrapper);
+            container.append(letterContainer);
+        }
+    }
+
+    $(element).find('.apply-button').bind('click', function (eventObject) {
         eventObject.preventDefault();
-        let row = $(this).attr("id").split("_")[2];
-        addNewCell(row);
+        setStudioErrorMessage("");
+        let inputValues = {};
+        $(element).find('.input-box').each(function () {
+            let id = $(this).attr('id').replace('content-', '');
+            let value = $(this).val();
+            inputValues[id] = value;
+        });
+        let grid = makeGrid();
+        let letters = validateGrid(grid);
+        if (letters == null) {
+            setStudioErrorMessage("Grilla inválida. Por favor, verifique que las letras estén en rectángulos y que no haya letras repetidas, ni filas o columnas vacías antes de filas o columnas con letras.");
+        } else {
+            displayCellsInputs(letters);
+        }
+        console.log(letters);
+        console.log(grid)
     });
-
-    $(element).find(".content-cell-delete").bind('click', function (eventObject) {
-        eventObject.preventDefault();
-        let row = $(this).attr("id").split("_")[2];
-        removeCell(row);
-    });
-
-    $(element).find(".new-row-button").bind('click', function (eventObject) {
-        eventObject.preventDefault();
-        addNewRow();
-    });
-
-    $(element).find(".content-row-delete").bind('click', function (eventObject) {
-        eventObject.preventDefault();
-        let row = $(this).attr("id").split("_")[2];
-        removeRow(row);
-    });
-
 
     $(element).find('.save-button').bind('click', function (eventObject) {
         eventObject.preventDefault();
@@ -707,15 +157,6 @@ function IterativeXBlockStudio(runtime, element, settings) {
         });
         var data = {
             title: title.val(),
-            style: style.val(),
-            gridlines: gridlines.val(),
-            content: content_ui,
-            submit_message: submit_message.val(),
-            display_message: display_message.val(),
-            no_answer_message: no_answer_message.val(),
-            min_questions: min_questions.val(),
-            min_characters: min_characters.val(),
-            min_words: min_words.val(),
             enable_download: enable_download.val(),
             download_name: download_name.val(),
             new_questions: newQuestions,
@@ -742,39 +183,13 @@ function IterativeXBlockStudio(runtime, element, settings) {
         }
     });
 
-    $(element).find('i').bind('click', function (eventObject) {
-        eventObject.preventDefault();
-        let icon = $(this).attr("class").split(" ")[1].split("fa-")[1];
-        let row = $(this).parent().parent().attr("class").split(" ")[1].split("_")[1];
-        let cell = $(this).parent().parent().attr("class").split(" ")[1].split("_")[2];
-        handleIcons(row, cell, icon);
-    });
-
     $(element).find('.cancel-button').bind('click', function (eventObject) {
         eventObject.preventDefault();
         runtime.notify('cancel', {});
     });
     
     function onLoad() {
-        input_title.removeAttr("hidden");
-        input_style.removeAttr("hidden");
-        input_gridlines.removeAttr("hidden");
-        input_submit_message.removeAttr("hidden");
-        input_display_message.removeAttr("hidden");
-        input_no_answer_message.removeAttr("hidden");
-        input_min_questions.removeAttr("hidden");
-        input_min_characters.removeAttr("hidden");
-        input_min_words.removeAttr("hidden");
         title.val(settings.title);
-        style.val(settings.style);
-        gridlines.val(settings.gridlines ? "yes" : "no");
-        submit_message.val(settings.submit_message);
-        display_message.val(settings.display_message);
-        no_answer_message.val(settings.no_answer_message);
-        min_questions.val(settings.min_questions);
-        min_characters.val(settings.min_characters);
-        min_words.val(settings.min_words);
-
         applyContent(content_backend);
     }
     onLoad();

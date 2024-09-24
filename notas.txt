@@ -1,9 +1,0 @@
-docker compose down && cd ../build/edx-staging/ && docker build . -t edx-staging:koa --target base && cd ../../sandbox && make migrate && make assets && cd ../self-certificate && docker compose up -d --force-recreate && cd ../sandbox && docker compose up -d
-
-optimize:
-- enhance pdf document
-- more tests
-- replace numbering at templates with dynamic 
-
-check:
-- export and import of course works as expected

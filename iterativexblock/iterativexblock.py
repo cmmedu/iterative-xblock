@@ -37,61 +37,6 @@ class IterativeXBlock(XBlock):
         help="Specifies the module's title. If this field is left blank, no title will be displayed."
     )
 
-    style = String(
-        default="basic",
-        values=["basic", "red", "blackwhite", "nostyle"],
-        scope=Scope.settings,
-        help="Determines the module's appearance. A variety of stylesheets are available to choose from."
-    )
-
-    gridlines = Boolean(
-        default=False,
-        scope=Scope.settings,
-        help="Determines whether the module's table will have gridlines or not."
-    )
-
-    no_answer_message = String(
-        default="You have not answered this question yet.",
-        scope=Scope.settings,
-        help="Message to be shown to the user when a question has not been answered yet."
-    )
-
-    submit_message = String(
-        default="Submit",
-        scope=Scope.settings,
-        help="Message to be shown in the submit button."
-    )
-
-    submitted_message = String(
-        default="Done",
-        scope=Scope.settings,
-        help="Message to be shown at the submit button when they have already submitted the activity."
-    )
-
-    display_message = String(
-        default="Display",
-        scope=Scope.settings,
-        help="Message to be shown at the button to display a previous answer."
-    )
-
-    min_questions = Integer(
-        default=0,
-        scope=Scope.settings,
-        help="Sets the minimum number of questions a student is required to answer. Setting this value to 0 mandates that all questions must be answered. This option is accessible only when at least one question is defined."
-    )
-
-    min_characters = Integer(
-        default=0,
-        scope=Scope.settings,
-        help="Specifies the minimum character count required for an answer to be deemed valid. A setting of 0 indicates no minimum requirement."
-    )
-
-    min_words = Integer(
-        default=0,
-        scope=Scope.settings,
-        help="Specifies the minimum word count required for an answer to be deemed valid. A setting of 0 indicates no minimum requirement."
-    )
-
     enable_download = Boolean(
         default=False,
         scope=Scope.settings,
@@ -106,21 +51,13 @@ class IterativeXBlock(XBlock):
 
     content = Dict(
         default={
-            "n_rows": 1,
-            "1": {
-                "n_cells": 2,
-                "1": {
-                    "type": "none",
-                    "content": ""
-                },
-                "2": {
-                    "type": "none",
-                    "content": ""
-                }
-            }
+            "grid": [
+                ["" for i in range(10)] for j in range(10)
+            ],
+            "content": {}
         },
         scope=Scope.settings,
-        help="Content of this XBlock: texts, questions and references to previous answers."
+        help="Content of this XBlock: texts, questions, iframes, and references to previous answers."
     )
 
     student_answers = Dict(
@@ -256,15 +193,9 @@ class IterativeXBlock(XBlock):
         id_student = self.scope_ids.user_id
         context = {
             "title": self.title,
-            "style": self.style,
-            "gridlines": self.gridlines,
             'location': str(self.location).split('@')[-1],
             'configured': self.configured,
             'content': self.content,
-            'no_answer_message': self.no_answer_message,
-            'submit_message': self.submit_message,
-            'submitted_message': self.submitted_message,
-            'display_message': self.display_message,
             'enable_download': self.enable_download,
             'show_submit_button': len(self.get_ids("question")) > 0
         }
@@ -313,17 +244,12 @@ class IterativeXBlock(XBlock):
             template,
             initialize_js_func='IterativeXBlockStudent',
             additional_css=[
-                'public/css/iterativexblock_{}.css'.format(self.style),
                 'public/css/iterativexblock.css'
             ],
             additional_js=[
                 'public/js/iterativexblock_student.js'
             ],
             settings={
-                "no_answer_message": self.no_answer_message,
-                "min_questions": self.min_questions,
-                "min_characters": self.min_characters,
-                "min_words": self.min_words,
                 "answers": answers,
                 "completed": completed,
                 "indicator_class": self.get_indicator_class(),
@@ -373,9 +299,6 @@ class IterativeXBlock(XBlock):
             'location': str(self.location).split('@')[-1],
             'configured': self.configured,
             'content': self.content,
-            'style': self.style,
-            'gridlines': self.gridlines,
-            'no_answer_message': self.no_answer_message,
             'answers': answers,
             'show_student_select': show_student_select,
             'enable_download': self.enable_download
@@ -389,14 +312,12 @@ class IterativeXBlock(XBlock):
             template,
             initialize_js_func='IterativeXBlockInstructor',
             additional_css=[
-                'public/css/iterativexblock_{}.css'.format(self.style),
                 'public/css/iterativexblock.css'
             ],
             additional_js=[
                 'public/js/iterativexblock_instructor.js'
             ],
             settings={
-                "no_answer_message": self.no_answer_message,
                 "answers": answers,
                 "content": self.content,
                 "title": self.title,
@@ -426,17 +347,8 @@ class IterativeXBlock(XBlock):
             settings={
                 "content": self.content,
                 "title": self.title,
-                "style": self.style,
-                "gridlines": self.gridlines,
-                "no_answer_message": self.no_answer_message,
-                "submit_message": self.submit_message,
-                "submitted_message": self.submitted_message,
-                "display_message": self.display_message,
                 "enable_download": self.enable_download,
-                "download_name": self.download_name,
-                "min_questions": self.min_questions,
-                "min_characters": self.min_characters,
-                "min_words": self.min_words
+                "download_name": self.download_name
             }
         )
         return frag
@@ -447,9 +359,7 @@ class IterativeXBlock(XBlock):
             "title": self.title,
             'location': str(self.location).split('@')[-1],
             'configured': self.configured,
-            "content": self.content,
-            "style": self.style,
-            "gridlines": self.gridlines
+            "content": self.content
         }
         template = loader.render_django_template(
             'public/html/iterativexblock_author.html',
@@ -460,7 +370,6 @@ class IterativeXBlock(XBlock):
             template,
             initialize_js_func='IterativeXBlockAuthor',
             additional_css=[
-                'public/css/iterativexblock_{}.css'.format(self.style),
                 'public/css/iterativexblock.css'
             ],
             additional_js=[
@@ -522,15 +431,6 @@ class IterativeXBlock(XBlock):
                 deleted_question.delete()
         self.content = data.get('content')
         self.title = data.get('title')
-        self.style = data.get('style')
-        self.gridlines = data.get('gridlines') == "yes"
-        self.no_answer_message = data.get('no_answer_message')
-        self.submit_message = data.get('submit_message')
-        self.submitted_message = data.get('submitted_message')
-        self.display_message = data.get('display_message')
-        self.min_questions = data.get('min_questions')
-        self.min_characters = data.get('min_characters')
-        self.min_words = data.get('min_words')
         self.enable_download = data.get('enable_download') == "yes"
         self.download_name = data.get('download_name')
         return {'result': 'success'}

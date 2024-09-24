@@ -1,846 +1,155 @@
 <div class="wrapper-comp-settings is-active editor-with-buttons" id="settings-tab">
+    <style>
+        .input-box {
+            width: 50px !important;
+            margin-bottom: 10px !important;
+            min-width: 0 !important;
+            height: 30px !important;
+        }
+        .centered {
+            text-align: center !important;
+        }
+    </style>
     <ul class="list-input settings-list">
-        <li id="input_content_row_1" class="field comp-setting-entry is-set iterative-content-row">
-            <div class="wrapper-comp-setting">
-                <label class="label setting-label">Fila 1</label>
-                <div class="iterative-content-studio-input-container">
-                    <div class="iterative-content-studio-input content_1_1">
-                        <select class="iterative-content-type" id="content_type_1_1">
-                            <option value="none" selected disabled>Seleccione una opción...</option>
-                            <option value="text">Texto fijo</option>
-                            <option value="question">Pregunta</option>
-                            <option value="answer">Respuesta de pregunta anterior</option>
-                        </select>
-                        <input class="input setting-input" name="content_row_1_1" id="content_row_1_1" value="" disabled placeholder="Por favor seleccione una opción..."type="text" />
-                        <div class="iterative-content-iconset">
-                            <i class="fa fa-align-left"></i>
-                            <i class="fa fa-align-center"></i>
-                            <i class="fa fa-align-right"></i>
-                            <i class="fa fa-align-justify"></i>
-                            <i class="fa fa-bold"></i>
-                            <i class="fa fa-italic"></i>
-                            <i class="fa fa-underline"></i>
-                            <i class="fa fa-strikethrough"></i>
-                        </div>
-                    </div>
-                    <div class="iterative-content-studio-input content_1_2">
-                        <select class="iterative-content-type" id="content_type_1_2">
-                            <option value="none" selected disabled>Seleccione una opción...</option>
-                            <option value="text">Texto fijo</option>
-                            <option value="question">Pregunta</option>
-                            <option value="answer">Respuesta de pregunta anterior</option>
-                        </select>
-                        <input class="input setting-input" name="content_row_1_2" id="content_row_1_2" value="" disabled placeholder="Por favor seleccione una opción..."type="text" />
-                        <div class="iterative-content-iconset">
-                            <i class="fa fa-align-left"></i>
-                            <i class="fa fa-align-center"></i>
-                            <i class="fa fa-align-right"></i>
-                            <i class="fa fa-align-justify"></i>
-                            <i class="fa fa-bold"></i>
-                            <i class="fa fa-italic"></i>
-                            <i class="fa fa-underline"></i>
-                            <i class="fa fa-strikethrough"></i>
-                        </div>
-                    </div>
-                    <div class="iterative-content-studio-input content_1_3" hidden>
-                        <select class="iterative-content-type" id="content_type_1_3">
-                            <option value="none" selected disabled>Seleccione una opción...</option>
-                            <option value="text">Texto fijo</option>
-                            <option value="question">Pregunta</option>
-                            <option value="answer">Respuesta de pregunta anterior</option>
-                        </select>
-                        <input class="input setting-input" name="content_row_1_3" id="content_row_1_3" value="" disabled placeholder="Por favor seleccione una opción..."type="text" />
-                        <div class="iterative-content-iconset">
-                            <i class="fa fa-align-left"></i>
-                            <i class="fa fa-align-center"></i>
-                            <i class="fa fa-align-right"></i>
-                            <i class="fa fa-align-justify"></i>
-                            <i class="fa fa-bold"></i>
-                            <i class="fa fa-italic"></i>
-                            <i class="fa fa-underline"></i>
-                            <i class="fa fa-strikethrough"></i>
-                        </div>
-                    </div>
-                    <div class="iterative-content-studio-input content_1_4" hidden>
-                        <select class="iterative-content-type" id="content_type_1_4">
-                            <option value="none" selected disabled>Seleccione una opción...</option>
-                            <option value="text">Texto fijo</option>
-                            <option value="question">Pregunta</option>
-                            <option value="answer">Respuesta de pregunta anterior</option>
-                        </select>
-                        <input class="input setting-input" name="content_row_1_4" id="content_row_1_4" value="" disabled placeholder="Por favor seleccione una opción..."type="text" />
-                        <div class="iterative-content-iconset">
-                            <i class="fa fa-align-left"></i>
-                            <i class="fa fa-align-center"></i>
-                            <i class="fa fa-align-right"></i>
-                            <i class="fa fa-align-justify"></i>
-                            <i class="fa fa-bold"></i>
-                            <i class="fa fa-italic"></i>
-                            <i class="fa fa-underline"></i>
-                            <i class="fa fa-strikethrough"></i>
-                        </div>
-                    </div>    
-                </div>
-                <div class="iterative-xblock-span-container">
-                    <span class="content-cell-new" id="content_row_1_new_cell">Nueva celda</span>
-                    <span class="content-cell-delete" id="content_row_1_delete_cell">Quitar celda</span>
-                    <span class="content-row-delete" id="content_row_1_delete_row">Quitar fila</span>
-                </div>
-            </div>
-        </li>
-        <li id="input_content_row_2" class="field comp-setting-entry is-set iterative-content-row" hidden>
-            <div class="wrapper-comp-setting">
-                <label class="label setting-label">Fila 2</label>
-                <div class="iterative-content-studio-input-container">
-                    <div class="iterative-content-studio-input content_2_1">
-                        <select class="iterative-content-type" id="content_type_2_1">
-                            <option value="none" selected disabled>Seleccione una opción...</option>
-                            <option value="text">Texto fijo</option>
-                            <option value="question">Pregunta</option>
-                            <option value="answer">Respuesta de pregunta anterior</option>
-                        </select>
-                        <input class="input setting-input" name="content_row_2_1" id="content_row_2_1" value="" disabled placeholder="Por favor seleccione una opción..."type="text" />
-                        <div class="iterative-content-iconset">
-                            <i class="fa fa-align-left"></i>
-                            <i class="fa fa-align-center"></i>
-                            <i class="fa fa-align-right"></i>
-                            <i class="fa fa-align-justify"></i>
-                            <i class="fa fa-bold"></i>
-                            <i class="fa fa-italic"></i>
-                            <i class="fa fa-underline"></i>
-                            <i class="fa fa-strikethrough"></i>
-                        </div>
-                    </div>
-                    <div class="iterative-content-studio-input content_2_2" hidden>
-                        <select class="iterative-content-type" id="content_type_2_2">
-                            <option value="none" selected disabled>Seleccione una opción...</option>
-                            <option value="text">Texto fijo</option>
-                            <option value="question">Pregunta</option>
-                            <option value="answer">Respuesta de pregunta anterior</option>
-                        </select>
-                        <input class="input setting-input" name="content_row_2_2" id="content_row_2_2" value="" disabled placeholder="Por favor seleccione una opción..."type="text" />
-                        <div class="iterative-content-iconset">
-                            <i class="fa fa-align-left"></i>
-                            <i class="fa fa-align-center"></i>
-                            <i class="fa fa-align-right"></i>
-                            <i class="fa fa-align-justify"></i>
-                            <i class="fa fa-bold"></i>
-                            <i class="fa fa-italic"></i>
-                            <i class="fa fa-underline"></i>
-                            <i class="fa fa-strikethrough"></i>
-                        </div>
-                    </div>
-                    <div class="iterative-content-studio-input content_2_3" hidden>
-                        <select class="iterative-content-type" id="content_type_2_3">
-                            <option value="none" selected disabled>Seleccione una opción...</option>
-                            <option value="text">Texto fijo</option>
-                            <option value="question">Pregunta</option>
-                            <option value="answer">Respuesta de pregunta anterior</option>
-                        </select>
-                        <input class="input setting-input" name="content_row_2_3" id="content_row_2_3" value="" disabled placeholder="Por favor seleccione una opción..."type="text" />
-                        <div class="iterative-content-iconset">
-                            <i class="fa fa-align-left"></i>
-                            <i class="fa fa-align-center"></i>
-                            <i class="fa fa-align-right"></i>
-                            <i class="fa fa-align-justify"></i>
-                            <i class="fa fa-bold"></i>
-                            <i class="fa fa-italic"></i>
-                            <i class="fa fa-underline"></i>
-                            <i class="fa fa-strikethrough"></i>
-                        </div>
-                    </div>
-                    <div class="iterative-content-studio-input content_2_4" hidden>
-                        <select class="iterative-content-type" id="content_type_2_4">
-                            <option value="none" selected disabled>Seleccione una opción...</option>
-                            <option value="text">Texto fijo</option>
-                            <option value="question">Pregunta</option>
-                            <option value="answer">Respuesta de pregunta anterior</option>
-                        </select>
-                        <input class="input setting-input" name="content_row_2_4" id="content_row_2_4" value="" disabled placeholder="Por favor seleccione una opción..."type="text" />
-                        <div class="iterative-content-iconset">
-                            <i class="fa fa-align-left"></i>
-                            <i class="fa fa-align-center"></i>
-                            <i class="fa fa-align-right"></i>
-                            <i class="fa fa-align-justify"></i>
-                            <i class="fa fa-bold"></i>
-                            <i class="fa fa-italic"></i>
-                            <i class="fa fa-underline"></i>
-                            <i class="fa fa-strikethrough"></i>
-                        </div>
-                    </div>    
-                </div>
-                <div class="iterative-xblock-span-container">
-                    <span class="content-cell-new" id="content_row_2_new_cell">Nueva celda</span>
-                    <span class="content-cell-delete" id="content_row_2_delete_cell">Quitar celda</span>
-                    <span class="content-row-delete" id="content_row_2_delete_row">Quitar fila</span>
-                </div>
-            </div>
-        </li>
-        <li id="input_content_row_3" class="field comp-setting-entry is-set iterative-content-row" hidden>
-            <div class="wrapper-comp-setting">
-                <label class="label setting-label">Fila 3</label>
-                <div class="iterative-content-studio-input-container">
-                    <div class="iterative-content-studio-input content_3_1">
-                        <select class="iterative-content-type" id="content_type_3_1">
-                            <option value="none" selected disabled>Seleccione una opción...</option>
-                            <option value="text">Texto fijo</option>
-                            <option value="question">Pregunta</option>
-                            <option value="answer">Respuesta de pregunta anterior</option>
-                        </select>
-                        <input class="input setting-input" name="content_row_3_1" id="content_row_3_1" value="" disabled placeholder="Por favor seleccione una opción..."type="text" />
-                        <div class="iterative-content-iconset">
-                            <i class="fa fa-align-left"></i>
-                            <i class="fa fa-align-center"></i>
-                            <i class="fa fa-align-right"></i>
-                            <i class="fa fa-align-justify"></i>
-                            <i class="fa fa-bold"></i>
-                            <i class="fa fa-italic"></i>
-                            <i class="fa fa-underline"></i>
-                            <i class="fa fa-strikethrough"></i>
-                        </div>
-                    </div>
-                    <div class="iterative-content-studio-input content_3_2" hidden>
-                        <select class="iterative-content-type" id="content_type_3_2">
-                            <option value="none" selected disabled>Seleccione una opción...</option>
-                            <option value="text">Texto fijo</option>
-                            <option value="question">Pregunta</option>
-                            <option value="answer">Respuesta de pregunta anterior</option>
-                        </select>
-                        <input class="input setting-input" name="content_row_3_2" id="content_row_3_2" value="" disabled placeholder="Por favor seleccione una opción..."type="text" />
-                        <div class="iterative-content-iconset">
-                            <i class="fa fa-align-left"></i>
-                            <i class="fa fa-align-center"></i>
-                            <i class="fa fa-align-right"></i>
-                            <i class="fa fa-align-justify"></i>
-                            <i class="fa fa-bold"></i>
-                            <i class="fa fa-italic"></i>
-                            <i class="fa fa-underline"></i>
-                            <i class="fa fa-strikethrough"></i>
-                        </div>
-                    </div>
-                    <div class="iterative-content-studio-input content_3_3" hidden>
-                        <select class="iterative-content-type" id="content_type_3_3">
-                            <option value="none" selected disabled>Seleccione una opción...</option>
-                            <option value="text">Texto fijo</option>
-                            <option value="question">Pregunta</option>
-                            <option value="answer">Respuesta de pregunta anterior</option>
-                        </select>
-                        <input class="input setting-input" name="content_row_3_3" id="content_row_3_3" value="" disabled placeholder="Por favor seleccione una opción..."type="text" />
-                        <div class="iterative-content-iconset">
-                            <i class="fa fa-align-left"></i>
-                            <i class="fa fa-align-center"></i>
-                            <i class="fa fa-align-right"></i>
-                            <i class="fa fa-align-justify"></i>
-                            <i class="fa fa-bold"></i>
-                            <i class="fa fa-italic"></i>
-                            <i class="fa fa-underline"></i>
-                            <i class="fa fa-strikethrough"></i>
-                        </div>
-                    </div>
-                    <div class="iterative-content-studio-input content_3_4" hidden>
-                        <select class="iterative-content-type" id="content_type_3_4">
-                            <option value="none" selected disabled>Seleccione una opción...</option>
-                            <option value="text">Texto fijo</option>
-                            <option value="question">Pregunta</option>
-                            <option value="answer">Respuesta de pregunta anterior</option>
-                        </select>
-                        <input class="input setting-input" name="content_row_3_4" id="content_row_3_4" value="" disabled placeholder="Por favor seleccione una opción..."type="text" />
-                        <div class="iterative-content-iconset">
-                            <i class="fa fa-align-left"></i>
-                            <i class="fa fa-align-center"></i>
-                            <i class="fa fa-align-right"></i>
-                            <i class="fa fa-align-justify"></i>
-                            <i class="fa fa-bold"></i>
-                            <i class="fa fa-italic"></i>
-                            <i class="fa fa-underline"></i>
-                            <i class="fa fa-strikethrough"></i>
-                        </div>
-                    </div>    
-                </div>
-                <div class="iterative-xblock-span-container">
-                    <span class="content-cell-new" id="content_row_3_new_cell">Nueva celda</span>
-                    <span class="content-cell-delete" id="content_row_3_delete_cell">Quitar celda</span>
-                    <span class="content-row-delete" id="content_row_3_delete_row">Quitar fila</span>
-                </div>
-            </div>
-        </li> 
-        <li id="input_content_row_4" class="field comp-setting-entry is-set iterative-content-row" hidden>
-            <div class="wrapper-comp-setting">
-                <label class="label setting-label">Fila 4</label>
-                <div class="iterative-content-studio-input-container">
-                    <div class="iterative-content-studio-input content_4_1">
-                        <select class="iterative-content-type" id="content_type_4_1">
-                            <option value="none" selected disabled>Seleccione una opción...</option>
-                            <option value="text">Texto fijo</option>
-                            <option value="question">Pregunta</option>
-                            <option value="answer">Respuesta de pregunta anterior</option>
-                        </select>
-                        <input class="input setting-input" name="content_row_4_1" id="content_row_4_1" value="" disabled placeholder="Por favor seleccione una opción..."type="text" />
-                        <div class="iterative-content-iconset">
-                            <i class="fa fa-align-left"></i>
-                            <i class="fa fa-align-center"></i>
-                            <i class="fa fa-align-right"></i>
-                            <i class="fa fa-align-justify"></i>
-                            <i class="fa fa-bold"></i>
-                            <i class="fa fa-italic"></i>
-                            <i class="fa fa-underline"></i>
-                            <i class="fa fa-strikethrough"></i>
-                        </div>
-                    </div>
-                    <div class="iterative-content-studio-input content_4_2" hidden>
-                        <select class="iterative-content-type" id="content_type_4_2">
-                            <option value="none" selected disabled>Seleccione una opción...</option>
-                            <option value="text">Texto fijo</option>
-                            <option value="question">Pregunta</option>
-                            <option value="answer">Respuesta de pregunta anterior</option>
-                        </select>
-                        <input class="input setting-input" name="content_row_4_2" id="content_row_4_2" value="" disabled placeholder="Por favor seleccione una opción..."type="text" />
-                        <div class="iterative-content-iconset">
-                            <i class="fa fa-align-left"></i>
-                            <i class="fa fa-align-center"></i>
-                            <i class="fa fa-align-right"></i>
-                            <i class="fa fa-align-justify"></i>
-                            <i class="fa fa-bold"></i>
-                            <i class="fa fa-italic"></i>
-                            <i class="fa fa-underline"></i>
-                            <i class="fa fa-strikethrough"></i>
-                        </div>
-                    </div>
-                    <div class="iterative-content-studio-input content_4_3" hidden>
-                        <select class="iterative-content-type" id="content_type_4_3">
-                            <option value="none" selected disabled>Seleccione una opción...</option>
-                            <option value="text">Texto fijo</option>
-                            <option value="question">Pregunta</option>
-                            <option value="answer">Respuesta de pregunta anterior</option>
-                        </select>
-                        <input class="input setting-input" name="content_row_4_3" id="content_row_4_3" value="" disabled placeholder="Por favor seleccione una opción..."type="text" />
-                        <div class="iterative-content-iconset">
-                            <i class="fa fa-align-left"></i>
-                            <i class="fa fa-align-center"></i>
-                            <i class="fa fa-align-right"></i>
-                            <i class="fa fa-align-justify"></i>
-                            <i class="fa fa-bold"></i>
-                            <i class="fa fa-italic"></i>
-                            <i class="fa fa-underline"></i>
-                            <i class="fa fa-strikethrough"></i>
-                        </div>
-                    </div>
-                    <div class="iterative-content-studio-input content_4_4" hidden>
-                        <select class="iterative-content-type" id="content_type_4_4">
-                            <option value="none" selected disabled>Seleccione una opción...</option>
-                            <option value="text">Texto fijo</option>
-                            <option value="question">Pregunta</option>
-                            <option value="answer">Respuesta de pregunta anterior</option>
-                        </select>
-                        <input class="input setting-input" name="content_row_4_4" id="content_row_4_4" value="" disabled placeholder="Por favor seleccione una opción..."type="text" />
-                        <div class="iterative-content-iconset">
-                            <i class="fa fa-align-left"></i>
-                            <i class="fa fa-align-center"></i>
-                            <i class="fa fa-align-right"></i>
-                            <i class="fa fa-align-justify"></i>
-                            <i class="fa fa-bold"></i>
-                            <i class="fa fa-italic"></i>
-                            <i class="fa fa-underline"></i>
-                            <i class="fa fa-strikethrough"></i>
-                        </div>
-                    </div>    
-                </div>
-                <div class="iterative-xblock-span-container">
-                    <span class="content-cell-new" id="content_row_4_new_cell">Nueva celda</span>
-                    <span class="content-cell-delete" id="content_row_4_delete_cell">Quitar celda</span>
-                    <span class="content-row-delete" id="content_row_4_delete_row">Quitar fila</span>
-                </div>
-            </div>
-        </li>
-        <li id="input_content_row_5" class="field comp-setting-entry is-set iterative-content-row" hidden>
-            <div class="wrapper-comp-setting">
-                <label class="label setting-label">Fila 5</label>
-                <div class="iterative-content-studio-input-container">
-                    <div class="iterative-content-studio-input content_5_1">
-                        <select class="iterative-content-type" id="content_type_5_1">
-                            <option value="none" selected disabled>Seleccione una opción...</option>
-                            <option value="text">Texto fijo</option>
-                            <option value="question">Pregunta</option>
-                            <option value="answer">Respuesta de pregunta anterior</option>
-                        </select>
-                        <input class="input setting-input" name="content_row_5_1" id="content_row_5_1" value="" disabled placeholder="Por favor seleccione una opción..."type="text" />
-                        <div class="iterative-content-iconset">
-                            <i class="fa fa-align-left"></i>
-                            <i class="fa fa-align-center"></i>
-                            <i class="fa fa-align-right"></i>
-                            <i class="fa fa-align-justify"></i>
-                            <i class="fa fa-bold"></i>
-                            <i class="fa fa-italic"></i>
-                            <i class="fa fa-underline"></i>
-                            <i class="fa fa-strikethrough"></i>
-                        </div>
-                    </div>
-                    <div class="iterative-content-studio-input content_5_2" hidden>
-                        <select class="iterative-content-type" id="content_type_5_2">
-                            <option value="none" selected disabled>Seleccione una opción...</option>
-                            <option value="text">Texto fijo</option>
-                            <option value="question">Pregunta</option>
-                            <option value="answer">Respuesta de pregunta anterior</option>
-                        </select>
-                        <input class="input setting-input" name="content_row_5_2" id="content_row_5_2" value="" disabled placeholder="Por favor seleccione una opción..."type="text" />
-                        <div class="iterative-content-iconset">
-                            <i class="fa fa-align-left"></i>
-                            <i class="fa fa-align-center"></i>
-                            <i class="fa fa-align-right"></i>
-                            <i class="fa fa-align-justify"></i>
-                            <i class="fa fa-bold"></i>
-                            <i class="fa fa-italic"></i>
-                            <i class="fa fa-underline"></i>
-                            <i class="fa fa-strikethrough"></i>
-                        </div>
-                    </div>
-                    <div class="iterative-content-studio-input content_5_3" hidden>
-                        <select class="iterative-content-type" id="content_type_5_3">
-                            <option value="none" selected disabled>Seleccione una opción...</option>
-                            <option value="text">Texto fijo</option>
-                            <option value="question">Pregunta</option>
-                            <option value="answer">Respuesta de pregunta anterior</option>
-                        </select>
-                        <input class="input setting-input" name="content_row_5_3" id="content_row_5_3" value="" disabled placeholder="Por favor seleccione una opción..."type="text" />
-                        <div class="iterative-content-iconset">
-                            <i class="fa fa-align-left"></i>
-                            <i class="fa fa-align-center"></i>
-                            <i class="fa fa-align-right"></i>
-                            <i class="fa fa-align-justify"></i>
-                            <i class="fa fa-bold"></i>
-                            <i class="fa fa-italic"></i>
-                            <i class="fa fa-underline"></i>
-                            <i class="fa fa-strikethrough"></i>
-                        </div>
-                    </div>
-                    <div class="iterative-content-studio-input content_5_4" hidden>
-                        <select class="iterative-content-type" id="content_type_5_4">
-                            <option value="none" selected disabled>Seleccione una opción...</option>
-                            <option value="text">Texto fijo</option>
-                            <option value="question">Pregunta</option>
-                            <option value="answer">Respuesta de pregunta anterior</option>
-                        </select>
-                        <input class="input setting-input" name="content_row_5_4" id="content_row_5_4" value="" disabled placeholder="Por favor seleccione una opción..."type="text" />
-                        <div class="iterative-content-iconset">
-                            <i class="fa fa-align-left"></i>
-                            <i class="fa fa-align-center"></i>
-                            <i class="fa fa-align-right"></i>
-                            <i class="fa fa-align-justify"></i>
-                            <i class="fa fa-bold"></i>
-                            <i class="fa fa-italic"></i>
-                            <i class="fa fa-underline"></i>
-                            <i class="fa fa-strikethrough"></i>
-                        </div>
-                    </div>    
-                </div>
-                <div class="iterative-xblock-span-container">
-                    <span class="content-cell-new" id="content_row_5_new_cell">Nueva celda</span>
-                    <span class="content-cell-delete" id="content_row_5_delete_cell">Quitar celda</span>
-                    <span class="content-row-delete" id="content_row_5_delete_row">Quitar fila</span>
-                </div>
-            </div>
-        </li>
-        <li id="input_content_row_6" class="field comp-setting-entry is-set iterative-content-row" hidden>
-            <div class="wrapper-comp-setting">
-                <label class="label setting-label">Fila 6</label>
-                <div class="iterative-content-studio-input-container">
-                    <div class="iterative-content-studio-input content_6_1">
-                        <select class="iterative-content-type" id="content_type_6_1">
-                            <option value="none" selected disabled>Seleccione una opción...</option>
-                            <option value="text">Texto fijo</option>
-                            <option value="question">Pregunta</option>
-                            <option value="answer">Respuesta de pregunta anterior</option>
-                        </select>
-                        <input class="input setting-input" name="content_row_6_1" id="content_row_6_1" value="" disabled placeholder="Por favor seleccione una opción..."type="text" />
-                        <div class="iterative-content-iconset">
-                            <i class="fa fa-align-left"></i>
-                            <i class="fa fa-align-center"></i>
-                            <i class="fa fa-align-right"></i>
-                            <i class="fa fa-align-justify"></i>
-                            <i class="fa fa-bold"></i>
-                            <i class="fa fa-italic"></i>
-                            <i class="fa fa-underline"></i>
-                            <i class="fa fa-strikethrough"></i>
-                        </div>
-                    </div>
-                    <div class="iterative-content-studio-input content_6_2" hidden>
-                        <select class="iterative-content-type" id="content_type_6_2">
-                            <option value="none" selected disabled>Seleccione una opción...</option>
-                            <option value="text">Texto fijo</option>
-                            <option value="question">Pregunta</option>
-                            <option value="answer">Respuesta de pregunta anterior</option>
-                        </select>
-                        <input class="input setting-input" name="content_row_6_2" id="content_row_6_2" value="" disabled placeholder="Por favor seleccione una opción..."type="text" />
-                        <div class="iterative-content-iconset">
-                            <i class="fa fa-align-left"></i>
-                            <i class="fa fa-align-center"></i>
-                            <i class="fa fa-align-right"></i>
-                            <i class="fa fa-align-justify"></i>
-                            <i class="fa fa-bold"></i>
-                            <i class="fa fa-italic"></i>
-                            <i class="fa fa-underline"></i>
-                            <i class="fa fa-strikethrough"></i>
-                        </div>
-                    </div>
-                    <div class="iterative-content-studio-input content_6_3" hidden>
-                        <select class="iterative-content-type" id="content_type_6_3">
-                            <option value="none" selected disabled>Seleccione una opción...</option>
-                            <option value="text">Texto fijo</option>
-                            <option value="question">Pregunta</option>
-                            <option value="answer">Respuesta de pregunta anterior</option>
-                        </select>
-                        <input class="input setting-input" name="content_row_6_3" id="content_row_6_3" value="" disabled placeholder="Por favor seleccione una opción..."type="text" />
-                        <div class="iterative-content-iconset">
-                            <i class="fa fa-align-left"></i>
-                            <i class="fa fa-align-center"></i>
-                            <i class="fa fa-align-right"></i>
-                            <i class="fa fa-align-justify"></i>
-                            <i class="fa fa-bold"></i>
-                            <i class="fa fa-italic"></i>
-                            <i class="fa fa-underline"></i>
-                            <i class="fa fa-strikethrough"></i>
-                        </div>
-                    </div>
-                    <div class="iterative-content-studio-input content_6_4" hidden>
-                        <select class="iterative-content-type" id="content_type_6_4">
-                            <option value="none" selected disabled>Seleccione una opción...</option>
-                            <option value="text">Texto fijo</option>
-                            <option value="question">Pregunta</option>
-                            <option value="answer">Respuesta de pregunta anterior</option>
-                        </select>
-                        <input class="input setting-input" name="content_row_6_4" id="content_row_6_4" value="" disabled placeholder="Por favor seleccione una opción..."type="text" />
-                        <div class="iterative-content-iconset">
-                            <i class="fa fa-align-left"></i>
-                            <i class="fa fa-align-center"></i>
-                            <i class="fa fa-align-right"></i>
-                            <i class="fa fa-align-justify"></i>
-                            <i class="fa fa-bold"></i>
-                            <i class="fa fa-italic"></i>
-                            <i class="fa fa-underline"></i>
-                            <i class="fa fa-strikethrough"></i>
-                        </div>
-                    </div>    
-                </div>
-                <div class="iterative-xblock-span-container">
-                    <span class="content-cell-new" id="content_row_6_new_cell">Nueva celda</span>
-                    <span class="content-cell-delete" id="content_row_6_delete_cell">Quitar celda</span>
-                    <span class="content-row-delete" id="content_row_6_delete_row">Quitar fila</span>
-                </div>
-            </div>
-        </li>
-        <li id="input_content_row_7" class="field comp-setting-entry is-set iterative-content-row" hidden>
-            <div class="wrapper-comp-setting">
-                <label class="label setting-label">Fila 7</label>
-                <div class="iterative-content-studio-input-container">
-                    <div class="iterative-content-studio-input content_7_1">
-                        <select class="iterative-content-type" id="content_type_7_1">
-                            <option value="none" selected disabled>Seleccione una opción...</option>
-                            <option value="text">Texto fijo</option>
-                            <option value="question">Pregunta</option>
-                            <option value="answer">Respuesta de pregunta anterior</option>
-                        </select>
-                        <input class="input setting-input" name="content_row_7_1" id="content_row_7_1" value="" disabled placeholder="Por favor seleccione una opción..."type="text" />
-                        <div class="iterative-content-iconset">
-                            <i class="fa fa-align-left"></i>
-                            <i class="fa fa-align-center"></i>
-                            <i class="fa fa-align-right"></i>
-                            <i class="fa fa-align-justify"></i>
-                            <i class="fa fa-bold"></i>
-                            <i class="fa fa-italic"></i>
-                            <i class="fa fa-underline"></i>
-                            <i class="fa fa-strikethrough"></i>
-                        </div>
-                    </div>
-                    <div class="iterative-content-studio-input content_7_2" hidden>
-                        <select class="iterative-content-type" id="content_type_7_2">
-                            <option value="none" selected disabled>Seleccione una opción...</option>
-                            <option value="text">Texto fijo</option>
-                            <option value="question">Pregunta</option>
-                            <option value="answer">Respuesta de pregunta anterior</option>
-                        </select>
-                        <input class="input setting-input" name="content_row_7_2" id="content_row_7_2" value="" disabled placeholder="Por favor seleccione una opción..."type="text" />
-                        <div class="iterative-content-iconset">
-                            <i class="fa fa-align-left"></i>
-                            <i class="fa fa-align-center"></i>
-                            <i class="fa fa-align-right"></i>
-                            <i class="fa fa-align-justify"></i>
-                            <i class="fa fa-bold"></i>
-                            <i class="fa fa-italic"></i>
-                            <i class="fa fa-underline"></i>
-                            <i class="fa fa-strikethrough"></i>
-                        </div>
-                    </div>
-                    <div class="iterative-content-studio-input content_7_3" hidden>
-                        <select class="iterative-content-type" id="content_type_7_3">
-                            <option value="none" selected disabled>Seleccione una opción...</option>
-                            <option value="text">Texto fijo</option>
-                            <option value="question">Pregunta</option>
-                            <option value="answer">Respuesta de pregunta anterior</option>
-                        </select>
-                        <input class="input setting-input" name="content_row_7_3" id="content_row_7_3" value="" disabled placeholder="Por favor seleccione una opción..."type="text" />
-                        <div class="iterative-content-iconset">
-                            <i class="fa fa-align-left"></i>
-                            <i class="fa fa-align-center"></i>
-                            <i class="fa fa-align-right"></i>
-                            <i class="fa fa-align-justify"></i>
-                            <i class="fa fa-bold"></i>
-                            <i class="fa fa-italic"></i>
-                            <i class="fa fa-underline"></i>
-                            <i class="fa fa-strikethrough"></i>
-                        </div>
-                    </div>
-                    <div class="iterative-content-studio-input content_7_4" hidden>
-                        <select class="iterative-content-type" id="content_type_7_4">
-                            <option value="none" selected disabled>Seleccione una opción...</option>
-                            <option value="text">Texto fijo</option>
-                            <option value="question">Pregunta</option>
-                            <option value="answer">Respuesta de pregunta anterior</option>
-                        </select>
-                        <input class="input setting-input" name="content_row_7_4" id="content_row_7_4" value="" disabled placeholder="Por favor seleccione una opción..."type="text" />
-                        <div class="iterative-content-iconset">
-                            <i class="fa fa-align-left"></i>
-                            <i class="fa fa-align-center"></i>
-                            <i class="fa fa-align-right"></i>
-                            <i class="fa fa-align-justify"></i>
-                            <i class="fa fa-bold"></i>
-                            <i class="fa fa-italic"></i>
-                            <i class="fa fa-underline"></i>
-                            <i class="fa fa-strikethrough"></i>
-                        </div>
-                    </div>    
-                </div>
-                <div class="iterative-xblock-span-container">
-                    <span class="content-cell-new" id="content_row_7_new_cell">Nueva celda</span>
-                    <span class="content-cell-delete" id="content_row_7_delete_cell">Quitar celda</span>
-                    <span class="content-row-delete" id="content_row_7_delete_row">Quitar fila</span>
-                </div>
-            </div>
-        </li>
-        <li id="input_content_row_8" class="field comp-setting-entry is-set iterative-content-row" hidden>
-            <div class="wrapper-comp-setting">
-                <label class="label setting-label">Fila 8</label>
-                <div class="iterative-content-studio-input-container">
-                    <div class="iterative-content-studio-input content_8_1">
-                        <select class="iterative-content-type" id="content_type_8_1">
-                            <option value="none" selected disabled>Seleccione una opción...</option>
-                            <option value="text">Texto fijo</option>
-                            <option value="question">Pregunta</option>
-                            <option value="answer">Respuesta de pregunta anterior</option>
-                        </select>
-                        <input class="input setting-input" name="content_row_8_1" id="content_row_8_1" value="" disabled placeholder="Por favor seleccione una opción..."type="text" />
-                        <div class="iterative-content-iconset">
-                            <i class="fa fa-align-left"></i>
-                            <i class="fa fa-align-center"></i>
-                            <i class="fa fa-align-right"></i>
-                            <i class="fa fa-align-justify"></i>
-                            <i class="fa fa-bold"></i>
-                            <i class="fa fa-italic"></i>
-                            <i class="fa fa-underline"></i>
-                            <i class="fa fa-strikethrough"></i>
-                        </div>
-                    </div>
-                    <div class="iterative-content-studio-input content_8_2" hidden>
-                        <select class="iterative-content-type" id="content_type_8_2">
-                            <option value="none" selected disabled>Seleccione una opción...</option>
-                            <option value="text">Texto fijo</option>
-                            <option value="question">Pregunta</option>
-                            <option value="answer">Respuesta de pregunta anterior</option>
-                        </select>
-                        <input class="input setting-input" name="content_row_8_2" id="content_row_8_2" value="" disabled placeholder="Por favor seleccione una opción..."type="text" />
-                        <div class="iterative-content-iconset">
-                            <i class="fa fa-align-left"></i>
-                            <i class="fa fa-align-center"></i>
-                            <i class="fa fa-align-right"></i>
-                            <i class="fa fa-align-justify"></i>
-                            <i class="fa fa-bold"></i>
-                            <i class="fa fa-italic"></i>
-                            <i class="fa fa-underline"></i>
-                            <i class="fa fa-strikethrough"></i>
-                        </div>
-                    </div>
-                    <div class="iterative-content-studio-input content_8_3" hidden>
-                        <select class="iterative-content-type" id="content_type_8_3">
-                            <option value="none" selected disabled>Seleccione una opción...</option>
-                            <option value="text">Texto fijo</option>
-                            <option value="question">Pregunta</option>
-                            <option value="answer">Respuesta de pregunta anterior</option>
-                        </select>
-                        <input class="input setting-input" name="content_row_8_3" id="content_row_8_3" value="" disabled placeholder="Por favor seleccione una opción..."type="text" />
-                        <div class="iterative-content-iconset">
-                            <i class="fa fa-align-left"></i>
-                            <i class="fa fa-align-center"></i>
-                            <i class="fa fa-align-right"></i>
-                            <i class="fa fa-align-justify"></i>
-                            <i class="fa fa-bold"></i>
-                            <i class="fa fa-italic"></i>
-                            <i class="fa fa-underline"></i>
-                            <i class="fa fa-strikethrough"></i>
-                        </div>
-                    </div>
-                    <div class="iterative-content-studio-input content_8_4" hidden>
-                        <select class="iterative-content-type" id="content_type_8_4">
-                            <option value="none" selected disabled>Seleccione una opción...</option>
-                            <option value="text">Texto fijo</option>
-                            <option value="question">Pregunta</option>
-                            <option value="answer">Respuesta de pregunta anterior</option>
-                        </select>
-                        <input class="input setting-input" name="content_row_8_4" id="content_row_8_4" value="" disabled placeholder="Por favor seleccione una opción..."type="text" />
-                        <div class="iterative-content-iconset">
-                            <i class="fa fa-align-left"></i>
-                            <i class="fa fa-align-center"></i>
-                            <i class="fa fa-align-right"></i>
-                            <i class="fa fa-align-justify"></i>
-                            <i class="fa fa-bold"></i>
-                            <i class="fa fa-italic"></i>
-                            <i class="fa fa-underline"></i>
-                            <i class="fa fa-strikethrough"></i>
-                        </div>
-                    </div>    
-                </div>
-                <div class="iterative-xblock-span-container">
-                    <span class="content-cell-new" id="content_row_8_new_cell">Nueva celda</span>
-                    <span class="content-cell-delete" id="content_row_8_delete_cell">Quitar celda</span>
-                    <span class="content-row-delete" id="content_row_8_delete_row">Quitar fila</span>
-                </div>
-            </div>
-        </li>
-        <li id="input_content_row_9" class="field comp-setting-entry is-set iterative-content-row" hidden>
-            <div class="wrapper-comp-setting">
-                <label class="label setting-label">Fila 9</label>
-                <div class="iterative-content-studio-input-container">
-                    <div class="iterative-content-studio-input content_9_1">
-                        <select class="iterative-content-type" id="content_type_9_1">
-                            <option value="none" selected disabled>Seleccione una opción...</option>
-                            <option value="text">Texto fijo</option>
-                            <option value="question">Pregunta</option>
-                            <option value="answer">Respuesta de pregunta anterior</option>
-                        </select>
-                        <input class="input setting-input" name="content_row_9_1" id="content_row_9_1" value="" disabled placeholder="Por favor seleccione una opción..."type="text" />
-                        <div class="iterative-content-iconset">
-                            <i class="fa fa-align-left"></i>
-                            <i class="fa fa-align-center"></i>
-                            <i class="fa fa-align-right"></i>
-                            <i class="fa fa-align-justify"></i>
-                            <i class="fa fa-bold"></i>
-                            <i class="fa fa-italic"></i>
-                            <i class="fa fa-underline"></i>
-                            <i class="fa fa-strikethrough"></i>
-                        </div>
-                    </div>
-                    <div class="iterative-content-studio-input content_9_2" hidden>
-                        <select class="iterative-content-type" id="content_type_9_2">
-                            <option value="none" selected disabled>Seleccione una opción...</option>
-                            <option value="text">Texto fijo</option>
-                            <option value="question">Pregunta</option>
-                            <option value="answer">Respuesta de pregunta anterior</option>
-                        </select>
-                        <input class="input setting-input" name="content_row_9_2" id="content_row_9_2" value="" disabled placeholder="Por favor seleccione una opción..."type="text" />
-                        <div class="iterative-content-iconset">
-                            <i class="fa fa-align-left"></i>
-                            <i class="fa fa-align-center"></i>
-                            <i class="fa fa-align-right"></i>
-                            <i class="fa fa-align-justify"></i>
-                            <i class="fa fa-bold"></i>
-                            <i class="fa fa-italic"></i>
-                            <i class="fa fa-underline"></i>
-                            <i class="fa fa-strikethrough"></i>
-                        </div>
-                    </div>
-                    <div class="iterative-content-studio-input content_9_3" hidden>
-                        <select class="iterative-content-type" id="content_type_9_3">
-                            <option value="none" selected disabled>Seleccione una opción...</option>
-                            <option value="text">Texto fijo</option>
-                            <option value="question">Pregunta</option>
-                            <option value="answer">Respuesta de pregunta anterior</option>
-                        </select>
-                        <input class="input setting-input" name="content_row_9_3" id="content_row_9_3" value="" disabled placeholder="Por favor seleccione una opción..."type="text" />
-                        <div class="iterative-content-iconset">
-                            <i class="fa fa-align-left"></i>
-                            <i class="fa fa-align-center"></i>
-                            <i class="fa fa-align-right"></i>
-                            <i class="fa fa-align-justify"></i>
-                            <i class="fa fa-bold"></i>
-                            <i class="fa fa-italic"></i>
-                            <i class="fa fa-underline"></i>
-                            <i class="fa fa-strikethrough"></i>
-                        </div>
-                    </div>
-                    <div class="iterative-content-studio-input content_9_4" hidden>
-                        <select class="iterative-content-type" id="content_type_9_4">
-                            <option value="none" selected disabled>Seleccione una opción...</option>
-                            <option value="text">Texto fijo</option>
-                            <option value="question">Pregunta</option>
-                            <option value="answer">Respuesta de pregunta anterior</option>
-                        </select>
-                        <input class="input setting-input" name="content_row_9_4" id="content_row_9_4" value="" disabled placeholder="Por favor seleccione una opción..."placeholder="Por favor seleccione una opción..." type="text" />
-                        <div class="iterative-content-iconset">
-                            <i class="fa fa-align-left"></i>
-                            <i class="fa fa-align-center"></i>
-                            <i class="fa fa-align-right"></i>
-                            <i class="fa fa-align-justify"></i>
-                            <i class="fa fa-bold"></i>
-                            <i class="fa fa-italic"></i>
-                            <i class="fa fa-underline"></i>
-                            <i class="fa fa-strikethrough"></i>
-                        </div>
-                    </div>    
-                </div>
-                <div class="iterative-xblock-span-container">
-                    <span class="content-cell-new" id="content_row_9_new_cell">Nueva celda</span>
-                    <span class="content-cell-delete" id="content_row_9_delete_cell">Quitar celda</span>
-                    <span class="content-row-delete" id="content_row_9_delete_row">Quitar fila</span>
-                </div>
-            </div>
-        </li>
-        <li id="input_title" class="field comp-setting-entry is-set" hidden>
+        <li id="input_title" class="field comp-setting-entry is-set">
             <div class="wrapper-comp-setting">
                 <label class="label setting-label" for="title">Título</label>
                 <input class="input setting-input" name="title" id="title" value="" type="text" />
             </div>
             <span class="tip setting-help">Define el título de este Iterative XBlock. Si se deja vacío, no se mostrará ningún título.</span>
         </li>
-        <li id="input_style" class="field comp-setting-entry is-set" hidden>
+        <li id="input_content" class="field comp-setting-entry is-set iterative-content-row">
             <div class="wrapper-comp-setting">
-                <label class="label setting-label" for="style">Estilo</label>
-                <select id="style" class="setting-select-input style" name="style">
-                    <option value="basic">Básico</option>
-                    <option value="red">Rojo</option>
-                    <option value="blackwhite">Blanco y negro</option>
-                    <option value="nostyle">Sin estilo</option>
-                </select>
+                <label class="label setting-label" for="content">Contenido</label>
+                <div>
+                    <div class="input-box-container">
+                        <input class="input-box setting-input" name="content-1-1" id="content-1-1" value="" type="text" />
+                        <input class="input-box setting-input" name="content-1-2" id="content-1-2" value="" type="text" />
+                        <input class="input-box setting-input" name="content-1-3" id="content-1-3" value="" type="text" />
+                        <input class="input-box setting-input" name="content-1-4" id="content-1-4" value="" type="text" />
+                        <input class="input-box setting-input" name="content-1-5" id="content-1-5" value="" type="text" />
+                        <input class="input-box setting-input" name="content-1-6" id="content-1-6" value="" type="text" />
+                        <input class="input-box setting-input" name="content-1-7" id="content-1-7" value="" type="text" />
+                        <input class="input-box setting-input" name="content-1-8" id="content-1-8" value="" type="text" />
+                        <input class="input-box setting-input" name="content-1-9" id="content-1-9" value="" type="text" />
+                        <input class="input-box setting-input" name="content-1-10" id="content-1-10" value="" type="text" />
+                    </div>
+                    <div class="input-box-container">
+                        <input class="input-box setting-input" name="content-2-1" id="content-2-1" value="" type="text" />
+                        <input class="input-box setting-input" name="content-2-2" id="content-2-2" value="" type="text" />
+                        <input class="input-box setting-input" name="content-2-3" id="content-2-3" value="" type="text" />
+                        <input class="input-box setting-input" name="content-2-4" id="content-2-4" value="" type="text" />
+                        <input class="input-box setting-input" name="content-2-5" id="content-2-5" value="" type="text" />
+                        <input class="input-box setting-input" name="content-2-6" id="content-2-6" value="" type="text" />
+                        <input class="input-box setting-input" name="content-2-7" id="content-2-7" value="" type="text" />
+                        <input class="input-box setting-input" name="content-2-8" id="content-2-8" value="" type="text" />
+                        <input class="input-box setting-input" name="content-2-9" id="content-2-9" value="" type="text" />
+                        <input class="input-box setting-input" name="content-2-10" id="content-2-10" value="" type="text" />
+                    </div>
+                    <div class="input-box-container">
+                        <input class="input-box setting-input" name="content-3-1" id="content-3-1" value="" type="text" />
+                        <input class="input-box setting-input" name="content-3-2" id="content-3-2" value="" type="text" />
+                        <input class="input-box setting-input" name="content-3-3" id="content-3-3" value="" type="text" />
+                        <input class="input-box setting-input" name="content-3-4" id="content-3-4" value="" type="text" />
+                        <input class="input-box setting-input" name="content-3-5" id="content-3-5" value="" type="text" />
+                        <input class="input-box setting-input" name="content-3-6" id="content-3-6" value="" type="text" />
+                        <input class="input-box setting-input" name="content-3-7" id="content-3-7" value="" type="text" />
+                        <input class="input-box setting-input" name="content-3-8" id="content-3-8" value="" type="text" />
+                        <input class="input-box setting-input" name="content-3-9" id="content-3-9" value="" type="text" />
+                        <input class="input-box setting-input" name="content-3-10" id="content-3-10" value="" type="text" />
+                    </div>
+                    <div class="input-box-container">
+                        <input class="input-box setting-input" name="content-4-1" id="content-4-1" value="" type="text" />
+                        <input class="input-box setting-input" name="content-4-2" id="content-4-2" value="" type="text" />
+                        <input class="input-box setting-input" name="content-4-3" id="content-4-3" value="" type="text" />
+                        <input class="input-box setting-input" name="content-4-4" id="content-4-4" value="" type="text" />
+                        <input class="input-box setting-input" name="content-4-5" id="content-4-5" value="" type="text" />
+                        <input class="input-box setting-input" name="content-4-6" id="content-4-6" value="" type="text" />
+                        <input class="input-box setting-input" name="content-4-7" id="content-4-7" value="" type="text" />
+                        <input class="input-box setting-input" name="content-4-8" id="content-4-8" value="" type="text" />
+                        <input class="input-box setting-input" name="content-4-9" id="content-4-9" value="" type="text" />
+                        <input class="input-box setting-input" name="content-4-10" id="content-4-10" value="" type="text" />
+                    </div>
+                    <div class="input-box-container">
+                        <input class="input-box setting-input" name="content-5-1" id="content-5-1" value="" type="text" />
+                        <input class="input-box setting-input" name="content-5-2" id="content-5-2" value="" type="text" />
+                        <input class="input-box setting-input" name="content-5-3" id="content-5-3" value="" type="text" />
+                        <input class="input-box setting-input" name="content-5-4" id="content-5-4" value="" type="text" />
+                        <input class="input-box setting-input" name="content-5-5" id="content-5-5" value="" type="text" />
+                        <input class="input-box setting-input" name="content-5-6" id="content-5-6" value="" type="text" />
+                        <input class="input-box setting-input" name="content-5-7" id="content-5-7" value="" type="text" />
+                        <input class="input-box setting-input" name="content-5-8" id="content-5-8" value="" type="text" />
+                        <input class="input-box setting-input" name="content-5-9" id="content-5-9" value="" type="text" />
+                        <input class="input-box setting-input" name="content-5-10" id="content-5-10" value="" type="text" />
+                    </div>
+                    <div class="input-box-container">
+                        <input class="input-box setting-input" name="content-6-1" id="content-6-1" value="" type="text" />
+                        <input class="input-box setting-input" name="content-6-2" id="content-6-2" value="" type="text" />
+                        <input class="input-box setting-input" name="content-6-3" id="content-6-3" value="" type="text" />
+                        <input class="input-box setting-input" name="content-6-4" id="content-6-4" value="" type="text" />
+                        <input class="input-box setting-input" name="content-6-5" id="content-6-5" value="" type="text" />
+                        <input class="input-box setting-input" name="content-6-6" id="content-6-6" value="" type="text" />
+                        <input class="input-box setting-input" name="content-6-7" id="content-6-7" value="" type="text" />
+                        <input class="input-box setting-input" name="content-6-8" id="content-6-8" value="" type="text" />
+                        <input class="input-box setting-input" name="content-6-9" id="content-6-9" value="" type="text" />
+                        <input class="input-box setting-input" name="content-6-10" id="content-6-10" value="" type="text" />
+                    </div>
+                    <div class="input-box-container">
+                        <input class="input-box setting-input" name="content-7-1" id="content-7-1" value="" type="text" />
+                        <input class="input-box setting-input" name="content-7-2" id="content-7-2" value="" type="text" />
+                        <input class="input-box setting-input" name="content-7-3" id="content-7-3" value="" type="text" />
+                        <input class="input-box setting-input" name="content-7-4" id="content-7-4" value="" type="text" />
+                        <input class="input-box setting-input" name="content-7-5" id="content-7-5" value="" type="text" />
+                        <input class="input-box setting-input" name="content-7-6" id="content-7-6" value="" type="text" />
+                        <input class="input-box setting-input" name="content-7-7" id="content-7-7" value="" type="text" />
+                        <input class="input-box setting-input" name="content-7-8" id="content-7-8" value="" type="text" />
+                        <input class="input-box setting-input" name="content-7-9" id="content-7-9" value="" type="text" />
+                        <input class="input-box setting-input" name="content-7-10" id="content-7-10" value="" type="text" />
+                    </div>
+                    <div class="input-box-container">
+                        <input class="input-box setting-input" name="content-8-1" id="content-8-1" value="" type="text" />
+                        <input class="input-box setting-input" name="content-8-2" id="content-8-2" value="" type="text" />
+                        <input class="input-box setting-input" name="content-8-3" id="content-8-3" value="" type="text" />
+                        <input class="input-box setting-input" name="content-8-4" id="content-8-4" value="" type="text" />
+                        <input class="input-box setting-input" name="content-8-5" id="content-8-5" value="" type="text" />
+                        <input class="input-box setting-input" name="content-8-6" id="content-8-6" value="" type="text" />
+                        <input class="input-box setting-input" name="content-8-7" id="content-8-7" value="" type="text" />
+                        <input class="input-box setting-input" name="content-8-8" id="content-8-8" value="" type="text" />
+                        <input class="input-box setting-input" name="content-8-9" id="content-8-9" value="" type="text" />
+                        <input class="input-box setting-input" name="content-8-10" id="content-8-10" value="" type="text" />
+                    </div>
+                    <div class="input-box-container">
+                        <input class="input-box setting-input" name="content-9-1" id="content-9-1" value="" type="text" />
+                        <input class="input-box setting-input" name="content-9-2" id="content-9-2" value="" type="text" />
+                        <input class="input-box setting-input" name="content-9-3" id="content-9-3" value="" type="text" />
+                        <input class="input-box setting-input" name="content-9-4" id="content-9-4" value="" type="text" />
+                        <input class="input-box setting-input" name="content-9-5" id="content-9-5" value="" type="text" />
+                        <input class="input-box setting-input" name="content-9-6" id="content-9-6" value="" type="text" />
+                        <input class="input-box setting-input" name="content-9-7" id="content-9-7" value="" type="text" />
+                        <input class="input-box setting-input" name="content-9-8" id="content-9-8" value="" type="text" />
+                        <input class="input-box setting-input" name="content-9-9" id="content-9-9" value="" type="text" />
+                        <input class="input-box setting-input" name="content-9-10" id="content-9-10" value="" type="text" />
+                    </div>
+                    <div class="input-box-container">
+                        <input class="input-box setting-input" name="content-10-1" id="content-10-1" value="" type="text" />
+                        <input class="input-box setting-input" name="content-10-2" id="content-10-2" value="" type="text" />
+                        <input class="input-box setting-input" name="content-10-3" id="content-10-3" value="" type="text" />
+                        <input class="input-box setting-input" name="content-10-4" id="content-10-4" value="" type="text" />
+                        <input class="input-box setting-input" name="content-10-5" id="content-10-5" value="" type="text" />
+                        <input class="input-box setting-input" name="content-10-6" id="content-10-6" value="" type="text" />
+                        <input class="input-box setting-input" name="content-10-7" id="content-10-7" value="" type="text" />
+                        <input class="input-box setting-input" name="content-10-8" id="content-10-8" value="" type="text" />
+                        <input class="input-box setting-input" name="content-10-9" id="content-10-9" value="" type="text" />
+                        <input class="input-box setting-input" name="content-10-10" id="content-10-10" value="" type="text" />
+                    </div>
+                    <div class="centered">
+                        <button class="apply-button">Aplicar</button>
+                    </div>
+                </div>
             </div>
-            <span class="tip setting-help">Define la apariencia de este Iterative XBlock. Existe una variedad de estilos para elegir.</span>
-        </li>
-        <li id="input_gridlines" class="field comp-setting-entry is-set" hidden>
-            <div class="wrapper-comp-setting">
-                <label class="label setting-label" for="gridlines">Grilla</label>
-                <select id="gridlines" class="setting-select-input gridlines" name="gridlines">
-                    <option value="yes">Sí</option>
-                    <option value="no">No</option>
-                </select>
-            </div>
-            <span class="tip setting-help">Determina si las celdas de este Iterative XBlock están separadas por una grilla o no.</span>
-        </li>
-        <li id="input_min_questions" class="field comp-setting-entry is-set" hidden>
-            <div class="wrapper-comp-setting">
-                <label class="label setting-label" for="min_questions">Mínimo de respuestas</label>
-                <input class="input setting-input" name="min_questions" id="min_questions" value="" type="number" />
-            </div>
-            <span class="tip setting-help">Define el número mínimo de preguntas que el estudiante debe responder. El valor 0 significa que todas las preguntas se deben responder. Esta opción solo está habilitada si este Iterative XBlock cuenta con al menos una pregunta definida.</span>
-        </li>
-        <li id="input_min_characters" class="field comp-setting-entry is-set" hidden>
-            <div class="wrapper-comp-setting">
-                <label class="label setting-label" for="min_characters">Mínimo de caracteres</label>
-                <input class="input setting-input" name="min_characters" id="min_characters" min="0" max="10000" value="" type="number" />
-            </div>
-            <span class="tip setting-help">Mínimo de caracteres para que la respuesta a una pregunta sea considerada válida. El valor 0 significa que no hay mínimo.</span>
-        </li>
-        <li id="input_min_words" class="field comp-setting-entry is-set" hidden>
-            <div class="wrapper-comp-setting">
-                <label class="label setting-label" for="min_words">Mínimo de palabras</label>
-                <input class="input setting-input" name="min_words" id="min_words" value="" min="0" max="5000" type="number" />
-            </div>
-            <span class="tip setting-help">Mínimo de palabras para que la respuesta a una pregunta sea considerada válida. El valor 0 significa que no hay mínimo.</span>
+            <span class="tip setting-help">
+                Defina las celdas de contenido del XBlock usando el formato grid-template-area. Una vez que esté listo, haga click en Aplicar.
+            </span>
         </li>
         <li id="input_enable_download" class="field comp-setting-entry is-set" hidden>
             <div class="wrapper-comp-setting">
@@ -859,27 +168,6 @@
             </div>
             <span class="tip setting-help">Nombre del archivo PDF en caso de que la descarga esté habilitada.</span>
         </li>
-        <li id="input_submit_message" class="field comp-setting-entry is-set" hidden>
-            <div class="wrapper-comp-setting">
-                <label class="label setting-label" for="submit_message">Texto del botón de envío</label>
-                <input class="input setting-input" name="submit_message" id="submit_message" value="" type="text" />
-            </div>
-            <span class="tip setting-help">Texto mostrado en el botón de envío.</span>
-        </li>
-        <li id="input_display_message" class="field comp-setting-entry is-set" hidden>
-            <div class="wrapper-comp-setting">
-                <label class="label setting-label" for="display_message">Texto de respuesta anterior</label>
-                <input class="input setting-input" name="display_message" id="display_message" value="" type="text" />
-            </div>
-            <span class="tip setting-help">Texto mostrado en el botón para ver una respuesta anterior.</span>
-        </li>
-        <li id="input_no_answer_message" class="field comp-setting-entry is-set" hidden>
-            <div class="wrapper-comp-setting">
-                <label class="label setting-label" for="no_answer_message">Texto de respuesta vacía</label>
-                <input class="input setting-input" name="no_answer_message" id="no_answer_message" value="" type="text" />
-            </div>
-            <span class="tip setting-help">Texto mostrado en caso de que no haya respuesta anterior.</span>
-        </li>
     </ul>
     <div class="xblock-actions">
         <ul>
@@ -894,9 +182,6 @@
             </li>
             <li class="action-item">
                 <a href="#" class="button cancel-button">Cancelar</a>
-            </li>
-            <li class="action-item">
-                <a href="#" class="button new-row-button">Agregar fila</a>
             </li>
         </ul>
     </div>
