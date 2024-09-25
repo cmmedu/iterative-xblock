@@ -79,10 +79,6 @@
   display: flex !important;
 }
 
-.iterative-content-row select {
-  width: 100% !important;
-}
-
 .iterative-xblock-cell-title p {
   text-align: center;
   font-weight: bold;
@@ -187,4 +183,55 @@
 
 .iterative-xblock-gridlines .expmid table td {
   border: 1px solid #646464;
+}
+
+.cell-content .cell-input {
+  width: 45% !important;
+  height: inherit !important;
+}
+
+.cell-content .cell-input-small {
+  width: 22% !important;
+  height: inherit !important;
+}
+
+.cell-content .cell-input-type {
+  height: inherit !important;
+}
+
+.cell-content .inputs-container {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.iterative-xblock-seemore {
+  width: 5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.iterative-xblock-formatting-icon {
+  width: 5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.iterative-xblock-extra-inputs {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.iterative-xblock-formatting-inputs {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
