@@ -167,8 +167,8 @@
   cursor: pointer;
 }
 
-.iterative-content-iconset .icon-chosen {
-  color: #333;
+.iterative-icon-chosen {
+  color: green;
 }
 
 .expmid table {

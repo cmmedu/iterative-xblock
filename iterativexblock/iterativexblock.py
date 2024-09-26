@@ -37,6 +37,12 @@ class IterativeXBlock(XBlock):
         help="Specifies the module's title. If this field is left blank, no title will be displayed."
     )
 
+    submit_message = String(
+        default="Enviar",
+        scope=Scope.settings,
+        help="Text to be displayed on the submit button."
+    )
+
     enable_download = Boolean(
         default=False,
         scope=Scope.settings,
@@ -107,12 +113,9 @@ class IterativeXBlock(XBlock):
 
     def get_ids(self, type):
         ids = []
-        for i in range(self.content["n_rows"]):
-            row = self.content[str(i+1)]
-            for j in range(row["n_cells"]):
-                cell = row[str(j+1)]
-                if cell["type"] == type:
-                    ids.append(cell["content"])
+        for cell in self.content["content"].values():
+            if cell["type"] == type:
+                ids.append(cell["content"])
         return ids
     
 
@@ -155,29 +158,27 @@ class IterativeXBlock(XBlock):
 
     def studio_post_duplicate(self, store, source_item):
         from .models import IterativeXBlockQuestion
+        from .compatibility import adapt_content
         id_course = self.course_id
         id_xblock = str(self.location).split('@')[-1]
-        new_content = source_item.content.copy()
-        for i in range(new_content["n_rows"]):
-            row = str(i+1)
-            for j in range(new_content[row]["n_cells"]):
-                cell = new_content[row][str(j+1)]
-                if cell["type"] == "question":
-                    id_question = cell["content"]
-                    match = re.search(r'_(\d+)$', id_question)
-                    if match:
-                        base_question = id_question[:match.start()]
-                        num = int(match.group(1)) + 1
-                    else:
-                        base_question = id_question
-                        num = 1
+        new_content = adapt_content(source_item.content).copy()
+        for cell_id, cell_value in new_content["content"].items():
+            if cell_value["type"] == "question":
+                id_question = cell_value["content"]
+                match = re.search(r'_(\d+)$', id_question)
+                if match:
+                    base_question = id_question[:match.start()]
+                    num = int(match.group(1)) + 1
+                else:
+                    base_question = id_question
+                    num = 1
+                new_question_id = f"{base_question}_{num}"
+                while IterativeXBlockQuestion.objects.filter(id_course=id_course, id_question=new_question_id).exists():
+                    num += 1
                     new_question_id = f"{base_question}_{num}"
-                    while IterativeXBlockQuestion.objects.filter(id_course=id_course, id_question=new_question_id).exists():
-                        num += 1
-                        new_question_id = f"{base_question}_{num}"
-                    new_question = IterativeXBlockQuestion(id_course=id_course, id_xblock=id_xblock, id_question=new_question_id)
-                    new_question.save()
-                    cell["content"] = new_question_id
+                new_question = IterativeXBlockQuestion(id_course=id_course, id_xblock=id_xblock, id_question=new_question_id)
+                new_question.save()
+                cell_value["content"] = new_question_id
         self.content = new_content
         return True
 
@@ -190,12 +191,13 @@ class IterativeXBlock(XBlock):
 
 
     def learner_view(self, context={}):
+        from .compatibility import adapt_content
         id_student = self.scope_ids.user_id
         context = {
             "title": self.title,
             'location': str(self.location).split('@')[-1],
             'configured': self.configured,
-            'content': self.content,
+            'content': adapt_content(self.content),
             'enable_download': self.enable_download,
             'show_submit_button': len(self.get_ids("question")) > 0
         }
@@ -253,7 +255,7 @@ class IterativeXBlock(XBlock):
                 "answers": answers,
                 "completed": completed,
                 "indicator_class": self.get_indicator_class(),
-                "content": self.content,
+                "content": adapt_content(self.content),
                 "title": self.title,
                 "download_name": self.download_name
             }
@@ -265,6 +267,7 @@ class IterativeXBlock(XBlock):
     def instructor_view(self, context={}):
         from django.contrib.auth.models import User
         from .models import IterativeXBlockQuestion, IterativeXBlockAnswer
+        from .compatibility import adapt_content
         if len(self.get_ids("question")) == 0 and len(self.get_ids("answer")) == 0 and not self.enable_download:
             show_student_select = False
             answers = []
@@ -298,7 +301,7 @@ class IterativeXBlock(XBlock):
             "title": self.title,
             'location': str(self.location).split('@')[-1],
             'configured': self.configured,
-            'content': self.content,
+            'content': adapt_content(self.content),
             'answers': answers,
             'show_student_select': show_student_select,
             'enable_download': self.enable_download
@@ -319,7 +322,7 @@ class IterativeXBlock(XBlock):
             ],
             settings={
                 "answers": answers,
-                "content": self.content,
+                "content": adapt_content(self.content),
                 "title": self.title,
                 "download_name": self.download_name
             }
@@ -329,6 +332,7 @@ class IterativeXBlock(XBlock):
 
 
     def studio_view(self, context):
+        from .compatibility import adapt_content
         context = {}
         template = loader.render_django_template(
             'public/html/iterativexblock_studio.html',
@@ -345,7 +349,7 @@ class IterativeXBlock(XBlock):
                 'public/js/iterativexblock_studio.js',
             ],
             settings={
-                "content": self.content,
+                "content": adapt_content(self.content),
                 "title": self.title,
                 "enable_download": self.enable_download,
                 "download_name": self.download_name
@@ -355,11 +359,12 @@ class IterativeXBlock(XBlock):
 
 
     def author_view(self, context={}):
+        from .compatibility import adapt_content
         context = {
             "title": self.title,
             'location': str(self.location).split('@')[-1],
             'configured': self.configured,
-            "content": self.content
+            "content": adapt_content(self.content)
         }
         template = loader.render_django_template(
             'public/html/iterativexblock_author.html',
@@ -405,14 +410,11 @@ class IterativeXBlock(XBlock):
         if bool(set(new_question_ids) & set(existing_question_ids)):
             return {'result': 'failed', 'error': 102}
         if not self.configured:
-            for i in range(content["n_rows"]):
-                row = content[str(i+1)]
-                for j in range(row["n_cells"]):
-                    cell = row[str(j+1)]
-                    if cell["type"] == "question":
-                        id_question = cell["content"]
-                        new_question = IterativeXBlockQuestion(id_course=id_course, id_xblock=id_xblock, id_question=id_question)
-                        new_question.save()
+            for cell_id, cell_value in range(content["content"].items()):
+                if cell_value["type"] == "question":
+                    id_question = cell_value["content"]
+                    new_question = IterativeXBlockQuestion(id_course=id_course, id_xblock=id_xblock, id_question=id_question)
+                    new_question.save()
             self.configured = True
         else:
             new_questions = data.get('new_questions')
