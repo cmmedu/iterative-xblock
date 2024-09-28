@@ -50,7 +50,7 @@ class IterativeXBlock(XBlock):
     )
 
     download_name = String(
-        default="document",
+        default="respuestas.pdf",
         scope=Scope.settings,
         help="Name of the file to be downloaded."
     )
@@ -257,7 +257,9 @@ class IterativeXBlock(XBlock):
                 "indicator_class": self.get_indicator_class(),
                 "content": adapt_content(self.content),
                 "title": self.title,
-                "download_name": self.download_name
+                "enable_download": self.enable_download,
+                "download_name": self.download_name,
+                "submit_message": self.submit_message
             }
         )
         frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js")
@@ -324,7 +326,9 @@ class IterativeXBlock(XBlock):
                 "answers": answers,
                 "content": adapt_content(self.content),
                 "title": self.title,
-                "download_name": self.download_name
+                "enable_download": self.enable_download,
+                "download_name": self.download_name,
+                "submit_message": self.submit_message
             }
         )
         frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js")
@@ -350,16 +354,18 @@ class IterativeXBlock(XBlock):
             ],
             settings={
                 "content": adapt_content(self.content),
+                "configured": self.configured,
                 "title": self.title,
                 "enable_download": self.enable_download,
-                "download_name": self.download_name
+                "download_name": self.download_name,
+                "submit_message": self.submit_message
             }
         )
         return frag
 
 
     def author_view(self, context={}):
-        from .compatibility import adapt_content
+        from .compatibility import adapt_content, make_grid_template_areas
         context = {
             "title": self.title,
             'location': str(self.location).split('@')[-1],
@@ -410,7 +416,7 @@ class IterativeXBlock(XBlock):
         if bool(set(new_question_ids) & set(existing_question_ids)):
             return {'result': 'failed', 'error': 102}
         if not self.configured:
-            for cell_id, cell_value in range(content["content"].items()):
+            for cell_id, cell_value in content["content"].items():
                 if cell_value["type"] == "question":
                     id_question = cell_value["content"]
                     new_question = IterativeXBlockQuestion(id_course=id_course, id_xblock=id_xblock, id_question=id_question)

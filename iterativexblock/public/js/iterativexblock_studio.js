@@ -9,6 +9,31 @@ function IterativeXBlockStudio(runtime, element, settings) {
     
     var content_ui;
     let content_backend  = settings.content
+    let urlPattern = new RegExp(
+        "^" +
+          "(?:(?:(?:https?|ftp):)?\\/\\/)" +
+          "(?:\\S+(?::\\S*)?@)?" +
+          "(?:" +
+            "(?!(?:10|127)(?:\\.\\d{1,3}){3})" +
+            "(?!(?:169\\.254|192\\.168)(?:\\.\\d{1,3}){2})" +
+            "(?!172\\.(?:1[6-9]|2\\d|3[0-1])(?:\\.\\d{1,3}){2})" +
+            "(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])" +
+            "(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}" +
+            "(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))" +
+          "|" +
+            "(?:" +
+              "(?:" +
+                "[a-z0-9\\u00a1-\\uffff]" +
+                "[a-z0-9\\u00a1-\\uffff_-]{0,62}" +
+              ")?" +
+              "[a-z0-9\\u00a1-\\uffff]\\." +
+            ")+" +
+            "(?:[a-z\\u00a1-\\uffff]{2,}\\.?)" +
+          ")" +
+          "(?::\\d{2,5})?" +
+          "(?:[/?#]\\S*)?" +
+        "$", "i"
+      );
 
     function setStudioErrorMessage(msg) {
         $(element).find('.studio-error-msg').html(msg);
@@ -33,7 +58,52 @@ function IterativeXBlockStudio(runtime, element, settings) {
         if (input_submit_message.is(":visible") && submit_message.val().length > 200) {
             return "El mensaje para el botón de envío debe tener un máximo de 200 caracteres."
         }
-        // validar contenido
+        for (let cell of Object.values(data["content"]["content"])) {
+            if (cell.type === "question") {
+                if (cell.content.length === 0) {
+                    return "Debe ingresar el ID de una pregunta para cada celda."
+                }
+                if (cell.content.length < 0 || cell.content.length > 100) {
+                    return "El ID de la pregunta debe tener un máximo de 100 caracteres."
+                }
+                if (cell.metadata.placeholder.length > 200) {
+                    return "El placeholder de la pregunta debe tener un máximo de 200 caracteres."
+                }
+                if (isNaN(cell.metadata.min_chars) || cell.metadata.min_chars < 0) {
+                    return "El mínimo de caracteres de la pregunta debe ser un número mayor o igual a 0."
+                }
+                if (isNaN(cell.metadata.min_words) || cell.metadata.min_words < 0) {
+                    return "El mínimo de palabras de la pregunta debe ser un número mayor o igual a 0."
+                }
+            } else if (cell.type === "answer") {
+                if (cell.content.length === 0) {
+                    return "Debe ingresar el ID de una respuesta para cada celda."
+                }
+                if (cell.content.length < 0 || cell.content.length > 100) {
+                    return "El ID de la respuesta debe tener un máximo de 100 caracteres."
+                }
+                if (cell.metadata.placeholder.length > 200) {
+                    return "El placeholder de la respuesta debe tener un máximo de 200 caracteres."
+                }
+            } else if (cell.type === "text") {
+                if (cell.content.length > 10000) {
+                    return "El texto de la celda debe tener un máximo de 10000 caracteres."
+                }
+            } else if (cell.type === "iframe") {
+                if (cell.content.length === 0) {
+                    return "Debe ingresar una URL para cada celda."
+                }
+                if (cell.content.length > 1000) {
+                    return "La URL de la celda debe tener un máximo de 1000 caracteres."
+                }
+                if (!urlPattern.test(cell.content)) {
+                    return "La URL de la celda no es válida."
+                }
+            } else {
+                return "Por favor, seleccione un tipo de contenido para cada celda."
+            }
+        }
+        return ""
     }
 
     function getQuestionIDs(content) {
@@ -55,7 +125,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
             submit_message.val(settings["submit_message"] !== "Enviar" ? settings["submit_message"] : "Enviar");
         } else {
             input_enable_download.show();
-            enable_download.val(settings["enable_download"] ? "true" : "false");
+            enable_download.val(settings["enable_download"] ? "yes" : "no");
             input_download_name.show();
             download_name.val(settings["download_name"] !== "respuestas.pdf" ? settings["download_name"] : "respuestas.pdf");
             input_submit_message.hide();
@@ -279,28 +349,30 @@ function IterativeXBlockStudio(runtime, element, settings) {
             };
         });
         return {
-            "grid": Array.from({ length: 10 }, () => Array(10).fill("")),
+            "grid": makeGrid(),
             "content": content
         }
     }
 
     function applyContent(content) {
-        for (let i = 0; i < content.length; i++) {
-            for (let j = 0; j < content[i].length; j++) {
+        for (let i = 0; i < content["grid"].length; i++) {
+            for (let j = 0; j < content["grid"][i].length; j++) {
                 let inputId = `content-${i + 1}-${j + 1}`;
-                $(`#${inputId}`).val(content[i][j]);
+                $(`#${inputId}`).val(content["grid"][i][j]);
             }
         }
+        console.log(content)
         let grid = makeGrid();
         let letters = validateGrid(grid);
+        console.log(grid)
+        console.log(letters)
         if (letters !== null) {
             displayCellsInputs(letters);
         }
-        for (let id in content["content"]) {
-            let cell = content["content"][id];
-            let cellId = "cell_" + id;
+        for (let cellId of Object.keys(content["content"])) {
+            let cell = content["content"][cellId];
             let cellType = cell["type"];
-            $(`#${cellId}_type`).val(cellType);
+            $(`#${cellId}_type`).val(cellType).trigger('change');
             if (cellType === "question") {
                 $(`#${cellId}_question`).val(cell["content"]);
             } else if (cellType === "text") {
@@ -320,49 +392,49 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 $(`#${cellId}_required`).val("optional");
             }
             if (cell["format"]["bold"]) {
-                $(`#${cellId}_bold`).addClass('iterative-icon-chosen');
+                $(`#${cellId}_bold`).trigger('click');
             }
             if (cell["format"]["italic"]) {
-                $(`#${cellId}_italic`).addClass('iterative-icon-chosen');
+                $(`#${cellId}_italic`).trigger('click');
             }
             if (cell["format"]["underline"]) {
-                $(`#${cellId}_underline`).addClass('iterative-icon-chosen');
+                $(`#${cellId}_underline`).trigger('click');
             }
             if (cell["format"]["strike"]) {
-                $(`#${cellId}_strike`).addClass('iterative-icon-chosen');
+                $(`#${cellId}_strike`).trigger('click');
             }
             if (cell["format"]["horizontal_align"] === "left") {
-                $(`#${cellId}_left`).addClass('iterative-icon-chosen');
+                $(`#${cellId}_left`).trigger('click');
             } else if (cell["format"]["horizontal_align"] === "center") {
-                $(`#${cellId}_center`).addClass('iterative-icon-chosen');
+                $(`#${cellId}_center`).trigger('click');
             } else if (cell["format"]["horizontal_align"] === "right") {
-                $(`#${cellId}_right`).addClass('iterative-icon-chosen');
+                $(`#${cellId}_right`).trigger('click');
             } else {
-                $(`#${cellId}_justify`).addClass('iterative-icon-chosen');
+                $(`#${cellId}_justify`).trigger('click');
             }
             if (cell["format"]["vertical_align"] === "top") {
-                $(`#${cellId}_align-up`).addClass('iterative-icon-chosen');
+                $(`#${cellId}_align-up`).trigger('click');
             } else if (cell["format"]["vertical_align"] === "middle") {
-                $(`#${cellId}_align-center`).addClass('iterative-icon-chosen');
+                $(`#${cellId}_align-center`).trigger('click');
             } else if (cell["format"]["vertical_align"] === "bottom") {
-                $(`#${cellId}_align-down`).addClass('iterative-icon-chosen');
+                $(`#${cellId}_align-down`).trigger('click');
             } else {
-                $(`#${cellId}_align-center`).addClass('iterative-icon-chosen');
+                $(`#${cellId}_align-center`).trigger('click');
             }
             if (cell["format"]["border_left"]) {
-                $(`#${cellId}_border-left`).addClass('iterative-icon-chosen');
+                $(`#${cellId}_border-left`).trigger('click');
             }
             if (cell["format"]["border_top"]) {
-                $(`#${cellId}_border-top`).addClass('iterative-icon-chosen');
+                $(`#${cellId}_border-top`).trigger('click');
             }
             if (cell["format"]["border_right"]) {
-                $(`#${cellId}_border-right`).addClass('iterative-icon-chosen');
+                $(`#${cellId}_border-right`).trigger('click');
             }
             if (cell["format"]["border_bottom"]) {
-                $(`#${cellId}_border-bottom`).addClass('iterative-icon-chosen');
+                $(`#${cellId}_border-bottom`).trigger('click');
             }
             if (cell["format"]["border_bold"]) {
-                $(`#${cellId}_border-bold`).addClass('iterative-icon-chosen');
+                $(`#${cellId}_border-bold`).trigger('click');
             }
         }
     }
@@ -425,7 +497,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
             formattingInputs.append(borderRightIcon);
             formattingInputs.append(borderBottomIcon);
             formattingInputs.append(borderBoldIcon);
-            let placeholderInput = $(`<input style="display:none;" id="cell_${letter}_placeholder" class="setting-input cell_${letter}_placeholder cell-input-small" type="text" placeholder="Placeholder" value="...">`);
+            let placeholderInput = $(`<input style="display:none;" id="cell_${letter}_placeholder" class="setting-input cell_${letter}_placeholder cell-input-small" type="text" placeholder="Placeholder" value="Placeholder">`);
             let minCharsInput = $(`<input style="display:none;" id="cell_${letter}_min_chars" class="setting-input cell_${letter}_min_chars cell-input-small" type="number" placeholder="Mínimo de caracteres" value="20">`);
             let minWordsInput = $(`<input style="display:none;" id="cell_${letter}_min_words" class="setting-input cell_${letter}_min_words cell-input-small" type="number" placeholder="Mínimo de palabras" value="0">`);
             let requiredInput = $(`<select style="display:none;" id="cell_${letter}_required" class="setting-select-input cell_${letter}_required cell-input-small"></select>`);
@@ -596,7 +668,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
             } else if (seemore.hasClass('iterative-xblock-seemore-question')) {
                 placeholderInput.css('display', 'flex');
                 placeholderInput.attr('placeholder', 'Placeholder');
-                placeholderInput.val(placeholder.val() !== "Placeholder" ? placeholder.val() : "Placeholder");
+                placeholderInput.val(placeholderInput.val() !== "Placeholder" ? placeholderInput.val() : "Placeholder");
                 minCharsInput.css('display', 'flex');
                 minWordsInput.css('display', 'flex');
                 requiredInput.css('display', 'flex');
@@ -604,7 +676,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
             } else if (seemore.hasClass('iterative-xblock-seemore-answer')) {
                 placeholderInput.css('display', 'flex');
                 placeholderInput.attr('placeholder', 'Texto del botón');
-                placeholderInput.val(placeholder.val() !== "Ver respuesta" ? placeholder.val() : "Ver respuesta");
+                placeholderInput.val(placeholderInput.val() !== "Placeholder" ? placeholderInput.val() : "Ver respuesta");
                 minCharsInput.css('display', 'none');
                 minWordsInput.css('display', 'none');
                 requiredInput.css('display', 'none');
@@ -640,7 +712,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 icon.addClass('iterative-icon-chosen');
             }
         }
-        if (icon.attr('id').includes('left') || icon.attr('id').includes('center') || icon.attr('id').includes('right') || icon.attr('id').includes('justify')) {
+        if (icon.attr('id').includes('_left') || icon.attr('id').includes('_center') || icon.attr('id').includes('_right') || icon.attr('id').includes('_justify')) {
             let cellId = icon.attr('id').replace('_left', '').replace('_center', '').replace('_right', '').replace('_justify', '');
             $(element).find(`#${cellId}_left`).removeClass('iterative-icon-chosen');
             $(element).find(`#${cellId}_center`).removeClass('iterative-icon-chosen');

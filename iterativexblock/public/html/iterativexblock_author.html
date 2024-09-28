@@ -1,5 +1,6 @@
 <div class="iterative-xblock-container_block xmodule_display xmodule_HtmlModule">
-    <div class="iterative-xblock iterative-xblock-style-{{style}}{% if gridlines %} iterative-xblock-gridlines{% endif %}" id="{{xblock.type}}{{location}}">
+    <div class="iterative-xblock iterative-xblock-style-{{style}}{% if gridlines %} iterative-xblock-gridlines{% endif %}"
+        id="{{xblock.type}}{{location}}">
         <div class="exptop">
             <h1 class="iterative-xblock-title">{{title}}</h1>
         </div>
@@ -9,31 +10,27 @@
                 <p class="centered">Este XBlock no ha sido configurado aún. No se mostrará en el LMS.</p>
             </div>
             {% else %}
-            <table>
-            {% for row_id, row in content.items %}
-            {% if row_id != 'n_rows' %}
-            <tr class="iterative-xblock-student-row">
-                {% for cell_id, cell in row.items %}
-                {% if cell_id != 'n_cells' %}
-                <td class="iterative-xblock-student-cell">
-                    {% if cell.type == 'text' %}
-                    <p style="text-align: {{ cell.alignment }};{% if cell.bold %}font-weight: bold;{% endif %}{% if cell.italic %}font-style: italic;{% endif %}text-decoration: {% if cell.underline %}underline {% endif %}{% if cell.strikethrough %}line-through{% endif %}">{{ cell.content }}</p>
-                    {% elif cell.type == 'question' %}
-                    <textarea disabled type="text" class="iterative-xblock-student-question"
-                        style="text-align: {{ cell.alignment }};{% if cell.bold %}font-weight: bold;{% endif %}{% if cell.italic %}font-style: italic;{% endif %}text-decoration: {% if cell.underline %}underline {% endif %}{% if cell.strikethrough %}line-through{% endif %}"
-                        id="iterative-xblock-student-question-{{ cell.content }}" >{{ cell.content }}</textarea>
-                    {% elif cell.type == 'answer' %}
-                    <div class="iterative-xblock-student-answer-container">
-                        <button id="iterative-xblock-student-get-answer-{{ cell.content }}" class="iterative-xblock-student-get-answer">{{ cell.content }}</button>
-                    </div>
-                    {% endif %}
-                </td>
-                {% endif %}
+            <style>
+                .iterative-xblock-gridarea {
+                    display: grid;
+                    grid-template-areas: {% for line in content.true_grid %}"{{ line }}" {% endfor %};
+                }
+                {% for cell_key, cell_value in content.content.items %}
+                .{{ cell_key }} {
+                    grid-area: {{ cell_key.5 }};
+                    padding: 1em;
+                    background-color: #f9f9f9;
+                    border: 1px solid #ccc;
+                }
                 {% endfor %}
-            </tr>
-            {% endif %}
-            {% endfor %}
-            </table>
+            </style>
+            <div class="iterative-xblock-gridarea">
+                {% for cell_key, cell_value in content.content.items %}
+                <div class="{{ cell_key }}">
+                    {{ cell_key }}
+                </div>
+                {% endfor %}
+            </div>
             {% endif %}
         </div>
     </div>
