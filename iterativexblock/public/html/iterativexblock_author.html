@@ -20,14 +20,35 @@
                     grid-area: {{ cell_key.5 }};
                     padding: 1em;
                     background-color: #f9f9f9;
-                    border: 1px solid #ccc;
+                    border-left: {% if cell_value.format.border_left %}{% if cell_value.format.border_bold %}3px{% else %}1px{% endif %} solid #000;{% else %}none;{% endif %}
+                    border-right: {% if cell_value.format.border_right %}{% if cell_value.format.border_bold %}3px{% else %}1px{% endif %} solid #000;{% else %}none;{% endif %}
+                    border-top: {% if cell_value.format.border_top %}{% if cell_value.format.border_bold %}3px{% else %}1px{% endif %} solid #000;{% else %}none;{% endif %}
+                    border-bottom: {% if cell_value.format.border_bottom %}{% if cell_value.format.border_bold %}3px{% else %}1px{% endif %} solid #000;{% else %}none;{% endif %}
+                    {% if cell_value.format.bold %}font-weight: bold;{% endif %}
+                    {% if cell_value.format.italic %}font-style: italic;{% endif %}
+                    {% if cell_value.format.underline %}text-decoration: underline;{% endif %}
+                    {% if cell_value.format.horizontal_align == 'left' %}text-align: left;{% endif %}
+                    {% if cell_value.format.horizontal_align == 'center' %}text-align: center;{% endif %}
+                    {% if cell_value.format.horizontal_align == 'right' %}text-align: right;{% endif %}
+                    {% if cell_value.format.horizontal_align == 'justify' %}text-align: justify;{% endif %}
+                    {% if cell_value.format.vertical_align == 'top' %}vertical-align: top;{% endif %}
+                    {% if cell_value.format.vertical_align == 'middle' %}vertical-align: middle;{% endif %}
+                    {% if cell_value.format.vertical_align == 'bottom' %}vertical-align: bottom;{% endif %}
                 }
                 {% endfor %}
             </style>
             <div class="iterative-xblock-gridarea">
                 {% for cell_key, cell_value in content.content.items %}
                 <div class="{{ cell_key }}">
-                    {{ cell_key }}
+                    {% if cell_value.type == 'text' %}
+                        {{ cell_value.content }}
+                    {% elif cell_value.type == 'iframe' %}
+                        <iframe src="{{ cell_value.content }}" width="100%" height="100%"></iframe>
+                    {% elif cell_value.type == 'question' %}
+                        <textarea class="iterative-xblock-question" id="{{ cell_key }}" name="{{ cell_key }}" value="" placeholder="{{ cell_value.metadata.placeholder }}"></textarea>
+                    {% elif cell_value.type == 'answer' %}
+                        <button id="iterative-xblock-student-get-answer-{{ cell_value.content }}" class="iterative-xblock-student-get-answer">{{ cell_value.metadata.placeholder }} ({{ cell_value.content }})</button>
+                    {% endif %}
                 </div>
                 {% endfor %}
             </div>

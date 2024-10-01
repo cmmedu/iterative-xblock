@@ -124,7 +124,7 @@
 }
 
 .iterative-xblock-student-get-answer {
-  position: absolute;
+  position: relative;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -139,6 +139,11 @@
   cursor: pointer;
   min-width: 100px;
   text-align: center;
+}
+
+.iterative-xblock-question {
+  width: 100%;
+  height: 100%;
 }
 
 .iterative-xblock-instructor-select-student-container {

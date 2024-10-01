@@ -112,10 +112,16 @@ class IterativeXBlock(XBlock):
     
 
     def get_ids(self, type):
+        from .compatibility import adapt_content
         ids = []
-        for cell in self.content["content"].values():
-            if cell["type"] == type:
-                ids.append(cell["content"])
+        if "n_rows" in self.content.keys():
+            for cell in adapt_content(self.content)["content"].values():
+                if cell["type"] == type:
+                    ids.append(cell["content"])
+        else:
+            for cell in self.content["content"].values():
+                if cell["type"] == type:
+                    ids.append(cell["content"])
         return ids
     
 
