@@ -18,7 +18,7 @@
                 {% for cell_key, cell_value in content.content.items %}
                 .{{ cell_key }} {
                     grid-area: {{ cell_key.5 }};
-                    padding: 1em;
+                    padding: {% if cell_value.type == 'text' %}1em{% else %}0{% endif %};
                     background-color: #f9f9f9;
                     border-left: {% if cell_value.format.border_left %}{% if cell_value.format.border_bold %}3px{% else %}1px{% endif %} solid #000;{% else %}none;{% endif %}
                     border-right: {% if cell_value.format.border_right %}{% if cell_value.format.border_bold %}3px{% else %}1px{% endif %} solid #000;{% else %}none;{% endif %}

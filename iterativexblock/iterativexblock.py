@@ -205,6 +205,7 @@ class IterativeXBlock(XBlock):
             'configured': self.configured,
             'content': adapt_content(self.content),
             'enable_download': self.enable_download,
+            'submit_message': self.submit_message,
             'show_submit_button': len(self.get_ids("question")) > 0
         }
         template = loader.render_django_template(

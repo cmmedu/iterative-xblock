@@ -1,3 +1,6 @@
+from copy import deepcopy
+
+
 def make_grid_template_areas(grid):
     grid_areas = [" ".join(row if (row and row != ".") else '.' for row in grid_row) for grid_row in grid]
     return grid_areas
@@ -28,9 +31,10 @@ def trim_grid(content):
 
 def adapt_content(content):
     if "n_rows" not in content:
-        content["grid"] = trim_grid(content)
-        content["true_grid"] = make_grid_template_areas(content["grid"])
-        return content
+        new_content = deepcopy(content)
+        new_content["grid"] = trim_grid(new_content)
+        new_content["true_grid"] = make_grid_template_areas(new_content["grid"])
+        return new_content
     new_content = {
         "grid": [
             ["" for i in range(10)] for j in range(10)

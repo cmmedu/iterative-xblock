@@ -11,35 +11,49 @@
             {% else %}
             <div class="status " id="status_{{ location }}"></div>
             {% endif %}
-            <table>
-            {% for row_id, row in content.items %}
-            {% if row_id != 'n_rows' %}
-            <tr class="iterative-xblock-student-row">
-                {% for cell_id, cell in row.items %}
-                {% if cell_id != 'n_cells' %}
-                <td id="iterative-xblock-student-cell-{{ row_id }}-{{ cell_id }}" class="iterative-xblock-student-cell iterative-xblock-cell-{{ cell.type }}" >
-                    {% if cell.type == 'text' %}
-                    <p style="text-align: {{ cell.alignment }};{% if cell.bold %}font-weight: bold;{% endif %}{% if cell.italic %}font-style: italic;{% endif %}text-decoration: {% if cell.underline %}underline {% endif %}{% if cell.strikethrough %}line-through{% endif %}">{{ cell.content }}</p>
-                    {% elif cell.type == 'question' %}
-                    <textarea type="text" class="iterative-xblock-student-question"
-                        id="iterative-xblock-student-question-{{ cell.content }}" 
-                        style="text-align: {{ cell.alignment }};{% if cell.bold %}font-weight: bold;{% endif %}{% if cell.italic %}font-style: italic;{% endif %}text-decoration: {% if cell.underline %}underline {% endif %}{% if cell.strikethrough %}line-through{% endif %}"
-                        ></textarea>
-                    {% elif cell.type == 'answer' %}
-                    <div class="iterative-xblock-student-answer-container">
-                        <span id="iterative-xblock-student-get-answer-{{ cell.content }}" class="iterative-xblock-student-get-answer">{{ display_message }}</span>
-                        <textarea disabled type="text" class="iterative-xblock-student-answer"
-                            style="text-align: {{ cell.alignment }};{% if cell.bold %}font-weight: bold;{% endif %}{% if cell.italic %}font-style: italic;{% endif %}text-decoration: {% if cell.underline %}underline {% endif %}{% if cell.strikethrough %}line-through{% endif %}"
-                            id="iterative-xblock-student-answer-{{ cell.content }}" ></textarea>
-                    </div>
-                    {% endif %}
-                </td>
-                {% endif %}
+            <style>
+                .iterative-xblock-gridarea {
+                    display: grid;
+                    grid-template-areas: {% for line in content.true_grid %}"{{ line }}" {% endfor %};
+                }
+                {% for cell_key, cell_value in content.content.items %}
+                .{{ cell_key }} {
+                    grid-area: {{ cell_key.5 }};
+                    padding: {% if cell_value.type == 'text' %}1em{% else %}0{% endif %};
+                    background-color: #f9f9f9;
+                    border-left: {% if cell_value.format.border_left %}{% if cell_value.format.border_bold %}3px{% else %}1px{% endif %} solid #000;{% else %}none;{% endif %}
+                    border-right: {% if cell_value.format.border_right %}{% if cell_value.format.border_bold %}3px{% else %}1px{% endif %} solid #000;{% else %}none;{% endif %}
+                    border-top: {% if cell_value.format.border_top %}{% if cell_value.format.border_bold %}3px{% else %}1px{% endif %} solid #000;{% else %}none;{% endif %}
+                    border-bottom: {% if cell_value.format.border_bottom %}{% if cell_value.format.border_bold %}3px{% else %}1px{% endif %} solid #000;{% else %}none;{% endif %}
+                    {% if cell_value.format.bold %}font-weight: bold;{% endif %}
+                    {% if cell_value.format.italic %}font-style: italic;{% endif %}
+                    {% if cell_value.format.underline %}text-decoration: underline;{% endif %}
+                    {% if cell_value.format.horizontal_align == 'left' %}text-align: left;{% endif %}
+                    {% if cell_value.format.horizontal_align == 'center' %}text-align: center;{% endif %}
+                    {% if cell_value.format.horizontal_align == 'right' %}text-align: right;{% endif %}
+                    {% if cell_value.format.horizontal_align == 'justify' %}text-align: justify;{% endif %}
+                    {% if cell_value.format.vertical_align == 'top' %}vertical-align: top;{% endif %}
+                    {% if cell_value.format.vertical_align == 'middle' %}vertical-align: middle;{% endif %}
+                    {% if cell_value.format.vertical_align == 'bottom' %}vertical-align: bottom;{% endif %}
+                }
                 {% endfor %}
-            </tr>
-            {% endif %}
-            {% endfor %}
-            </table>
+            </style>
+            <div class="iterative-xblock-gridarea">
+                {% for cell_key, cell_value in content.content.items %}
+                <div class="{{ cell_key }}">
+                    {% if cell_value.type == 'text' %}
+                        {{ cell_value.content }}
+                    {% elif cell_value.type == 'iframe' %}
+                        <iframe src="{{ cell_value.content }}" width="100%" height="100%"></iframe>
+                    {% elif cell_value.type == 'question' %}
+                        <textarea class="iterative-xblock-question" id="{{ cell_key }}" name="{{ cell_key }}" value="" placeholder="{{ cell_value.metadata.placeholder }}"></textarea>
+                    {% elif cell_value.type == 'answer' %}
+                        <button id="iterative-xblock-student-get-answer-{{ cell_value.content }}" class="iterative-xblock-student-get-answer">{{ cell_value.metadata.placeholder }} ({{ cell_value.content }})</button>
+                        <textarea hidden disabled type="text" class="iterative-xblock-student-answer" id="iterative-xblock-student-answer-{{ cell.content }}" ></textarea>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
             {% if show_submit_button %}
             <div class="action iterative-xblock-action">
                 <button class="iterative-xblock-submit submit Submit"

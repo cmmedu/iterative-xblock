@@ -108,12 +108,15 @@ function IterativeXBlockStudent(runtime, element, settings) {
         let displayButton = $(element).find("#iterative-xblock-student-get-answer-" + id_question);
         displayButton.hide();
         let area = $(element).find("#iterative-xblock-student-answer-" + id_question);
+        area.show();
         if(result["result"] === "success"){
             let answer = result["answer"] === "" ? settings.no_answer_message : result["answer"];
             let answer_time = result["answer_time"];
             area.val(answer);
+        } else if (result["result"] === "no_question"){
+            area.val("Esta pregunta no existe.");
         } else if (result["result"] === "no_answer"){
-            area.val(settings.no_answer_message);
+            area.val("Aún no has respondido a esta pregunta.");
         } else {
             area.val(result["error"]);
         }
@@ -127,6 +130,7 @@ function IterativeXBlockStudent(runtime, element, settings) {
             "id_user": ""
         }
         $.post(displayUrl, JSON.stringify(data)).done(function (response) {
+            $(this).hide();
             afterDisplay(data["id_question"], response)
         });
     });
