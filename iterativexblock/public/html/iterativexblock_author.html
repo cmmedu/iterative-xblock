@@ -19,11 +19,21 @@
                 .{{ cell_key }} {
                     grid-area: {{ cell_key.5 }};
                     padding: {% if cell_value.type == 'text' %}1em{% else %}0{% endif %};
-                    background-color: #f9f9f9;
+                    display: flex;
                     border-left: {% if cell_value.format.border_left %}{% if cell_value.format.border_bold %}3px{% else %}1px{% endif %} solid #000;{% else %}none;{% endif %}
                     border-right: {% if cell_value.format.border_right %}{% if cell_value.format.border_bold %}3px{% else %}1px{% endif %} solid #000;{% else %}none;{% endif %}
                     border-top: {% if cell_value.format.border_top %}{% if cell_value.format.border_bold %}3px{% else %}1px{% endif %} solid #000;{% else %}none;{% endif %}
                     border-bottom: {% if cell_value.format.border_bottom %}{% if cell_value.format.border_bold %}3px{% else %}1px{% endif %} solid #000;{% else %}none;{% endif %}
+                    {% if cell_value.format.horizontal_align == 'left' %}justify-content: start;{% endif %}
+                    {% if cell_value.format.horizontal_align == 'center' %}justify-content: center;{% endif %}
+                    {% if cell_value.format.horizontal_align == 'right' %}justify-content: end;{% endif %}
+                    {% if cell_value.format.horizontal_align == 'justify' %}justify-content: start;{% endif %}
+                    {% if cell_value.format.vertical_align == 'top' %}align-items: start;{% endif %}
+                    {% if cell_value.format.vertical_align == 'middle' %}align-items: center;{% endif %}
+                    {% if cell_value.format.vertical_align == 'bottom' %}align-items: end;{% endif %}
+                }
+                .{{ cell_key }} p {
+                    margin-bottom: 0 !important;
                     {% if cell_value.format.bold %}font-weight: bold;{% endif %}
                     {% if cell_value.format.italic %}font-style: italic;{% endif %}
                     {% if cell_value.format.underline %}text-decoration: underline;{% endif %}
@@ -31,9 +41,15 @@
                     {% if cell_value.format.horizontal_align == 'center' %}text-align: center;{% endif %}
                     {% if cell_value.format.horizontal_align == 'right' %}text-align: right;{% endif %}
                     {% if cell_value.format.horizontal_align == 'justify' %}text-align: justify;{% endif %}
-                    {% if cell_value.format.vertical_align == 'top' %}vertical-align: top;{% endif %}
-                    {% if cell_value.format.vertical_align == 'middle' %}vertical-align: middle;{% endif %}
-                    {% if cell_value.format.vertical_align == 'bottom' %}vertical-align: bottom;{% endif %}
+                }
+                .{{ cell_key }} textarea {
+                    {% if cell_value.format.bold %}font-weight: bold;{% endif %}
+                    {% if cell_value.format.italic %}font-style: italic;{% endif %}
+                    {% if cell_value.format.underline %}text-decoration: underline;{% endif %}
+                    {% if cell_value.format.horizontal_align == 'left' %}text-align: left;{% endif %}
+                    {% if cell_value.format.horizontal_align == 'center' %}text-align: center;{% endif %}
+                    {% if cell_value.format.horizontal_align == 'right' %}text-align: right;{% endif %}
+                    {% if cell_value.format.horizontal_align == 'justify' %}text-align: justify;{% endif %}
                 }
                 {% endfor %}
             </style>
@@ -41,11 +57,11 @@
                 {% for cell_key, cell_value in content.content.items %}
                 <div class="{{ cell_key }}">
                     {% if cell_value.type == 'text' %}
-                        {{ cell_value.content }}
+                        <p>{{ cell_value.content }}</p>
                     {% elif cell_value.type == 'iframe' %}
                         <iframe src="{{ cell_value.content }}" width="100%" height="100%"></iframe>
                     {% elif cell_value.type == 'question' %}
-                        <textarea class="iterative-xblock-question" id="{{ cell_key }}" name="{{ cell_key }}" value="" placeholder="{{ cell_value.metadata.placeholder }}"></textarea>
+                        <textarea disabled class="iterative-xblock-question" id="iterative-xblock-question-{{ cell_value.content }}" name="{{ cell_value.content }}" value="" placeholder="{{ cell_value.metadata.placeholder }}"></textarea>
                     {% elif cell_value.type == 'answer' %}
                         <button id="iterative-xblock-student-get-answer-{{ cell_value.content }}" class="iterative-xblock-student-get-answer">{{ cell_value.metadata.placeholder }} ({{ cell_value.content }})</button>
                     {% endif %}

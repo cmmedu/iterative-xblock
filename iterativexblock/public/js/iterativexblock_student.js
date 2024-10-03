@@ -5,8 +5,7 @@ function IterativeXBlockStudent(runtime, element, settings) {
     let buttonSubmit = $(element).find(".iterative-xblock-submit");
     let submitUrl = runtime.handlerUrl(element, 'student_submit');
     let displayUrl = runtime.handlerUrl(element, 'fetch_previous_submission');
-    let pdfDisplayUrl = runtime.handlerUrl(element, 'fetch_pdf_submissions');
-    let min_questions = settings.min_questions;
+    let ensureUrl = runtime.handlerUrl(element, 'ensure_db_integrity');
 
     function showErrorMessage(msg) {
         $(element).find('#iterative-xblock-student-error-msg').html(msg);
@@ -14,8 +13,8 @@ function IterativeXBlockStudent(runtime, element, settings) {
 
     function makeSubmissionData() {
         let data = {};
-        $(element).find(".iterative-xblock-student-question").each(function (index, element) {
-            let key = $(this).attr("id").split("iterative-xblock-student-question-")[1];
+        $(element).find(".iterative-xblock-question").each(function (index, element) {
+            let key = $(this).attr("id").split("iterative-xblock-question-")[1];
             let value = $(this).val();
             data[key] = value;
         });
@@ -24,34 +23,49 @@ function IterativeXBlockStudent(runtime, element, settings) {
 
     function validate(data) {
         let error_msg = "";
-        let count = 0;
-        for (let key in data) {
+        for (let key of Object.keys(data)) {
             if (data[key].length > 0){ 
-                count++;
+                var cell_id = null;
+                for (let cellKey of Object.keys(settings.content.content)) {
+                    if (settings.content.content[cellKey].content === key) {
+                        cell_id = cellKey;
+                        break;
+                    }
+                }
                 if (data[key].length > 10000) {
                     error_msg = "La respuesta es muy larga. Por favor, utilice menos de 10000 caracteres (usados: " + data[key].length + ").";
+                    $(element).find("#iterative-xblock-question-" + key).addClass("iterative-xblock-question-error")
                     break;
                 }
-                if (settings.min_characters !== 0){
-                    if (data[key].length < settings.min_characters) {
-                        error_msg = "La respuesta es muy corta. Por favor, utilice al menos " + settings.min_characters + " caracteres (usados: " + data[key].length + ").";
+                if (settings.content.content[cell_id].metadata.required === "required") {
+                    if (data[key].trim().length === 0) {
+                        error_msg = "Por favor, responda esta pregunta.";
+                        $(element).find("#iterative-xblock-question-" + key).addClass("iterative-xblock-question-error")
+                        break;
+                    }
+                    if (data[key].trim().length < parseInt(settings.content.content[cell_id].metadata.min_chars)) {
+                        error_msg = "La respuesta es muy corta. Por favor, utilice al menos " + settings.content.content[cell_id].metadata.min_chars + " caracteres.";
+                        $(element).find("#iterative-xblock-question-" + key).addClass("iterative-xblock-question-error")
+                        break;
+                    }
+                    if (data[key].trim().split(" ").length < parseInt(settings.content.content[cell_id].metadata.min_words)) {
+                        error_msg = "La respuesta es muy corta. Por favor, utilice al menos " + settings.content.content[cell_id].metadata.min_words + " palabras.";
+                        $(element).find("#iterative-xblock-question-" + key).addClass("iterative-xblock-question-error")
+                        break;
+                    }
+                } else if (data[key].trim().length > 0) {
+                    if (data[key].trim().length < parseInt(settings.content.content[cell_id].metadata.min_chars)) {
+                        error_msg = "La respuesta es muy corta. Por favor, utilice al menos " + settings.content.content[cell_id].metadata.min_chars + " caracteres.";
+                        $(element).find("#iterative-xblock-question-" + key).addClass("iterative-xblock-question-error")
+                        break;
+                    }
+                    if (data[key].trim().split(" ").length < parseInt(settings.content.content[key].min_words)) {
+                        error_msg = "La respuesta es muy corta. Por favor, utilice al menos " + settings.content.content[cell_id].metadata.min_words + " palabras.";
+                        $(element).find("#iterative-xblock-question-" + key).addClass("iterative-xblock-question-error")
                         break;
                     }
                 }
-                if (settings.min_words !== 0) {
-                    if (data[key].split(" ").length < settings.min_words) {
-                        error_msg = "La respuesta es muy corta. Por favor, utilice al menos " + settings.min_words + " palabras (usadas: " + data[key].split(" ").length + ").";
-                        break;
-                    }
-                } 
             }
-        }
-        if (min_questions === 0){
-            if (count < data.length){
-                error_msg = "Por favor, responda todas las preguntas.";
-            }
-        } else if (count < min_questions) {
-            error_msg = "Por favor, responda al menos " + min_questions + " preguntas.";
         }
         return error_msg;
     }
@@ -75,6 +89,7 @@ function IterativeXBlockStudent(runtime, element, settings) {
 
     buttonSubmit.click(function (e) {
         e.preventDefault();
+        $(element).find(".iterative-xblock-question").removeClass("iterative-xblock-question-error");
         showErrorMessage("");
         if (!busyValidating){
             if ($.isFunction(runtime.notify)) {
@@ -110,8 +125,7 @@ function IterativeXBlockStudent(runtime, element, settings) {
         let area = $(element).find("#iterative-xblock-student-answer-" + id_question);
         area.show();
         if(result["result"] === "success"){
-            let answer = result["answer"] === "" ? settings.no_answer_message : result["answer"];
-            let answer_time = result["answer_time"];
+            let answer = result["answer"] === "" ? "Aún no has respondido a esta pregunta." : result["answer"];
             area.val(answer);
         } else if (result["result"] === "no_question"){
             area.val("Esta pregunta no existe.");
@@ -120,8 +134,7 @@ function IterativeXBlockStudent(runtime, element, settings) {
         } else {
             area.val(result["error"]);
         }
-        area.css('height', 'auto');
-        area.css('height', area.scrollHeight + 'px');
+        area.css('height', area.prop('scrollHeight') + 'px');
     }
 
     $(element).find(".iterative-xblock-student-get-answer").on('click', function (eventObject) {
@@ -135,102 +148,21 @@ function IterativeXBlockStudent(runtime, element, settings) {
         });
     });
 
-    $(element).find(".iterative-xblock-student-download-pdf").on('click', function (eventObject) {
-        $.post(pdfDisplayUrl, JSON.stringify({"id_user": ""})).done(function (response) {
-            generatePDF(response["answers"]);
-        });
-    });
-
-    function generatePDF(answers) {
-        const { jsPDF } = jspdf;
-        var doc = new jsPDF();
-        let pageWidth = doc.internal.pageSize.getWidth();
-        let margin = 20;
-        let totalWidth = pageWidth - (2 * margin);
-        let lineHeight = 5;
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(16);
-        let title = settings.title;
-        let titleWidth = doc.getStringUnitWidth(title) * 16 / doc.internal.scaleFactor;
-        let titleX = (pageWidth - titleWidth) / 2; 
-        doc.text(title, titleX, margin);
-        let startY = margin;
-        doc.setFontSize(10);
-        var y = startY + margin;
-        var processParagraph = function(paragraph, x, y, width, alignment) {
-            var lines = doc.splitTextToSize(paragraph, width);
-            var blockHeight = lines.length * lineHeight;
-            doc.text(lines, x, y + (lineHeight / 2), {maxWidth: width, align: alignment});
-            return blockHeight;
-        };
-        for (var i = 1; i <= settings.content["n_rows"]; i++) {
-            let n_cells = settings.content[i.toString()]["n_cells"];
-            var widths = [];
-            var totalOffsetWidth = 0;
-            for (var j = 1; j <= n_cells; j++) {
-                var cellObject = document.querySelector("#iterative-xblock-student-cell-" + i + "-" + j);
-                widths.push(cellObject.offsetWidth);
-                totalOffsetWidth += cellObject.offsetWidth;
-            }
-            var proportionalWidths = widths.map(function(width) {
-                return Math.floor(width*totalWidth / totalOffsetWidth);
-            });
-            var x = margin;
-            var next_y = 0;
-            for (var j = 1; j <= n_cells; j++) {
-                var paragraph;
-                var cellContent = settings.content[i.toString()][j.toString()];
-                var stylestring = ""
-                if (cellContent["bold"]) {
-                    stylestring += "bold";
-                }
-                if (cellContent["italic"]) {
-                    stylestring += "italic";
-                }
-                if (stylestring === "") {
-                    stylestring = "normal";
-                }
-                doc.setFont("helvetica", stylestring);
-                if (cellContent["type"] === "text") {
-                    paragraph = cellContent["content"];
-                } else if (cellContent["type"] === "answer") {
-                    paragraph = answers[cellContent["content"]];
-                }
-                cellWidth = proportionalWidths[j-1]-4;
-                this_y = processParagraph(paragraph, x+2, y, cellWidth, cellContent["alignment"] !== "right" ? cellContent["alignment"] : "center");
-                console.log(y)
-                console.log(this_y)
-                next_y = Math.max(next_y, this_y);
-                x += proportionalWidths[j-1];
-            }
-            y += next_y;
-        }
-        doc.save(settings.download_name + '.pdf');
-    }
-
-    $(".iterative-xblock-student-question").each(function(index, e) {
-        $(e).on('load', function() {
-            this.style.height = this.scrollHeight + 'px';
-        });
-        $(e).on('input', function() {
-            this.style.height = this.scrollHeight + 'px';
-        });
-    });
-
-    $(".iterative-xblock-student-answer").each(function(index, e) {
-        $(e).on('load', function() {
-            this.style.height = this.scrollHeight + 'px';
-        });
-    });
-
     $(function ($) {
-        MathJax.Hub.Queue(["Typeset", MathJax.Hub]); 
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+        $.post(ensureUrl, JSON.stringify({})).done(function (response) {
+            if (response["result"] !== "success") {
+                showErrorMessage("Algo salió mal.");
+            }
+        });
         if (settings.completed) {
             var answers = settings.answers;
             for (var key in answers) {
-                $(element).find("#iterative-xblock-student-question-" + key).val(answers[key]);
+                let question = $(element).find("#iterative-xblock-question-" + key);
+                question.val(answers[key]);
+                question.css('height', question.prop('scrollHeight') + 'px');
             }
-            $(element).find(".iterative-xblock-student-question").attr("disabled", true);
+            $(element).find(".iterative-xblock-question").attr("disabled", true);
             buttonSubmit.attr("disabled", true);
         }
         statusDiv.removeClass("unanswered");

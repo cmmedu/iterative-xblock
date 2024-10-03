@@ -1,9 +1,5 @@
 function IterativeXBlockStudio(runtime, element, settings) {
     let title = $(element).find("#title");
-    let input_enable_download = $(element).find("#input_enable_download");
-    let enable_download = $(element).find("#enable_download");
-    let input_download_name = $(element).find("#input_download_name");
-    let download_name = $(element).find("#download_name");
     let input_submit_message = $(element).find("#input_submit_message");
     let submit_message = $(element).find("#submit_message");
     
@@ -42,15 +38,6 @@ function IterativeXBlockStudio(runtime, element, settings) {
     function validate(data) {
         if (data["title"].length > 200) {
             return "El título debe tener un máximo de 200 caracteres."
-        }
-        if (input_enable_download.is(":visible") && enable_download.val() === "true" && download_name.val().length === 0) {
-            return "Debe ingresar un nombre para el archivo descargable."
-        }
-        if (input_enable_download.is(":visible") && enable_download.val() === "true" && download_name.val().length > 200) {
-            return "El nombre del archivo descargable debe tener un máximo de 200 caracteres."
-        }
-        if (input_enable_download.is(":visible") && enable_download.val() === "true" && !download_name.val().length.endsWith(".pdf")) {
-            return "El nombre del archivo descargable debe terminar en '.pdf'."
         }
         if (input_submit_message.is(":visible") && submit_message.val().length === 0) {
             return "Debe ingresar un mensaje para el botón de envío."
@@ -119,15 +106,9 @@ function IterativeXBlockStudio(runtime, element, settings) {
     function toggleHiddenInputs(content) {
         let questionIds = getQuestionIDs(content["content"]);
         if (questionIds.length > 0) {
-            input_enable_download.hide();
-            input_download_name.hide();
             input_submit_message.show();
             submit_message.val(settings["submit_message"] !== "Enviar" ? settings["submit_message"] : "Enviar");
         } else {
-            input_enable_download.show();
-            enable_download.val(settings["enable_download"] ? "yes" : "no");
-            input_download_name.show();
-            download_name.val(settings["download_name"] !== "respuestas.pdf" ? settings["download_name"] : "respuestas.pdf");
             input_submit_message.hide();
         }
     }
@@ -815,8 +796,6 @@ function IterativeXBlockStudio(runtime, element, settings) {
         var data = {
             title: title.val(),
             content: content_ui,
-            enable_download: enable_download.val(),
-            download_name: download_name.val(),
             submit_message: submit_message.val(),
             new_questions: newQuestions,
             removed_questions: removedQuestions

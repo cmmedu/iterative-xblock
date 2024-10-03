@@ -43,18 +43,6 @@ class IterativeXBlock(XBlock):
         help="Text to be displayed on the submit button."
     )
 
-    enable_download = Boolean(
-        default=False,
-        scope=Scope.settings,
-        help="Allows for the downloading of the XBlock content as a PDF document. This functionality is only enabled if there are no questions within the module."
-    )
-
-    download_name = String(
-        default="respuestas.pdf",
-        scope=Scope.settings,
-        help="Name of the file to be downloaded."
-    )
-
     content = Dict(
         default={
             "grid": [
@@ -204,7 +192,6 @@ class IterativeXBlock(XBlock):
             'location': str(self.location).split('@')[-1],
             'configured': self.configured,
             'content': adapt_content(self.content),
-            'enable_download': self.enable_download,
             'submit_message': self.submit_message,
             'show_submit_button': len(self.get_ids("question")) > 0
         }
@@ -264,8 +251,6 @@ class IterativeXBlock(XBlock):
                 "indicator_class": self.get_indicator_class(),
                 "content": adapt_content(self.content),
                 "title": self.title,
-                "enable_download": self.enable_download,
-                "download_name": self.download_name,
                 "submit_message": self.submit_message
             }
         )
@@ -277,7 +262,7 @@ class IterativeXBlock(XBlock):
         from django.contrib.auth.models import User
         from .models import IterativeXBlockQuestion, IterativeXBlockAnswer
         from .compatibility import adapt_content
-        if len(self.get_ids("question")) == 0 and len(self.get_ids("answer")) == 0 and not self.enable_download:
+        if len(self.get_ids("question")) == 0 and len(self.get_ids("answer")) == 0:
             show_student_select = False
             answers = []
         else:
@@ -312,8 +297,7 @@ class IterativeXBlock(XBlock):
             'configured': self.configured,
             'content': adapt_content(self.content),
             'answers': answers,
-            'show_student_select': show_student_select,
-            'enable_download': self.enable_download
+            'show_student_select': show_student_select
         }
         template = loader.render_django_template(
             'public/html/iterativexblock_instructor.html',
@@ -333,8 +317,6 @@ class IterativeXBlock(XBlock):
                 "answers": answers,
                 "content": adapt_content(self.content),
                 "title": self.title,
-                "enable_download": self.enable_download,
-                "download_name": self.download_name,
                 "submit_message": self.submit_message
             }
         )
@@ -363,8 +345,6 @@ class IterativeXBlock(XBlock):
                 "content": adapt_content(self.content),
                 "configured": self.configured,
                 "title": self.title,
-                "enable_download": self.enable_download,
-                "download_name": self.download_name,
                 "submit_message": self.submit_message
             }
         )
@@ -446,8 +426,6 @@ class IterativeXBlock(XBlock):
                 deleted_question.delete()
         self.content = data.get('content')
         self.title = data.get('title')
-        self.enable_download = data.get('enable_download') == "yes"
-        self.download_name = data.get('download_name')
         return {'result': 'success'}
 
 
@@ -468,11 +446,6 @@ class IterativeXBlock(XBlock):
             for id_question, answer in data.items():
                 if answer != "":
                     answered += 1
-            if self.min_questions > 0 and answered < self.min_questions:
-                return {"result": 'not_enough', 'indicator_class': self.get_indicator_class()}
-            if self.min_questions == 0:
-                if answered < len(self.get_ids("question")):
-                    return {"result": 'not_enough', 'indicator_class': self.get_indicator_class()}
             self.score = 1
             self.runtime.publish(
                 self,
@@ -519,28 +492,17 @@ class IterativeXBlock(XBlock):
 
 
     @XBlock.json_handler
-    def fetch_pdf_submissions(self, data, suffix=''):
+    def ensure_db_integrity(self, data, suffix=''):
         """
-        Called when a user wants to download the submissions as a PDF file.
+        Called when XBlock is rendered to check if questions exist in the database. If not, they are created.
         """
-        from .models import IterativeXBlockQuestion, IterativeXBlockAnswer
+        from .models import IterativeXBlockQuestion
         id_course = self.course_id
-        id_student_data = data["id_user"]
-        if id_student_data != "":
-            id_student = id_student_data
-        else:
-            id_student = self.scope_ids.user_id
-        questions = self.get_ids("answer")
-        answers = {}
-        for id_question in questions:
-            try:
-                question = IterativeXBlockQuestion.objects.get(id_course=id_course, id_question=id_question)
-                try:
-                    answer = IterativeXBlockAnswer.objects.get(id_course=id_course, question=question, id_student=id_student)
-                    answers[id_question] = answer.answer
-                except IterativeXBlockAnswer.DoesNotExist:
-                    answers[id_question] = self.no_answer_message
-            except IterativeXBlockQuestion.DoesNotExist:
-                answers[id_question] = "This question does not exist."
-        return {"result": 'success', 'answers': answers}
-
+        id_xblock = str(self.location).split('@')[-1]
+        for cell_id, cell_value in self.content["content"].items():
+            if cell_value["type"] == "question":
+                id_question = cell_value["content"]
+                if not IterativeXBlockQuestion.objects.filter(id_course=id_course, id_xblock=id_xblock, id_question=id_question).exists():
+                    new_question = IterativeXBlockQuestion(id_course=id_course, id_xblock=id_xblock, id_question=id_question)
+                    new_question.save()
+        return {"result": 'success'}

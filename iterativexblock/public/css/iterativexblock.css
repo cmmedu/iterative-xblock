@@ -79,6 +79,11 @@
   display: flex !important;
 }
 
+.iterative-xblock-title {
+  text-align: center !important;
+  margin-bottom: 10px !important;
+}
+
 .iterative-xblock-cell-title p {
   text-align: center;
   font-weight: bold;
@@ -118,16 +123,7 @@
   margin-top: 20px;
 }
 
-.iterative-xblock-student-answer-container {
-  position: relative;
-  width: 100%;
-}
-
 .iterative-xblock-student-get-answer {
-  position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   z-index: 2;
   background-image: none;
   border: none;
@@ -144,6 +140,10 @@
 .iterative-xblock-question {
   width: 100%;
   height: 100%;
+}
+
+.iterative-xblock-question-error {
+  outline: 2px solid red;
 }
 
 .iterative-xblock-student-answer {
