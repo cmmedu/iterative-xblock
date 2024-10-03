@@ -342,11 +342,8 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 $(`#${inputId}`).val(content["grid"][i][j]);
             }
         }
-        console.log(content)
         let grid = makeGrid();
         let letters = validateGrid(grid);
-        console.log(grid)
-        console.log(letters)
         if (letters !== null) {
             displayCellsInputs(letters);
         }

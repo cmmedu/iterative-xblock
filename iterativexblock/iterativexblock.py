@@ -497,9 +497,10 @@ class IterativeXBlock(XBlock):
         Called when XBlock is rendered to check if questions exist in the database. If not, they are created.
         """
         from .models import IterativeXBlockQuestion
+        from .compatibility import adapt_content
         id_course = self.course_id
         id_xblock = str(self.location).split('@')[-1]
-        for cell_id, cell_value in self.content["content"].items():
+        for cell_id, cell_value in adapt_content(self.content)["content"].items():
             if cell_value["type"] == "question":
                 id_question = cell_value["content"]
                 if not IterativeXBlockQuestion.objects.filter(id_course=id_course, id_xblock=id_xblock, id_question=id_question).exists():

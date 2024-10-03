@@ -54,7 +54,7 @@ def adapt_content(content):
             new_content["content"][current_letter] = {
                 "type": cell["type"],
                 "content": cell["content"],
-                "formatting": {
+                "format": {
                     "horizontal_align": cell["alignment"],
                     "vertical_align": "middle",
                     "bold": cell["bold"],
