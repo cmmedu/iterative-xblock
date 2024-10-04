@@ -408,7 +408,6 @@ class IterativeXBlock(XBlock):
                     id_question = cell_value["content"]
                     new_question = IterativeXBlockQuestion(id_course=id_course, id_xblock=id_xblock, id_question=id_question)
                     new_question.save()
-            self.configured = True
         else:
             new_questions = data.get('new_questions')
             deleted_questions = data.get('removed_questions')
@@ -424,6 +423,8 @@ class IterativeXBlock(XBlock):
                 for answer in deleted_answers:
                     answer.delete()
                 deleted_question.delete()
+        if len(content["content"].keys()) != 0:
+            self.configured = True
         self.content = data.get('content')
         self.submit_message = data.get('submit_message')
         self.title = data.get('title')

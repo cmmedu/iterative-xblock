@@ -13,4 +13,4 @@ jobs:
     - name: Run tests
       run: |
         cd .github/
-        docker-compose run lms /openedx/requirements/iterative-xblock/.github/test.sh
+        docker compose run lms /openedx/requirements/iterative-xblock/.github/test.sh

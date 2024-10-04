@@ -1244,12 +1244,7 @@ class IterativeXBlockTestCase(TransactionTestCase):
         fake_xblock =  Mock(
             content=sample_content,
             title='TestTitle',
-            style='TestStyle',
-            no_answer_message='TestNoAnswerMessage',
-            submit_message='TestSubmitMessage',
-            display_message='TestDisplayMessage',
-            min_questions=1,
-            enable_download=True
+            submit_message='TestSubmitMessage'
         )
         duplicated = self.xblock9.studio_post_duplicate("", fake_xblock)
         self.assertTrue(duplicated)
