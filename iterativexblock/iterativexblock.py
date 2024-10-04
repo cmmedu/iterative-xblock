@@ -425,6 +425,7 @@ class IterativeXBlock(XBlock):
                     answer.delete()
                 deleted_question.delete()
         self.content = data.get('content')
+        self.submit_message = data.get('submit_message')
         self.title = data.get('title')
         return {'result': 'success'}
 

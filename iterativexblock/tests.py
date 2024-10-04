@@ -74,26 +74,13 @@ class IterativeXBlockTestCase(TransactionTestCase):
         Checks if XBlock was created successfully.
         """
         self.assertEqual(self.xblock1.title, "Iterative XBlock")
-        self.assertEqual(self.xblock1.style, "basic")
         self.assertEqual(self.xblock1.configured, False)
-        self.assertEqual(self.xblock1.no_answer_message, "You have not answered this question yet.")
-        self.assertEqual(self.xblock1.submit_message, "Submit")
-        self.assertEqual(self.xblock1.display_message, "Display")
-        self.assertEqual(self.xblock1.min_questions, 0)
-        self.assertEqual(self.xblock1.enable_download, False)
+        self.assertEqual(self.xblock1.submit_message, "Enviar")
         self.assertEqual(self.xblock1.content, {
-            "n_rows": 1,
-            "1": {
-                "n_cells": 2,
-                "1": {
-                    "type": "none",
-                    "content": ""
-                },
-                "2": {
-                    "type": "none",
-                    "content": ""
-                }
-            }
+            "grid": [
+                ["" for i in range(10)] for j in range(10)
+            ],
+            "content": {}
         })
 
 
@@ -104,43 +91,117 @@ class IterativeXBlockTestCase(TransactionTestCase):
         request = TestRequest()
         request.method = 'POST'
         sample_content = {
-            "n_rows": 2,
-            "1": {
-                "n_cells": 2,
-                "1": {
-                    "type": "text",
-                    "content": "TestText1"
-                },
-                "2": {
-                    "type": "text",
-                    "content": "TestText2"
-                }
-            },
-            "2": {
-                "n_cells": 3,
-                "1": {
-                    "type": "text",
-                    "content": "TestText3"
-                },
-                "2": {
-                    "type": "text",
-                    "content": "TestText4"
-                },
-                "3": {
-                    "type": "text",
-                    "content": "TestText5"
+            'grid': [
+                ['a', 'a', 'b', '', '', '', '', '', '', ''], 
+                ['c', 'c', 'b', '', '', '', '', '', '', ''], 
+                ['c', 'c', 'z', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', '']
+            ], 
+            'content': {
+                'cell_a': {
+                    'type': 'text', 
+                    'content': 'sadfasdfa', 
+                    'metadata': {
+                        'placeholder': '', 
+                        'min_chars': '0', 
+                        'min_words': '0', 
+                        'required': 'required'
+                    },
+                    'format': {
+                        'bold': False, 
+                        'italic': False, 
+                        'underline': False, 
+                        'strike': False, 
+                        'horizontal_align': 'justify', 
+                        'vertical_align': 'middle', 
+                        'border_left': False, 
+                        'border_top': False, 
+                        'border_right': False, 
+                        'border_bottom': False, 
+                        'border_bold': False
+                    }
+                }, 
+                'cell_b': {
+                    'type': 'text', 
+                    'content': 'vdfvxszfv', 
+                    'metadata': {
+                        'placeholder': '', 
+                        'min_chars': '0', 
+                        'min_words': '0', 
+                        'required': 'required'
+                    }, 
+                    'format': {
+                        'bold': False, 
+                        'italic': False, 
+                        'underline': False, 
+                        'strike': False, 
+                        'horizontal_align': 'justify', 
+                        'vertical_align': 'middle', 
+                        'border_left': False, 
+                        'border_top': False, 
+                        'border_right': False, 
+                        'border_bottom': False, 
+                        'border_bold': False
+                    }
+                }, 
+                'cell_c': {
+                    'type': 'text', 
+                    'content': 'sadfasdfgsda', 
+                    'metadata': {
+                        'placeholder': '', 
+                        'min_chars': '0', 
+                        'min_words': '0', 
+                        'required': 'required'
+                    }, 
+                    'format': {
+                        'bold': False, 
+                        'italic': False, 
+                        'underline': False, 
+                        'strike': False, 
+                        'horizontal_align': 'justify', 
+                        'vertical_align': 'middle', 
+                        'border_left': False, 
+                        'border_top': False, 
+                        'border_right': False, 
+                        'border_bottom': False, 
+                        'border_bold': False
+                    }
+                }, 
+                'cell_z': {
+                    'type': 'text', 
+                    'content': 'asfw4qef43wqfwaefe', 
+                    'metadata': {
+                        'placeholder': '', 
+                        'min_chars': '0', 
+                        'min_words': '0',
+                        'required': 'required'
+                    }, 
+                    'format': {
+                        'bold': False, 
+                        'italic': False, 
+                        'underline': False, 
+                        'strike': False, 
+                        'horizontal_align': 'justify', 
+                        'vertical_align': 'middle', 
+                        'border_left': False, 
+                        'border_top': False, 
+                        'border_right': False, 
+                        'border_bottom': False, 
+                        'border_bold': False
+                    }
                 }
             }
         }
         data = json.dumps({
             "content": sample_content,
             "title": self.xblock1.title,
-            "style": self.xblock1.style,
-            "no_answer_message": self.xblock1.no_answer_message,
             "submit_message": self.xblock1.submit_message,
-            "display_message": self.xblock1.display_message,
-            "min_questions": self.xblock1.min_questions,
-            "enable_download": self.xblock1.enable_download,
             "new_questions": [],
             "removed_questions": []
         })
@@ -157,43 +218,94 @@ class IterativeXBlockTestCase(TransactionTestCase):
         request = TestRequest()
         request.method = 'POST'
         sample_content = {
-            "n_rows": 2,
-            "1": {
-                "n_cells": 2,
-                "1": {
-                    "type": "question",
-                    "content": "q001"
-                },
-                "2": {
-                    "type": "text",
-                    "content": "TestText2"
-                }
-            },
-            "2": {
-                "n_cells": 3,
-                "1": {
-                    "type": "text",
-                    "content": "TestText3"
-                },
-                "2": {
-                    "type": "question",
-                    "content": "q002"
-                },
-                "3": {
-                    "type": "question",
-                    "content": "q003"
+            'grid': [
+                ['a', 'a', 'b', '', '', '', '', '', '', ''], 
+                ['c', 'c', 'c', '', '', '', '', '', '', ''], 
+                ['c', 'c', 'c', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', '']
+            ], 
+            'content': {
+                'cell_a': {
+                    'type': 'question', 
+                    'content': 'q001', 
+                    'metadata': {
+                        'placeholder': 'Placeholder', 
+                        'min_chars': '20', 
+                        'min_words': '0', 
+                        'required': 'required'
+                    }, 
+                    'format': {
+                        'bold': False, 
+                        'italic': False, 
+                        'underline': False, 
+                        'strike': False, 
+                        'horizontal_align': 'justify', 
+                        'vertical_align': 'middle', 
+                        'border_left': False, 
+                        'border_top': False, 
+                        'border_right': False, 
+                        'border_bottom': False, 
+                        'border_bold': False
+                    }
+                }, 
+                'cell_b': {
+                    'type': 'question', 
+                    'content': 'q002', 
+                    'metadata': {
+                        'placeholder': 'Placeholder', 
+                        'min_chars': '20', 
+                        'min_words': '0', 
+                        'required': 'required'
+                    }, 
+                    'format': {
+                        'bold': False, 
+                        'italic': False, 
+                        'underline': False, 
+                        'strike': False, 
+                        'horizontal_align': 'justify', 
+                        'vertical_align': 'middle', 
+                        'border_left': False, 
+                        'border_top': False, 
+                        'border_right': False, 
+                        'border_bottom': False, 
+                        'border_bold': False
+                    }
+                }, 
+                'cell_c': {
+                    'type': 'question', 
+                    'content': 'q003', 
+                    'metadata': {
+                        'placeholder': 'Placeholder', 
+                        'min_chars': '20', 
+                        'min_words': '0', 
+                        'required': 'required'
+                    }, 
+                    'format': {
+                        'bold': False, 
+                        'italic': False, 
+                        'underline': False, 
+                        'strike': False, 
+                        'horizontal_align': 'justify', 
+                        'vertical_align': 'middle', 
+                        'border_left': False, 
+                        'border_top': False, 
+                        'border_right': False, 
+                        'border_bottom': False, 
+                        'border_bold': False
+                    }
                 }
             }
         }
         data = json.dumps({
             "content": sample_content,
             "title": self.xblock2.title,
-            "style": self.xblock2.style,
-            "no_answer_message": self.xblock2.no_answer_message,
             "submit_message": self.xblock2.submit_message,
-            "display_message": self.xblock2.display_message,
-            "min_questions": self.xblock2.min_questions,
-            "enable_download": self.xblock2.enable_download,
             "new_questions": ["q001", "q002", "q003"],
             "removed_questions": []
         })
@@ -219,58 +331,140 @@ class IterativeXBlockTestCase(TransactionTestCase):
         request = TestRequest()
         request.method = 'POST'
         sample_content = {
-            "n_rows": 3,
-            "1": {
-                "n_cells": 2,
-                "1": {
-                    "type": "question",
-                    "content": "q004"
-                },
-                "2": {
-                    "type": "text",
-                    "content": "TestText2"
-                }
-            },
-            "2": {
-                "n_cells": 3,
-                "1": {
-                    "type": "text",
-                    "content": "TestText3"
-                },
-                "2": {
-                    "type": "text",
-                    "content": "TestText4"
-                },
-                "3": {
-                    "type": "question",
-                    "content": "q005"
-                }
-            },
-            "3": {
-                "n_cells": 3,
-                "1": {
-                    "type": "answer",
-                    "content": "q001"
-                },
-                "2": {
-                    "type": "answer",
-                    "content": "q002"
-                },
-                "3": {
-                    "type": "answer",
-                    "content": "q003"
+            'grid': [
+                ['a', 'a', 'b', '', '', '', '', '', '', ''], 
+                ['c', 'c', 'c', '', '', '', '', '', '', ''], 
+                ['c', 'c', 'c', '', '', '', '', '', '', ''], 
+                ['d', 'e', 'e', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', '']
+            ], 
+            'content': {
+                'cell_a': {
+                    'type': 'question', 
+                    'content': 'q004', 
+                    'metadata': {
+                        'placeholder': 'Placeholder', 
+                        'min_chars': '20', 
+                        'min_words': '0', 
+                        'required': 'required'
+                    }, 
+                    'format': {
+                        'bold': False, 
+                        'italic': False, 
+                        'underline': False, 
+                        'strike': False, 
+                        'horizontal_align': 'justify', 
+                        'vertical_align': 'middle', 
+                        'border_left': False, 
+                        'border_top': False, 
+                        'border_right': False, 
+                        'border_bottom': False, 
+                        'border_bold': False
+                    }
+                }, 
+                'cell_b': {
+                    'type': 'question', 
+                    'content': 'q005', 
+                    'metadata': {
+                        'placeholder': 'Placeholder', 
+                        'min_chars': '20', 
+                        'min_words': '0', 
+                        'required': 'required'
+                    }, 
+                    'format': {
+                        'bold': False, 
+                        'italic': False, 
+                        'underline': False, 
+                        'strike': False, 
+                        'horizontal_align': 'justify', 
+                        'vertical_align': 'middle', 
+                        'border_left': False, 
+                        'border_top': False, 
+                        'border_right': False, 
+                        'border_bottom': False, 
+                        'border_bold': False
+                    }
+                }, 
+                'cell_c': {
+                    'type': 'answer', 
+                    'content': 'q001', 
+                    'metadata': {
+                        'placeholder': 'Ver respuesta', 
+                        'min_chars': '20', 
+                        'min_words': '0', 
+                        'required': 'required'
+                    }, 
+                    'format': {
+                        'bold': False, 
+                        'italic': False, 
+                        'underline': False, 
+                        'strike': False, 
+                        'horizontal_align': 'justify', 
+                        'vertical_align': 'middle', 
+                        'border_left': False, 
+                        'border_top': False, 
+                        'border_right': False, 
+                        'border_bottom': False, 
+                        'border_bold': False
+                    }
+                }, 
+                'cell_d': {
+                    'type': 'answer', 
+                    'content': 'q002', 
+                    'metadata': {
+                        'placeholder': 'Ver respuesta', 
+                        'min_chars': '20', 
+                        'min_words': '0', 
+                        'required': 'required'
+                    }, 
+                    'format': {
+                        'bold': False, 
+                        'italic': False, 
+                        'underline': False, 
+                        'strike': False, 
+                        'horizontal_align': 'justify', 
+                        'vertical_align': 'middle', 
+                        'border_left': False, 
+                        'border_top': False, 
+                        'border_right': False, 
+                        'border_bottom': False, 
+                        'border_bold': False
+                    }
+                }, 
+                'cell_e': {
+                    'type': 'answer', 
+                    'content': 'q003', 
+                    'metadata': {
+                        'placeholder': 'Ver respuesta', 
+                        'min_chars': '20', 
+                        'min_words': '0', 
+                        'required': 'required'
+                    }, 
+                    'format': {
+                        'bold': False, 
+                        'italic': False, 
+                        'underline': False, 
+                        'strike': False, 
+                        'horizontal_align': 'justify', 
+                        'vertical_align': 'middle', 
+                        'border_left': False, 
+                        'border_top': False, 
+                        'border_right': False, 
+                        'border_bottom': False, 
+                        'border_bold': False
+                    }
                 }
             }
         }
         data = json.dumps({
             "content": sample_content,
             "title": self.xblock3.title,
-            "style": self.xblock3.style,
-            "no_answer_message": self.xblock3.no_answer_message,
             "submit_message": self.xblock3.submit_message,
-            "display_message": self.xblock3.display_message,
-            "min_questions": self.xblock3.min_questions,
-            "enable_download": self.xblock3.enable_download,
             "new_questions": ["q004", "q005"],
             "removed_questions": []
         })
@@ -296,36 +490,117 @@ class IterativeXBlockTestCase(TransactionTestCase):
         request = TestRequest()
         request.method = 'POST'
         sample_content = {
-            "n_rows": 1,
-            "1": {
-                "n_cells": 4,
-                "1": {
-                    "type": "question",
-                    "content": "q006"
-                },
-                "2": {
-                    "type": "text",
-                    "content": "TestText2"
-                },
-                "3": {
-                    "type": "answer",
-                    "content": "q001"
-                },
-                "4": {
-                    "type": "question",
-                    "content": "q007"
+            'grid': [
+                ['a', 'a', 'b', '', '', '', '', '', '', ''], 
+                ['c', 'c', 'c', '', '', '', '', '', '', ''], 
+                ['c', 'c', 'c', '', '', '', '', '', '', ''], 
+                ['d', 'd', 'd', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', '']
+            ], 
+            'content': {
+                'cell_a': {
+                    'type': 'question', 
+                    'content': 'q006', 
+                    'metadata': {
+                        'placeholder': 'Placeholder', 
+                        'min_chars': '20', 
+                        'min_words': '0', 
+                        'required': 'required'
+                    }, 
+                    'format': {
+                        'bold': False, 
+                        'italic': False, 
+                        'underline': False, 
+                        'strike': False, 
+                        'horizontal_align': 'justify', 
+                        'vertical_align': 'middle', 
+                        'border_left': False, 
+                        'border_top': False, 
+                        'border_right': False, 
+                        'border_bottom': False, 
+                        'border_bold': False
+                    }
+                }, 
+                'cell_b': {
+                    'type': 'question', 
+                    'content': 'q007', 
+                    'metadata': {
+                        'placeholder': 'Placeholder', 
+                        'min_chars': '20', 
+                        'min_words': '0', 
+                        'required': 'required'
+                    }, 
+                    'format': {
+                        'bold': False, 
+                        'italic': False, 
+                        'underline': False, 
+                        'strike': False, 
+                        'horizontal_align': 'justify', 
+                        'vertical_align': 'middle', 
+                        'border_left': False, 
+                        'border_top': False, 
+                        'border_right': False, 
+                        'border_bottom': False, 
+                        'border_bold': False
+                    }
+                }, 
+                'cell_c': {
+                    'type': 'answer', 
+                    'content': 'q001', 
+                    'metadata': {
+                        'placeholder': 'Ver respuesta', 
+                        'min_chars': '20', 
+                        'min_words': '0', 
+                        'required': 'required'
+                    }, 
+                    'format': {
+                        'bold': False, 
+                        'italic': False, 
+                        'underline': False, 
+                        'strike': False, 
+                        'horizontal_align': 'justify', 
+                        'vertical_align': 'middle', 
+                        'border_left': False, 
+                        'border_top': False, 
+                        'border_right': False, 
+                        'border_bottom': False, 
+                        'border_bold': False
+                    }
+                }, 
+                'cell_d': {
+                    'type': 'text', 
+                    'content': 'Test text', 
+                    'metadata': {
+                        'placeholder': '', 
+                        'min_chars': '0', 
+                        'min_words': '0', 
+                        'required': 'required'
+                    }, 
+                    'format': {
+                        'bold': False, 
+                        'italic': False, 
+                        'underline': False, 
+                        'strike': False, 
+                        'horizontal_align': 'justify', 
+                        'vertical_align': 'middle', 
+                        'border_left': False, 
+                        'border_top': False, 
+                        'border_right': False, 
+                        'border_bottom': False, 
+                        'border_bold': False
+                    }
                 }
             }
         }
         data = json.dumps({
             "content": sample_content,
             "title": "Some other title",
-            "style": "style2",
-            "no_answer_message": "Custom no answer message",
             "submit_message": "Custom submit message",
-            "display_message": "Custom display message",
-            "min_questions": 1,
-            "enable_download": self.xblock4.enable_download,
             "new_questions": ["q006", "q007"],
             "removed_questions": []
         })
@@ -334,12 +609,7 @@ class IterativeXBlockTestCase(TransactionTestCase):
         id_xblock = str(self.xblock4.location).split('@')[-1]
         self.assertEqual(response.json_body["result"], "success")
         self.assertEqual(self.xblock4.title, "Some other title")
-        self.assertEqual(self.xblock4.style, "style2")
-        self.assertEqual(self.xblock4.no_answer_message, "Custom no answer message")
         self.assertEqual(self.xblock4.submit_message, "Custom submit message")
-        self.assertEqual(self.xblock4.display_message, "Custom display message")
-        self.assertEqual(self.xblock4.min_questions, 1)
-        self.assertEqual(self.xblock4.enable_download, False)
         self.assertEqual(self.xblock4.content, sample_content)
         self.assertEqual(IterativeXBlockQuestion.objects.filter(id_course=COURSE_ID, id_xblock=id_xblock).count(), 2)
         i = 6
@@ -353,43 +623,117 @@ class IterativeXBlockTestCase(TransactionTestCase):
         request2 = TestRequest()
         request2.method = 'POST'
         sample_content2 = {
-            "n_rows": 2,
-            "1": {
-                "n_cells": 3,
-                "1": {
-                    "type": "question",
-                    "content": "q006"
-                },
-                "2": {
-                    "type": "text",
-                    "content": "TestText2"
-                },
-                "3": {
-                    "type": "answer",
-                    "content": "q001"
-                }
-            },
-            "2": {
-                "n_cells": 2,
-                "1": {
-                    "type": "question",
-                    "content": "q008"
-                },
-                "2": {
-                    "type": "text",
-                    "content": "TestText4"
+            'grid': [
+                ['a', 'a', 'b', '', '', '', '', '', '', ''], 
+                ['c', 'c', 'c', '', '', '', '', '', '', ''], 
+                ['c', 'c', 'c', '', '', '', '', '', '', ''], 
+                ['d', 'd', 'd', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', '']
+            ], 
+            'content': {
+                'cell_a': {
+                    'type': 'question', 
+                    'content': 'q006', 
+                    'metadata': {
+                        'placeholder': 'Placeholder', 
+                        'min_chars': '20', 
+                        'min_words': '0', 
+                        'required': 'required'
+                    }, 
+                    'format': {
+                        'bold': False, 
+                        'italic': False, 
+                        'underline': False, 
+                        'strike': False, 
+                        'horizontal_align': 'justify', 
+                        'vertical_align': 'middle', 
+                        'border_left': False, 
+                        'border_top': False, 
+                        'border_right': False, 
+                        'border_bottom': False, 
+                        'border_bold': False
+                    }
+                }, 
+                'cell_b': {
+                    'type': 'question', 
+                    'content': 'q008', 
+                    'metadata': {
+                        'placeholder': 'Placeholder', 
+                        'min_chars': '20', 
+                        'min_words': '0', 
+                        'required': 'required'
+                    }, 
+                    'format': {
+                        'bold': False, 
+                        'italic': False, 
+                        'underline': False, 
+                        'strike': False, 
+                        'horizontal_align': 'justify', 
+                        'vertical_align': 'middle', 
+                        'border_left': False, 
+                        'border_top': False, 
+                        'border_right': False, 
+                        'border_bottom': False, 
+                        'border_bold': False
+                    }
+                }, 
+                'cell_c': {
+                    'type': 'answer', 
+                    'content': 'q001', 
+                    'metadata': {
+                        'placeholder': 'Ver respuesta', 
+                        'min_chars': '20', 
+                        'min_words': '0', 
+                        'required': 'required'
+                    }, 
+                    'format': {
+                        'bold': False, 
+                        'italic': False, 
+                        'underline': False, 
+                        'strike': False, 
+                        'horizontal_align': 'justify', 
+                        'vertical_align': 'middle', 
+                        'border_left': False, 
+                        'border_top': False, 
+                        'border_right': False, 
+                        'border_bottom': False, 
+                        'border_bold': False
+                    }
+                }, 
+                'cell_d': {
+                    'type': 'text', 
+                    'content': 'Test text', 
+                    'metadata': {
+                        'placeholder': '', 
+                        'min_chars': '0', 
+                        'min_words': '0', 
+                        'required': 'required'
+                    }, 
+                    'format': {
+                        'bold': False, 
+                        'italic': False, 
+                        'underline': False, 
+                        'strike': False, 
+                        'horizontal_align': 'justify', 
+                        'vertical_align': 'middle', 
+                        'border_left': False, 
+                        'border_top': False, 
+                        'border_right': False, 
+                        'border_bottom': False, 
+                        'border_bold': False
+                    }
                 }
             }
         }
         data2 = json.dumps({
             "content": sample_content2,
             "title": self.xblock4.title,
-            "style": self.xblock4.style,
-            "no_answer_message": self.xblock4.no_answer_message,
             "submit_message": self.xblock4.submit_message,
-            "display_message": self.xblock4.display_message,
-            "min_questions": self.xblock4.min_questions,
-            "enable_download": self.xblock4.enable_download,
             "new_questions": ["q008"],
             "removed_questions": ["q007"]
         })
@@ -415,43 +759,94 @@ class IterativeXBlockTestCase(TransactionTestCase):
         request = TestRequest()
         request.method = 'POST'
         sample_content = {
-            "n_rows": 2,
-            "1": {
-                "n_cells": 2,
-                "1": {
-                    "type": "question",
-                    "content": "q009"
-                },
-                "2": {
-                    "type": "text",
-                    "content": "TestText2"
-                }
-            },
-            "2": {
-                "n_cells": 3,
-                "1": {
-                    "type": "text",
-                    "content": "TestText3"
-                },
-                "2": {
-                    "type": "question",
-                    "content": "q010"
-                },
-                "3": {
-                    "type": "question",
-                    "content": "q011"
+            'grid': [
+                ['a', 'a', 'b', '', '', '', '', '', '', ''], 
+                ['c', 'c', 'c', '', '', '', '', '', '', ''], 
+                ['c', 'c', 'c', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', '']
+            ], 
+            'content': {
+                'cell_a': {
+                    'type': 'question', 
+                    'content': 'q009', 
+                    'metadata': {
+                        'placeholder': 'Placeholder', 
+                        'min_chars': '20', 
+                        'min_words': '0', 
+                        'required': 'required'
+                    }, 
+                    'format': {
+                        'bold': False, 
+                        'italic': False, 
+                        'underline': False, 
+                        'strike': False, 
+                        'horizontal_align': 'justify', 
+                        'vertical_align': 'middle', 
+                        'border_left': False, 
+                        'border_top': False, 
+                        'border_right': False, 
+                        'border_bottom': False, 
+                        'border_bold': False
+                    }
+                }, 
+                'cell_b': {
+                    'type': 'question', 
+                    'content': 'q010', 
+                    'metadata': {
+                        'placeholder': 'Placeholder', 
+                        'min_chars': '20', 
+                        'min_words': '0', 
+                        'required': 'required'
+                    }, 
+                    'format': {
+                        'bold': False, 
+                        'italic': False, 
+                        'underline': False, 
+                        'strike': False, 
+                        'horizontal_align': 'justify', 
+                        'vertical_align': 'middle', 
+                        'border_left': False, 
+                        'border_top': False, 
+                        'border_right': False, 
+                        'border_bottom': False, 
+                        'border_bold': False
+                    }
+                }, 
+                'cell_c': {
+                    'type': 'question', 
+                    'content': 'q011', 
+                    'metadata': {
+                        'placeholder': 'Placeholder', 
+                        'min_chars': '20', 
+                        'min_words': '0', 
+                        'required': 'required'
+                    }, 
+                    'format': {
+                        'bold': False, 
+                        'italic': False, 
+                        'underline': False, 
+                        'strike': False, 
+                        'horizontal_align': 'justify', 
+                        'vertical_align': 'middle', 
+                        'border_left': False, 
+                        'border_top': False, 
+                        'border_right': False, 
+                        'border_bottom': False, 
+                        'border_bold': False
+                    }
                 }
             }
         }
         data = json.dumps({
             "content": sample_content,
             "title": self.xblock5.title,
-            "style": self.xblock5.style,
-            "no_answer_message": self.xblock5.no_answer_message,
             "submit_message": self.xblock5.submit_message,
-            "display_message": self.xblock5.display_message,
-            "min_questions": self.xblock5.min_questions,
-            "enable_download": self.xblock5.enable_download,
             "new_questions": ["q009", "q010", "q011"],
             "removed_questions": []
         })
@@ -487,43 +882,94 @@ class IterativeXBlockTestCase(TransactionTestCase):
         request = TestRequest()
         request.method = 'POST'
         sample_content = {
-            "n_rows": 2,
-            "1": {
-                "n_cells": 2,
-                "1": {
-                    "type": "question",
-                    "content": "q012"
-                },
-                "2": {
-                    "type": "text",
-                    "content": "TestText2"
-                }
-            },
-            "2": {
-                "n_cells": 3,
-                "1": {
-                    "type": "text",
-                    "content": "TestText3"
-                },
-                "2": {
-                    "type": "question",
-                    "content": "q013"
-                },
-                "3": {
-                    "type": "question",
-                    "content": "q014"
+            'grid': [
+                ['a', 'a', 'b', '', '', '', '', '', '', ''], 
+                ['c', 'c', 'c', '', '', '', '', '', '', ''], 
+                ['c', 'c', 'c', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', '']
+            ], 
+            'content': {
+                'cell_a': {
+                    'type': 'question', 
+                    'content': 'q012', 
+                    'metadata': {
+                        'placeholder': 'Placeholder', 
+                        'min_chars': '20', 
+                        'min_words': '0', 
+                        'required': 'required'
+                    }, 
+                    'format': {
+                        'bold': False, 
+                        'italic': False, 
+                        'underline': False, 
+                        'strike': False, 
+                        'horizontal_align': 'justify', 
+                        'vertical_align': 'middle', 
+                        'border_left': False, 
+                        'border_top': False, 
+                        'border_right': False, 
+                        'border_bottom': False, 
+                        'border_bold': False
+                    }
+                }, 
+                'cell_b': {
+                    'type': 'question', 
+                    'content': 'q013', 
+                    'metadata': {
+                        'placeholder': 'Placeholder', 
+                        'min_chars': '20', 
+                        'min_words': '0', 
+                        'required': 'required'
+                    }, 
+                    'format': {
+                        'bold': False, 
+                        'italic': False, 
+                        'underline': False, 
+                        'strike': False, 
+                        'horizontal_align': 'justify', 
+                        'vertical_align': 'middle', 
+                        'border_left': False, 
+                        'border_top': False, 
+                        'border_right': False, 
+                        'border_bottom': False, 
+                        'border_bold': False
+                    }
+                }, 
+                'cell_c': {
+                    'type': 'question', 
+                    'content': 'q014', 
+                    'metadata': {
+                        'placeholder': 'Placeholder', 
+                        'min_chars': '20', 
+                        'min_words': '0', 
+                        'required': 'required'
+                    }, 
+                    'format': {
+                        'bold': False, 
+                        'italic': False, 
+                        'underline': False, 
+                        'strike': False, 
+                        'horizontal_align': 'justify', 
+                        'vertical_align': 'middle', 
+                        'border_left': False, 
+                        'border_top': False, 
+                        'border_right': False, 
+                        'border_bottom': False, 
+                        'border_bold': False
+                    }
                 }
             }
         }
         data = json.dumps({
             "content": sample_content,
             "title": self.xblock6.title,
-            "style": self.xblock6.style,
-            "no_answer_message": self.xblock6.no_answer_message,
             "submit_message": self.xblock6.submit_message,
-            "display_message": self.xblock6.display_message,
-            "min_questions": self.xblock6.min_questions,
-            "enable_download": self.xblock6.enable_download,
             "new_questions": ["q012", "q013", "q014"],
             "removed_questions": []
         })
@@ -533,28 +979,71 @@ class IterativeXBlockTestCase(TransactionTestCase):
         request2 = TestRequest()
         request2.method = 'POST'
         sample_content2 = {
-            "n_rows": 1,
-            "1": {
-                "n_cells": 2,
-                "1": {
-                    "type": "answer",
-                    "content": "q012"
-                },
-                "2": {
-                    "type": "question",
-                    "content": "q015"
+            'grid': [
+                ['a', 'a', 'b', '', '', '', '', '', '', ''], 
+                ['c', 'c', 'c', '', '', '', '', '', '', ''], 
+                ['c', 'c', 'c', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', '']
+            ], 
+            'content': {
+                'cell_a': {
+                    'type': 'question', 
+                    'content': 'q015', 
+                    'metadata': {
+                        'placeholder': 'Placeholder', 
+                        'min_chars': '20', 
+                        'min_words': '0', 
+                        'required': 'required'
+                    }, 
+                    'format': {
+                        'bold': False, 
+                        'italic': False, 
+                        'underline': False, 
+                        'strike': False, 
+                        'horizontal_align': 'justify', 
+                        'vertical_align': 'middle', 
+                        'border_left': False, 
+                        'border_top': False, 
+                        'border_right': False, 
+                        'border_bottom': False, 
+                        'border_bold': False
+                    }
+                }, 
+                'cell_b': {
+                    'type': 'answer', 
+                    'content': 'q013', 
+                    'metadata': {
+                        'placeholder': 'Ver respuesta', 
+                        'min_chars': '20', 
+                        'min_words': '0', 
+                        'required': 'required'
+                    }, 
+                    'format': {
+                        'bold': False, 
+                        'italic': False, 
+                        'underline': False, 
+                        'strike': False, 
+                        'horizontal_align': 'justify', 
+                        'vertical_align': 'middle', 
+                        'border_left': False, 
+                        'border_top': False, 
+                        'border_right': False, 
+                        'border_bottom': False, 
+                        'border_bold': False
+                    }
                 }
             }
         }
         data2 = json.dumps({
             "content": sample_content2,
             "title": self.xblock7.title,
-            "style": self.xblock7.style,
-            "no_answer_message": self.xblock7.no_answer_message,
             "submit_message": self.xblock7.submit_message,
-            "display_message": self.xblock7.display_message,
-            "min_questions": self.xblock7.min_questions,
-            "enable_download": self.xblock7.enable_download,
             "new_questions": ["q015"],
             "removed_questions": []
         })
@@ -592,28 +1081,71 @@ class IterativeXBlockTestCase(TransactionTestCase):
         request = TestRequest()
         request.method = 'POST'
         sample_content = {
-            "n_rows": 1,
-            "1": {
-                "n_cells": 2,
-                "1": {
-                    "type": "question",
-                    "content": "q016"
-                },
-                "2": {
-                    "type": "question",
-                    "content": "q017"
+            'grid': [
+                ['a', 'a', 'b', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', '']
+            ], 
+            'content': {
+                'cell_a': {
+                    'type': 'question', 
+                    'content': 'q016', 
+                    'metadata': {
+                        'placeholder': 'Placeholder', 
+                        'min_chars': '20', 
+                        'min_words': '0', 
+                        'required': 'required'
+                    }, 
+                    'format': {
+                        'bold': False, 
+                        'italic': False, 
+                        'underline': False, 
+                        'strike': False, 
+                        'horizontal_align': 'justify', 
+                        'vertical_align': 'middle', 
+                        'border_left': False, 
+                        'border_top': False, 
+                        'border_right': False, 
+                        'border_bottom': False, 
+                        'border_bold': False
+                    }
+                }, 
+                'cell_b': {
+                    'type': 'question', 
+                    'content': 'q017', 
+                    'metadata': {
+                        'placeholder': 'Placeholder', 
+                        'min_chars': '20', 
+                        'min_words': '0', 
+                        'required': 'required'
+                    }, 
+                    'format': {
+                        'bold': False, 
+                        'italic': False, 
+                        'underline': False, 
+                        'strike': False, 
+                        'horizontal_align': 'justify', 
+                        'vertical_align': 'middle', 
+                        'border_left': False, 
+                        'border_top': False, 
+                        'border_right': False, 
+                        'border_bottom': False, 
+                        'border_bold': False
+                    }
                 }
             }
         }
         data = json.dumps({
             "content": sample_content,
             "title": self.xblock8.title,
-            "style": self.xblock8.style,
-            "no_answer_message": self.xblock8.no_answer_message,
             "submit_message": self.xblock8.submit_message,
-            "display_message": self.xblock8.display_message,
-            "min_questions": self.xblock8.min_questions,
-            "enable_download": self.xblock8.enable_download,
             "new_questions": ["q016", "q017"],
             "removed_questions": []
         })
@@ -648,16 +1180,64 @@ class IterativeXBlockTestCase(TransactionTestCase):
 
     def test_duplicate(self):
         sample_content = {
-            "n_rows": 1,
-            "1": {
-                "n_cells": 2,
-                "1": {
-                    "type": "question",
-                    "content": "q018"
-                },
-                "2": {
-                    "type": "question",
-                    "content": "q019"
+            'grid': [
+                ['a', 'a', 'b', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', ''], 
+                ['', '', '', '', '', '', '', '', '', '']
+            ], 
+            'content': {
+                'cell_a': {
+                    'type': 'question', 
+                    'content': 'q018', 
+                    'metadata': {
+                        'placeholder': 'Placeholder', 
+                        'min_chars': '20', 
+                        'min_words': '0', 
+                        'required': 'required'
+                    }, 
+                    'format': {
+                        'bold': False, 
+                        'italic': False, 
+                        'underline': False, 
+                        'strike': False, 
+                        'horizontal_align': 'justify', 
+                        'vertical_align': 'middle', 
+                        'border_left': False, 
+                        'border_top': False, 
+                        'border_right': False, 
+                        'border_bottom': False, 
+                        'border_bold': False
+                    }
+                }, 
+                'cell_b': {
+                    'type': 'question', 
+                    'content': 'q019', 
+                    'metadata': {
+                        'placeholder': 'Placeholder', 
+                        'min_chars': '20', 
+                        'min_words': '0', 
+                        'required': 'required'
+                    }, 
+                    'format': {
+                        'bold': False, 
+                        'italic': False, 
+                        'underline': False, 
+                        'strike': False, 
+                        'horizontal_align': 'justify', 
+                        'vertical_align': 'middle', 
+                        'border_left': False, 
+                        'border_top': False, 
+                        'border_right': False, 
+                        'border_bottom': False, 
+                        'border_bold': False
+                    }
                 }
             }
         }
