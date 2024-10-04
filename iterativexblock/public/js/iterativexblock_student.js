@@ -149,7 +149,6 @@ function IterativeXBlockStudent(runtime, element, settings) {
     });
 
     $(function ($) {
-        MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
         $.post(ensureUrl, JSON.stringify({})).done(function (response) {
             if (response["result"] !== "success") {
                 showErrorMessage("Algo salió mal.");
@@ -168,5 +167,24 @@ function IterativeXBlockStudent(runtime, element, settings) {
         statusDiv.removeClass("unanswered");
         statusDiv.addClass("correct");
         statusDiv.addClass(settings.indicator_class);
+        
+
+        var iteraid = "iterative_" + settings.location;
+        //console.log(iteraid)
+		renderMathForSpecificElements(iteraid);
     });
+
+    function renderMathForSpecificElements(id) {
+        //console.log("Render Mathjax in " + id);
+        if (typeof MathJax !== "undefined") {
+            var $container = $('#' + id);
+            if ($container.length) {
+                $container.find('.exptop, .expmid, .expbot').each(function (index, contaelem) {
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, contaelem]);
+                });
+            }
+        } else {
+            console.warn("MathJax no está cargado.");
+        }
+    }
 }
