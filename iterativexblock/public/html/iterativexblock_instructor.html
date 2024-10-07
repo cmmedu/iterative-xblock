@@ -39,6 +39,8 @@
                     {% if cell_value.format.vertical_align == 'top' %}align-items: start;{% endif %}
                     {% if cell_value.format.vertical_align == 'middle' %}align-items: center;{% endif %}
                     {% if cell_value.format.vertical_align == 'bottom' %}align-items: end;{% endif %}
+                    background-color: {% if cell_value.format.background_color %}{{ cell_value.format.background_color }}{% else %}#ffffff{% endif %};
+                    color: {% if cell_value.format.text_color %}{{ cell_value.format.text_color }}{% else %}#000000{% endif %};
                 }
                 .X{{location}} .expmid  .{{ cell_key }} p {
                     margin-bottom: 0 !important;
@@ -72,6 +74,7 @@
                         <textarea disabled class="iterative-xblock-question" id="iterative-xblock-question-{{ cell_value.content }}" name="{{ cell_value.content }}" value="" placeholder="{{ cell_value.metadata.placeholder }}"></textarea>
                     {% elif cell_value.type == 'answer' %}
                         <button id="iterative-xblock-student-get-answer-{{ cell_value.content }}" class="iterative-xblock-student-get-answer">{{ cell_value.metadata.placeholder }} ({{ cell_value.content }})</button>
+                        <textarea hidden disabled type="text" class="iterative-xblock-student-answer" id="iterative-xblock-student-answer-{{ cell_value.content }}" ></textarea>
                     {% endif %}
                 </div>
                 {% endfor %}

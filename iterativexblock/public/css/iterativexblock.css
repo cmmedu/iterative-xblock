@@ -243,6 +243,13 @@
   gap: 10px;
 }
 
+.iterative-xblock-colors-inputs {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
 .iterative-xblock-formatting-inputs {
   width: 100%;
   display: flex;

@@ -32,6 +32,8 @@
                     {% if cell_value.format.vertical_align == 'top' %}align-items: start;{% endif %}
                     {% if cell_value.format.vertical_align == 'middle' %}align-items: center;{% endif %}
                     {% if cell_value.format.vertical_align == 'bottom' %}align-items: end;{% endif %}
+                    background-color: {% if cell_value.format.background_color %}{{ cell_value.format.background_color }}{% else %}#ffffff{% endif %};
+                    color: {% if cell_value.format.text_color %}{{ cell_value.format.text_color }}{% else %}#000000{% endif %};
                 }
                 .X{{location}} .expmid .{{ cell_key }} p {
                     margin-bottom: 0 !important;

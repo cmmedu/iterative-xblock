@@ -24,6 +24,7 @@ function IterativeXBlockInstructor(runtime, element, settings) {
         let displayButton = $(element).find("#iterative-xblock-student-get-answer-" + id_question);
         displayButton.hide();
         let area = $(element).find("#iterative-xblock-student-answer-" + id_question);
+        area.show();
         if(result["result"] === "success"){
             let answer = result["answer"] === "" ? "Aún no has respondido a esta pregunta." : result["answer"];
             area.val(answer);

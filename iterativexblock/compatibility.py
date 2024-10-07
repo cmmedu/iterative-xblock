@@ -65,7 +65,9 @@ def adapt_content(content):
                     "border_right": False,
                     "border_top": False,
                     "border_bottom": False,
-                    "border_bold": False
+                    "border_bold": False,
+                    "cell_background": "efefef",
+                    "cell_color": "000000",
                 },
                 "metadata": {
                     "placeholder": "Ver respuesta" if cell["type"] == "answer" else "Placeholder",

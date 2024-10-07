@@ -223,6 +223,8 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 let borderRight = $(`#${cellId}_border-right`).hasClass('iterative-icon-chosen');
                 let borderBottom = $(`#${cellId}_border-bottom`).hasClass('iterative-icon-chosen');
                 let borderBold = $(`#${cellId}_border-bold`).hasClass('iterative-icon-chosen');
+                let backgroundColor = $(`#${cellId}_background_color`).val();
+                let textColor = $(`#${cellId}_text_color`).val();
                 format["bold"] = bold;
                 format["italic"] = italic;
                 format["underline"] = underline;
@@ -234,6 +236,8 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 format["border_right"] = borderRight;
                 format["border_bottom"] = borderBottom;
                 format["border_bold"] = borderBold;
+                format["background_color"] = backgroundColor;
+                format["text_color"] = textColor;
             } else if (cellType === "answer") {
                 let placeholder = $(`#${cellId}_placeholder`).val();
                 metadata["placeholder"] = placeholder;
@@ -251,6 +255,8 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 let borderRight = $(`#${cellId}_border-right`).hasClass('iterative-icon-chosen');
                 let borderBottom = $(`#${cellId}_border-bottom`).hasClass('iterative-icon-chosen');
                 let borderBold = $(`#${cellId}_border-bold`).hasClass('iterative-icon-chosen');
+                let backgroundColor = $(`#${cellId}_background_color`).val();
+                let textColor = $(`#${cellId}_text_color`).val();
                 format["bold"] = bold;
                 format["italic"] = italic;
                 format["underline"] = underline;
@@ -262,6 +268,8 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 format["border_right"] = borderRight;
                 format["border_bottom"] = borderBottom;
                 format["border_bold"] = borderBold;
+                format["background_color"] = backgroundColor;
+                format["text_color"] = textColor;
             } else if (cellType === "text") {
                 metadata["placeholder"] = "";
                 metadata["min_chars"] = "0";
@@ -278,6 +286,8 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 let borderRight = $(`#${cellId}_border-right`).hasClass('iterative-icon-chosen');
                 let borderBottom = $(`#${cellId}_border-bottom`).hasClass('iterative-icon-chosen');
                 let borderBold = $(`#${cellId}_border-bold`).hasClass('iterative-icon-chosen');
+                let backgroundColor = $(`#${cellId}_background_color`).val();
+                let textColor = $(`#${cellId}_text_color`).val();
                 format["bold"] = bold;
                 format["italic"] = italic;
                 format["underline"] = underline;
@@ -289,6 +299,8 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 format["border_right"] = borderRight;
                 format["border_bottom"] = borderBottom;
                 format["border_bold"] = borderBold;
+                format["background_color"] = backgroundColor;
+                format["text_color"] = textColor;
             } else if (cellType === "iframe") {
                 metadata["placeholder"] = "";
                 metadata["min_chars"] = "0";
@@ -305,6 +317,8 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 format["border_right"] = $(`#${cellId}_border-right`).hasClass('iterative-icon-chosen');
                 format["border_bottom"] = $(`#${cellId}_border-bottom`).hasClass('iterative-icon-chosen');
                 format["border_bold"] = $(`#${cellId}_border-bold`).hasClass('iterative-icon-chosen');
+                format["background_color"] = $(`#${cellId}_background_color`).val();
+                format["text_color"] = $(`#${cellId}_text_color`).val();
             } else {
                 metadata["placeholder"] = "";
                 metadata["min_chars"] = "0";
@@ -321,6 +335,8 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 format["border_right"] = false;
                 format["border_bottom"] = false;
                 format["border_bold"] = false;
+                format["background_color"] = "#ffffff";
+                format["text_color"] = "#000000";
             }
             content[cellId] = {
                 "type": cellType,
@@ -364,6 +380,8 @@ function IterativeXBlockStudio(runtime, element, settings) {
             $(`#${cellId}_min_chars`).val(cell["metadata"]["min_chars"]);
             $(`#${cellId}_min_words`).val(cell["metadata"]["min_words"]);
             $(`#${cellId}_required`).val(cell["metadata"]["required"]);
+            $(`#${cellId}_background_color`).val(cell["format"]["background_color"] ? cell["format"]["background_color"] : "#ffffff");
+            $(`#${cellId}_text_color`).val(cell["format"]["text_color"] ? cell["format"]["text_color"] : "#000000");
             if (cell["metadata"]["required"] === "required") {
                 $(`#${cellId}_required`).val("required");
             } else {
@@ -442,6 +460,11 @@ function IterativeXBlockStudio(runtime, element, settings) {
             inputsContainer.append(questionInput);
             inputsContainer.append(answerInput);
             let extraInputsContainer = $(`<div style="display:none;" class="iterative-xblock-extra-inputs iterative-xblock-extra-inputs-cell_${letter}"></div>`);
+            let colorsInputs = $(`<div style="display:none;" class="iterative-xblock-colors-inputs iterative-xblock-colors-inputs-cell_${letter}"></div>`);
+            let backgroundColorInput = $(`<input style="display:none;" id="cell_${letter}_background_color" class="setting-input cell_${letter}_background_color cell-input-small" type="text" placeholder="Color de fondo">`);
+            let textColorInput = $(`<input style="display:none;" id="cell_${letter}_text_color" class="setting-input cell_${letter}_text_color cell-input-small" type="text" placeholder="Color del texto">`);
+            colorsInputs.append(backgroundColorInput);
+            colorsInputs.append(textColorInput);
             let formattingInputs = $(`<div style="display:none;" class="iterative-xblock-formatting-inputs iterative-xblock-formatting-inputs-cell_${letter}"></div>`);
             let boldIcon = $(`<div style="display:none;" id="cell_${letter}_bold" class="iterative-xblock-formatting-icon"><i class="fa fa-bold"></i></div>`);
             let italicIcon = $(`<div style="display:none;" id="cell_${letter}_italic" class="iterative-xblock-formatting-icon"><i class="fa fa-italic"></i></div>`);
@@ -488,6 +511,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
             let seemore = $(`<div style="display: none;" class="iterative-xblock-seemore"><i class="fa fa-eye"></i></div>`);
             inputsContainer.append(seemore);
             inputsContainer.append(extraInputsContainer);
+            inputsContainer.append(colorsInputs);
             inputsContainer.append(formattingInputs);
             wrapper.append(inputsContainer);
             letterContainer.append(wrapper);
@@ -498,6 +522,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
     function triggerSeemore(cellId, show) {
         let seemore = $(element).find(`#input_${cellId}`).find('.iterative-xblock-seemore');
         let extraInputsContainer = $(element).find(`.iterative-xblock-extra-inputs-${cellId}`);
+        let colorsInputs = $(element).find(`.iterative-xblock-colors-inputs-${cellId}`);
         let formattingInputs = $(element).find(`.iterative-xblock-formatting-inputs-${cellId}`);
         let boldIcon = $(element).find(`#${cellId}_bold`);
         let italicIcon = $(element).find(`#${cellId}_italic`);
@@ -515,6 +540,8 @@ function IterativeXBlockStudio(runtime, element, settings) {
         let borderRightIcon = $(element).find(`#${cellId}_border-right`);
         let borderBottomIcon = $(element).find(`#${cellId}_border-bottom`);
         let borderBoldIcon = $(element).find(`#${cellId}_border-bold`);
+        let backgroundColorInput = $(element).find(`#${cellId}_background_color`);
+        let textColorInput = $(element).find(`#${cellId}_text_color`);
         let placeholderInput = $(element).find(`#${cellId}_placeholder`);
         let minCharsInput = $(element).find(`#${cellId}_min_chars`);
         let minWordsInput = $(element).find(`#${cellId}_min_words`);
@@ -672,6 +699,29 @@ function IterativeXBlockStudio(runtime, element, settings) {
             minWordsInput.css('display', 'none');
             requiredInput.css('display', 'none');
             extraInputsContainer.css('display', 'none');
+        }
+        if (show) {
+            if (seemore.hasClass('iterative-xblock-seemore-text')) {
+                backgroundColorInput.css('display', 'flex');
+                textColorInput.css('display', 'flex');
+                colorsInputs.css('display', 'flex');
+            } else if (seemore.hasClass('iterative-xblock-seemore-iframe')) {
+                backgroundColorInput.css('display', 'none');
+                textColorInput.css('display', 'none');
+                colorsInputs.css('display', 'none');
+            } else if (seemore.hasClass('iterative-xblock-seemore-question')) {
+                backgroundColorInput.css('display', 'flex');
+                textColorInput.css('display', 'flex');
+                colorsInputs.css('display', 'flex');
+            } else if (seemore.hasClass('iterative-xblock-seemore-answer')) {
+                backgroundColorInput.css('display', 'flex');
+                textColorInput.css('display', 'flex');
+                colorsInputs.css('display', 'flex');
+            } else {
+                backgroundColorInput.css('display', 'none');
+                textColorInput.css('display', 'none');
+                colorsInputs.css('display', 'none');
+            }
         }
     }
 

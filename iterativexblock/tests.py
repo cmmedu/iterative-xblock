@@ -124,7 +124,9 @@ class IterativeXBlockTestCase(TransactionTestCase):
                         'border_top': False, 
                         'border_right': False, 
                         'border_bottom': False, 
-                        'border_bold': False
+                        'border_bold': False,
+                        'background_color': '#ffffff',
+                        'text_color': '#000000'
                     }
                 }, 
                 'cell_b': {
@@ -147,7 +149,9 @@ class IterativeXBlockTestCase(TransactionTestCase):
                         'border_top': False, 
                         'border_right': False, 
                         'border_bottom': False, 
-                        'border_bold': False
+                        'border_bold': False,
+                        'background_color': '#ffffff',
+                        'text_color': '#000000'
                     }
                 }, 
                 'cell_c': {
@@ -170,7 +174,9 @@ class IterativeXBlockTestCase(TransactionTestCase):
                         'border_top': False, 
                         'border_right': False, 
                         'border_bottom': False, 
-                        'border_bold': False
+                        'border_bold': False,
+                        'background_color': '#ffffff',
+                        'text_color': '#000000'
                     }
                 }, 
                 'cell_z': {
@@ -193,7 +199,9 @@ class IterativeXBlockTestCase(TransactionTestCase):
                         'border_top': False, 
                         'border_right': False, 
                         'border_bottom': False, 
-                        'border_bold': False
+                        'border_bold': False,
+                        'background_color': '#ffffff',
+                        'text_color': '#000000'
                     }
                 }
             }
@@ -251,7 +259,9 @@ class IterativeXBlockTestCase(TransactionTestCase):
                         'border_top': False, 
                         'border_right': False, 
                         'border_bottom': False, 
-                        'border_bold': False
+                        'border_bold': False,
+                        'background_color': '#ffffff',
+                        'text_color': '#000000'
                     }
                 }, 
                 'cell_b': {
@@ -274,7 +284,9 @@ class IterativeXBlockTestCase(TransactionTestCase):
                         'border_top': False, 
                         'border_right': False, 
                         'border_bottom': False, 
-                        'border_bold': False
+                        'border_bold': False,
+                        'background_color': '#ffffff',
+                        'text_color': '#000000'
                     }
                 }, 
                 'cell_c': {
@@ -297,7 +309,9 @@ class IterativeXBlockTestCase(TransactionTestCase):
                         'border_top': False, 
                         'border_right': False, 
                         'border_bottom': False, 
-                        'border_bold': False
+                        'border_bold': False,
+                        'background_color': '#ffffff',
+                        'text_color': '#000000'
                     }
                 }
             }
@@ -364,7 +378,9 @@ class IterativeXBlockTestCase(TransactionTestCase):
                         'border_top': False, 
                         'border_right': False, 
                         'border_bottom': False, 
-                        'border_bold': False
+                        'border_bold': False,
+                        'background_color': '#ffffff',
+                        'text_color': '#000000'
                     }
                 }, 
                 'cell_b': {
@@ -387,7 +403,9 @@ class IterativeXBlockTestCase(TransactionTestCase):
                         'border_top': False, 
                         'border_right': False, 
                         'border_bottom': False, 
-                        'border_bold': False
+                        'border_bold': False,
+                        'background_color': '#ffffff',
+                        'text_color': '#000000'
                     }
                 }, 
                 'cell_c': {
@@ -410,7 +428,9 @@ class IterativeXBlockTestCase(TransactionTestCase):
                         'border_top': False, 
                         'border_right': False, 
                         'border_bottom': False, 
-                        'border_bold': False
+                        'border_bold': False,
+                        'background_color': '#ffffff',
+                        'text_color': '#000000'
                     }
                 }, 
                 'cell_d': {
@@ -433,7 +453,9 @@ class IterativeXBlockTestCase(TransactionTestCase):
                         'border_top': False, 
                         'border_right': False, 
                         'border_bottom': False, 
-                        'border_bold': False
+                        'border_bold': False,
+                        'background_color': '#ffffff',
+                        'text_color': '#000000'
                     }
                 }, 
                 'cell_e': {
@@ -456,7 +478,9 @@ class IterativeXBlockTestCase(TransactionTestCase):
                         'border_top': False, 
                         'border_right': False, 
                         'border_bottom': False, 
-                        'border_bold': False
+                        'border_bold': False,
+                        'background_color': '#ffffff',
+                        'text_color': '#000000'
                     }
                 }
             }
@@ -523,7 +547,9 @@ class IterativeXBlockTestCase(TransactionTestCase):
                         'border_top': False, 
                         'border_right': False, 
                         'border_bottom': False, 
-                        'border_bold': False
+                        'border_bold': False,
+                        'background_color': '#ffffff',
+                        'text_color': '#000000'
                     }
                 }, 
                 'cell_b': {
@@ -546,7 +572,9 @@ class IterativeXBlockTestCase(TransactionTestCase):
                         'border_top': False, 
                         'border_right': False, 
                         'border_bottom': False, 
-                        'border_bold': False
+                        'border_bold': False,
+                        'background_color': '#ffffff',
+                        'text_color': '#000000'
                     }
                 }, 
                 'cell_c': {
@@ -569,7 +597,9 @@ class IterativeXBlockTestCase(TransactionTestCase):
                         'border_top': False, 
                         'border_right': False, 
                         'border_bottom': False, 
-                        'border_bold': False
+                        'border_bold': False,
+                        'background_color': '#ffffff',
+                        'text_color': '#000000'
                     }
                 }, 
                 'cell_d': {
@@ -592,7 +622,9 @@ class IterativeXBlockTestCase(TransactionTestCase):
                         'border_top': False, 
                         'border_right': False, 
                         'border_bottom': False, 
-                        'border_bold': False
+                        'border_bold': False,
+                        'background_color': '#ffffff',
+                        'text_color': '#000000'
                     }
                 }
             }
@@ -656,7 +688,9 @@ class IterativeXBlockTestCase(TransactionTestCase):
                         'border_top': False, 
                         'border_right': False, 
                         'border_bottom': False, 
-                        'border_bold': False
+                        'border_bold': False,
+                        'background_color': '#ffffff',
+                        'text_color': '#000000'
                     }
                 }, 
                 'cell_b': {
@@ -679,7 +713,9 @@ class IterativeXBlockTestCase(TransactionTestCase):
                         'border_top': False, 
                         'border_right': False, 
                         'border_bottom': False, 
-                        'border_bold': False
+                        'border_bold': False,
+                        'background_color': '#ffffff',
+                        'text_color': '#000000'
                     }
                 }, 
                 'cell_c': {
@@ -702,7 +738,9 @@ class IterativeXBlockTestCase(TransactionTestCase):
                         'border_top': False, 
                         'border_right': False, 
                         'border_bottom': False, 
-                        'border_bold': False
+                        'border_bold': False,
+                        'background_color': '#ffffff',
+                        'text_color': '#000000'
                     }
                 }, 
                 'cell_d': {
@@ -725,7 +763,9 @@ class IterativeXBlockTestCase(TransactionTestCase):
                         'border_top': False, 
                         'border_right': False, 
                         'border_bottom': False, 
-                        'border_bold': False
+                        'border_bold': False,
+                        'background_color': '#ffffff',
+                        'text_color': '#000000'
                     }
                 }
             }
@@ -792,7 +832,9 @@ class IterativeXBlockTestCase(TransactionTestCase):
                         'border_top': False, 
                         'border_right': False, 
                         'border_bottom': False, 
-                        'border_bold': False
+                        'border_bold': False,
+                        'background_color': '#ffffff',
+                        'text_color': '#000000'
                     }
                 }, 
                 'cell_b': {
@@ -815,7 +857,9 @@ class IterativeXBlockTestCase(TransactionTestCase):
                         'border_top': False, 
                         'border_right': False, 
                         'border_bottom': False, 
-                        'border_bold': False
+                        'border_bold': False,
+                        'background_color': '#ffffff',
+                        'text_color': '#000000'
                     }
                 }, 
                 'cell_c': {
@@ -838,7 +882,9 @@ class IterativeXBlockTestCase(TransactionTestCase):
                         'border_top': False, 
                         'border_right': False, 
                         'border_bottom': False, 
-                        'border_bold': False
+                        'border_bold': False,
+                        'background_color': '#ffffff',
+                        'text_color': '#000000'
                     }
                 }
             }
@@ -915,7 +961,9 @@ class IterativeXBlockTestCase(TransactionTestCase):
                         'border_top': False, 
                         'border_right': False, 
                         'border_bottom': False, 
-                        'border_bold': False
+                        'border_bold': False,
+                        'background_color': '#ffffff',
+                        'text_color': '#000000'
                     }
                 }, 
                 'cell_b': {
@@ -938,7 +986,9 @@ class IterativeXBlockTestCase(TransactionTestCase):
                         'border_top': False, 
                         'border_right': False, 
                         'border_bottom': False, 
-                        'border_bold': False
+                        'border_bold': False,
+                        'background_color': '#ffffff',
+                        'text_color': '#000000'
                     }
                 }, 
                 'cell_c': {
@@ -961,7 +1011,9 @@ class IterativeXBlockTestCase(TransactionTestCase):
                         'border_top': False, 
                         'border_right': False, 
                         'border_bottom': False, 
-                        'border_bold': False
+                        'border_bold': False,
+                        'background_color': '#ffffff',
+                        'text_color': '#000000'
                     }
                 }
             }
@@ -1012,7 +1064,9 @@ class IterativeXBlockTestCase(TransactionTestCase):
                         'border_top': False, 
                         'border_right': False, 
                         'border_bottom': False, 
-                        'border_bold': False
+                        'border_bold': False,
+                        'background_color': '#ffffff',
+                        'text_color': '#000000'
                     }
                 }, 
                 'cell_b': {
@@ -1035,7 +1089,9 @@ class IterativeXBlockTestCase(TransactionTestCase):
                         'border_top': False, 
                         'border_right': False, 
                         'border_bottom': False, 
-                        'border_bold': False
+                        'border_bold': False,
+                        'background_color': '#ffffff',
+                        'text_color': '#000000'
                     }
                 }
             }
@@ -1114,7 +1170,9 @@ class IterativeXBlockTestCase(TransactionTestCase):
                         'border_top': False, 
                         'border_right': False, 
                         'border_bottom': False, 
-                        'border_bold': False
+                        'border_bold': False,
+                        'background_color': '#ffffff',
+                        'text_color': '#000000'
                     }
                 }, 
                 'cell_b': {
@@ -1137,7 +1195,9 @@ class IterativeXBlockTestCase(TransactionTestCase):
                         'border_top': False, 
                         'border_right': False, 
                         'border_bottom': False, 
-                        'border_bold': False
+                        'border_bold': False,
+                        'background_color': '#ffffff',
+                        'text_color': '#000000'
                     }
                 }
             }
@@ -1213,7 +1273,9 @@ class IterativeXBlockTestCase(TransactionTestCase):
                         'border_top': False, 
                         'border_right': False, 
                         'border_bottom': False, 
-                        'border_bold': False
+                        'border_bold': False,
+                        'background_color': '#ffffff',
+                        'text_color': '#000000'
                     }
                 }, 
                 'cell_b': {
@@ -1236,7 +1298,9 @@ class IterativeXBlockTestCase(TransactionTestCase):
                         'border_top': False, 
                         'border_right': False, 
                         'border_bottom': False, 
-                        'border_bold': False
+                        'border_bold': False,
+                        'background_color': '#ffffff',
+                        'text_color': '#000000'
                     }
                 }
             }
