@@ -58,7 +58,7 @@ function IterativeXBlockInstructor(runtime, element, settings) {
         
         var iteraid = "iterative_" + settings.location;
         //console.log(iteraid);
-		renderMathForSpecificElements(iteraidx);
+		renderMathForSpecificElements(iteraid);
     });
 
     function renderMathForSpecificElements(id) {

@@ -803,7 +803,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
         } else {
             $.post(checkQuestionIDsUrl, JSON.stringify(newQuestions)).done(function (response) {
                 if(response["result"] === "failed") {
-                    setStudioErrorMessage("Las siguientes preguntas ya existen en otro Iterative XBlock: " + response["question_ids"].join(", "));
+                    setStudioErrorMessage("Las siguientes preguntas ya existen en otro Iterative XBlock: " + response["existing_question_ids"].join(", "));
                 } else {
                     if ($.isFunction(runtime.notify)) {
                         runtime.notify('save', { state: 'start' });

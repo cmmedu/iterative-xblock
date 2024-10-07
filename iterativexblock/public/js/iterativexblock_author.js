@@ -3,7 +3,7 @@ function IterativeXBlockAuthor(runtime, element, settings) {
     $(function ($) {
         var iteraid = "iterative_" + settings.location;
         //console.log(iteraid);
-		renderMathForSpecificElements(iteraidx);
+		renderMathForSpecificElements(iteraid);
     });
 
     function renderMathForSpecificElements(id) {

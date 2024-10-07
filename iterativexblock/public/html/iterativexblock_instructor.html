@@ -1,6 +1,6 @@
 {% if configured %}
 <div class="iterative-xblock-container_block xmodule_display xmodule_HtmlModule"  id="iterative_{{ location }}">
-    <div class="iterative-xblock iterative-xblock-style-{{style}}{% if gridlines %} iterative-xblock-gridlines{% endif %}"
+    <div class="iterative-xblock iterative-xblock-style-{{style}}{% if gridlines %} iterative-xblock-gridlines{% endif %} X{{location}}"
         id="{{xblock.type}}{{location}}">
         <div class="exptop">
             <h1 class="iterative-xblock-title">{{title}}</h1>
@@ -19,12 +19,12 @@
             <hr>
             {% endif %}
             <style>
-                .iterative-xblock-gridarea {
+                .X{{location}} .expmid  .iterative-xblock-gridarea {
                     display: grid;
                     grid-template-areas: {% for line in content.true_grid %}"{{ line }}" {% endfor %};
                 }
                 {% for cell_key, cell_value in content.content.items %}
-                .{{ cell_key }} {
+                .X{{location}} .expmid  .{{ cell_key }} {
                     grid-area: {{ cell_key.5 }};
                     padding: {% if cell_value.type == 'text' %}1em{% else %}0{% endif %};
                     display: flex;
@@ -40,7 +40,7 @@
                     {% if cell_value.format.vertical_align == 'middle' %}align-items: center;{% endif %}
                     {% if cell_value.format.vertical_align == 'bottom' %}align-items: end;{% endif %}
                 }
-                .{{ cell_key }} p {
+                .X{{location}} .expmid  .{{ cell_key }} p {
                     margin-bottom: 0 !important;
                     {% if cell_value.format.bold %}font-weight: bold;{% endif %}
                     {% if cell_value.format.italic %}font-style: italic;{% endif %}
@@ -50,7 +50,7 @@
                     {% if cell_value.format.horizontal_align == 'right' %}text-align: right;{% endif %}
                     {% if cell_value.format.horizontal_align == 'justify' %}text-align: justify;{% endif %}
                 }
-                .{{ cell_key }} textarea {
+                .X{{location}} .expmid  .{{ cell_key }} textarea {
                     {% if cell_value.format.bold %}font-weight: bold;{% endif %}
                     {% if cell_value.format.italic %}font-style: italic;{% endif %}
                     {% if cell_value.format.underline %}text-decoration: underline;{% endif %}

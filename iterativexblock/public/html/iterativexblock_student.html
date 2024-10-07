@@ -1,23 +1,23 @@
 {% if configured %}
 <div class="iterative-xblock-container_block xmodule_display xmodule_HtmlModule"  id="interative_{{ location }}">
-    <div class="iterative-xblock iterative-xblock-style-{{style}}{% if gridlines %} iterative-xblock-gridlines{% endif %}"
+    <div class="iterative-xblock iterative-xblock-style-{{style}}{% if gridlines %} iterative-xblock-gridlines{% endif %} X{{location}}"
         id="{{xblock.type}}{{location}}">
         <div class="exptop">
             <h1 class="iterative-xblock-title">{{title}}</h1>
         </div>
-        <div class="expmid">
+        <div class="expmid {{location}}">
             {% if indicator_class == 'unanswered' %}
             <div class="status {{ indicator_class }}" id="status_{{ location }}"></div>
             {% else %}
             <div class="status " id="status_{{ location }}"></div>
             {% endif %}
             <style>
-                .iterative-xblock-gridarea {
+                .X{{location}} .expmid .iterative-xblock-gridarea {
                     display: grid;
                     grid-template-areas: {% for line in content.true_grid %}"{{ line }}" {% endfor %};
                 }
                 {% for cell_key, cell_value in content.content.items %}
-                .{{ cell_key }} {
+                .X{{location}} .expmid .{{ cell_key }} {
                     grid-area: {{ cell_key.5 }};
                     padding: {% if cell_value.type == 'text' %}1em{% else %}0{% endif %};
                     display: flex;
@@ -33,7 +33,7 @@
                     {% if cell_value.format.vertical_align == 'middle' %}align-items: center;{% endif %}
                     {% if cell_value.format.vertical_align == 'bottom' %}align-items: end;{% endif %}
                 }
-                .{{ cell_key }} p {
+                .X{{location}} .expmid .{{ cell_key }} p {
                     margin-bottom: 0 !important;
                     {% if cell_value.format.bold %}font-weight: bold;{% endif %}
                     {% if cell_value.format.italic %}font-style: italic;{% endif %}
@@ -43,7 +43,7 @@
                     {% if cell_value.format.horizontal_align == 'right' %}text-align: right;{% endif %}
                     {% if cell_value.format.horizontal_align == 'justify' %}text-align: justify;{% endif %}
                 }
-                .{{ cell_key }} textarea {
+                .X{{location}} .expmid .{{ cell_key }} textarea {
                     {% if cell_value.format.bold %}font-weight: bold;{% endif %}
                     {% if cell_value.format.italic %}font-style: italic;{% endif %}
                     {% if cell_value.format.underline %}text-decoration: underline;{% endif %}
@@ -64,7 +64,7 @@
                     {% elif cell_value.type == 'question' %}
                         <textarea oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' class="iterative-xblock-question" id="iterative-xblock-question-{{ cell_value.content }}" name="{{ cell_value.content }}" value="" placeholder="{{ cell_value.metadata.placeholder }}"></textarea>
                     {% elif cell_value.type == 'answer' %}
-                        <button id="iterative-xblock-student-get-answer-{{ cell_value.content }}" class="iterative-xblock-student-get-answer">{{ cell_value.metadata.placeholder }} ({{ cell_value.content }})</button>
+                        <button id="iterative-xblock-student-get-answer-{{ cell_value.content }}" class="iterative-xblock-student-get-answer">{{ cell_value.metadata.placeholder }}</button>
                         <textarea hidden disabled type="text" class="iterative-xblock-student-answer" id="iterative-xblock-student-answer-{{ cell_value.content }}" ></textarea>
                     {% endif %}
                 </div>
