@@ -54,6 +54,12 @@ class IterativeXBlock(XBlock):
         help="Content of this XBlock: texts, questions, iframes, and references to previous answers."
     )
 
+    enable_download = Boolean(
+        default=False,
+        scope=Scope.settings,
+        help="Allows for the downloading of the XBlock content as a PDF document. This functionality is only enabled if there are no questions within the module."
+    )
+
     student_answers = Dict(
         default={},
         scope=Scope.user_state,
@@ -193,6 +199,7 @@ class IterativeXBlock(XBlock):
             'configured': self.configured,
             'content': adapt_content(self.content),
             'submit_message': self.submit_message,
+            'enable_download': self.enable_download,
             'show_submit_button': len(self.get_ids("question")) > 0
         }
         template = loader.render_django_template(
@@ -254,7 +261,7 @@ class IterativeXBlock(XBlock):
                 "submit_message": self.submit_message
             }
         )
-        frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js")
+        frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js")
         return frag
     
 
@@ -296,6 +303,7 @@ class IterativeXBlock(XBlock):
             'location': str(self.location).split('@')[-1],
             'configured': self.configured,
             'content': adapt_content(self.content),
+            'enable_download': self.enable_download,
             'answers': answers,
             'show_student_select': show_student_select
         }
@@ -320,7 +328,7 @@ class IterativeXBlock(XBlock):
                 "submit_message": self.submit_message
             }
         )
-        frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js")
+        frag.add_javascript_url("https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js")
         return frag
 
 
@@ -345,14 +353,15 @@ class IterativeXBlock(XBlock):
                 "content": adapt_content(self.content),
                 "configured": self.configured,
                 "title": self.title,
-                "submit_message": self.submit_message
+                "submit_message": self.submit_message,
+                'enable_download': "yes" if self.enable_download else "no"
             }
         )
         return frag
 
 
     def author_view(self, context={}):
-        from .compatibility import adapt_content, make_grid_template_areas
+        from .compatibility import adapt_content
         context = {
             "title": self.title,
             'location': str(self.location).split('@')[-1],
@@ -428,6 +437,7 @@ class IterativeXBlock(XBlock):
         self.content = data.get('content')
         self.submit_message = data.get('submit_message')
         self.title = data.get('title')
+        self.enable_download = data.get('enable_download') == "yes"
         return {'result': 'success'}
 
 

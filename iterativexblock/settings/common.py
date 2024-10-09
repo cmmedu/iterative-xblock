@@ -1,4 +1,4 @@
-""" Common settings for IAA XBlock. """
+""" Common settings for Iterative XBlock. """
 
 
 def plugin_settings(settings):

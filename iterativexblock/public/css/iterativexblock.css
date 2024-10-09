@@ -256,3 +256,7 @@
   flex-wrap: wrap;
   gap: 10px;
 }
+
+.iterative-xblock-student-download-pdf {
+  margin-top: 10px;
+}

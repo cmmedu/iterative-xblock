@@ -2,6 +2,8 @@ function IterativeXBlockStudio(runtime, element, settings) {
     let title = $(element).find("#title");
     let input_submit_message = $(element).find("#input_submit_message");
     let submit_message = $(element).find("#submit_message");
+    let input_enable_download = $(element).find("#input_enable_download");
+    let enable_download = $(element).find("#enable_download");
     
     var content_ui;
     let content_backend  = settings.content
@@ -44,6 +46,9 @@ function IterativeXBlockStudio(runtime, element, settings) {
         }
         if (input_submit_message.is(":visible") && submit_message.val().length > 200) {
             return "El mensaje para el botón de envío debe tener un máximo de 200 caracteres."
+        }
+        if (input_enable_download.is(":visible") && enable_download.val() !== "yes" && enable_download.val() !== "no") {
+            return "Debe seleccionar una opción para habilitar o deshabilitar la descarga de respuestas."
         }
         for (let cell of Object.values(data["content"]["content"])) {
             if (cell.type === "question") {
@@ -108,8 +113,11 @@ function IterativeXBlockStudio(runtime, element, settings) {
         if (questionIds.length > 0) {
             input_submit_message.show();
             submit_message.val(settings["submit_message"] !== "Enviar" ? settings["submit_message"] : "Enviar");
+            enable_download.hide();
         } else {
             input_submit_message.hide();
+            input_enable_download.show();
+            enable_download.val(settings["enable_download"] === "yes" ? "yes" : "no");
         }
     }
 
@@ -844,6 +852,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
             title: title.val(),
             content: content_ui,
             submit_message: submit_message.val(),
+            enable_download: enable_download.val(),
             new_questions: newQuestions,
             removed_questions: removedQuestions
         };
@@ -875,6 +884,8 @@ function IterativeXBlockStudio(runtime, element, settings) {
     
     function onLoad() {
         title.val(settings.title);
+        submit_message.val(settings.submit_message);
+        enable_download.val(settings.enable_download);
         applyContent(content_backend);
     }
     onLoad();

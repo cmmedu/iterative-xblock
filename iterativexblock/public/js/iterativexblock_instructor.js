@@ -50,6 +50,34 @@ function IterativeXBlockInstructor(runtime, element, settings) {
         }
     });
 
+    $(element).find(".iterative-xblock-student-download-pdf").on('click', function (eventObject) {
+        $(this).prop('disabled', true);
+        generatePDF($(this));
+    });
+
+    function generatePDF(buttonElement) {
+        let promises = [];
+        $(element).find(".iterative-xblock-student-get-answer").each(function () {
+            promises.push(new Promise((resolve) => {
+                $(this).on('click', function () {
+                    resolve();
+                });
+                $(this).click();
+            }));
+        });
+        Promise.all(promises).then(() => {
+            var pdfElement = $(element).find("#" + settings.location + " .iterative-xblock-gridarea");
+            html2pdf().from(pdfElement[0]).set({
+                margin: 1,
+                filename: settings.location + '.pdf',
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            }).save().then(() => {
+                buttonElement.prop('disabled', false);
+            });
+        });
+    }
+
     $(function ($) {
         $.post(ensureUrl, JSON.stringify({})).done(function (response) {
             if (response["result"] !== "success") {

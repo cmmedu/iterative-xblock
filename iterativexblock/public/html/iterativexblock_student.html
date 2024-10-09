@@ -11,52 +11,52 @@
             {% else %}
             <div class="status " id="status_{{ location }}"></div>
             {% endif %}
-            <style>
-                .X{{location}} .expmid .iterative-xblock-gridarea {
-                    display: grid;
-                    grid-template-areas: {% for line in content.true_grid %}"{{ line }}" {% endfor %};
-                }
-                {% for cell_key, cell_value in content.content.items %}
-                .X{{location}} .expmid .{{ cell_key }} {
-                    grid-area: {{ cell_key.5 }};
-                    padding: {% if cell_value.type == 'text' %}1em{% else %}0{% endif %};
-                    display: flex;
-                    border-left: {% if cell_value.format.border_left %}{% if cell_value.format.border_bold %}3px{% else %}1px{% endif %} solid #000;{% else %}none;{% endif %}
-                    border-right: {% if cell_value.format.border_right %}{% if cell_value.format.border_bold %}3px{% else %}1px{% endif %} solid #000;{% else %}none;{% endif %}
-                    border-top: {% if cell_value.format.border_top %}{% if cell_value.format.border_bold %}3px{% else %}1px{% endif %} solid #000;{% else %}none;{% endif %}
-                    border-bottom: {% if cell_value.format.border_bottom %}{% if cell_value.format.border_bold %}3px{% else %}1px{% endif %} solid #000;{% else %}none;{% endif %}
-                    {% if cell_value.format.horizontal_align == 'left' %}justify-content: start;{% endif %}
-                    {% if cell_value.format.horizontal_align == 'center' %}justify-content: center;{% endif %}
-                    {% if cell_value.format.horizontal_align == 'right' %}justify-content: end;{% endif %}
-                    {% if cell_value.format.horizontal_align == 'justify' %}justify-content: start;{% endif %}
-                    {% if cell_value.format.vertical_align == 'top' %}align-items: start;{% endif %}
-                    {% if cell_value.format.vertical_align == 'middle' %}align-items: center;{% endif %}
-                    {% if cell_value.format.vertical_align == 'bottom' %}align-items: end;{% endif %}
-                    background-color: {% if cell_value.format.background_color %}{{ cell_value.format.background_color }}{% else %}#ffffff{% endif %};
-                    color: {% if cell_value.format.text_color %}{{ cell_value.format.text_color }}{% else %}#000000{% endif %};
-                }
-                .X{{location}} .expmid .{{ cell_key }} p {
-                    margin-bottom: 0 !important;
-                    {% if cell_value.format.bold %}font-weight: bold;{% endif %}
-                    {% if cell_value.format.italic %}font-style: italic;{% endif %}
-                    {% if cell_value.format.underline %}text-decoration: underline;{% endif %}
-                    {% if cell_value.format.horizontal_align == 'left' %}text-align: left;{% endif %}
-                    {% if cell_value.format.horizontal_align == 'center' %}text-align: center;{% endif %}
-                    {% if cell_value.format.horizontal_align == 'right' %}text-align: right;{% endif %}
-                    {% if cell_value.format.horizontal_align == 'justify' %}text-align: justify;{% endif %}
-                }
-                .X{{location}} .expmid .{{ cell_key }} textarea {
-                    {% if cell_value.format.bold %}font-weight: bold;{% endif %}
-                    {% if cell_value.format.italic %}font-style: italic;{% endif %}
-                    {% if cell_value.format.underline %}text-decoration: underline;{% endif %}
-                    {% if cell_value.format.horizontal_align == 'left' %}text-align: left;{% endif %}
-                    {% if cell_value.format.horizontal_align == 'center' %}text-align: center;{% endif %}
-                    {% if cell_value.format.horizontal_align == 'right' %}text-align: right;{% endif %}
-                    {% if cell_value.format.horizontal_align == 'justify' %}text-align: justify;{% endif %}
-                }
-                {% endfor %}
-            </style>
             <div class="iterative-xblock-gridarea">
+                <style>
+                    .X{{location}} .expmid .iterative-xblock-gridarea {
+                        display: grid;
+                        grid-template-areas: {% for line in content.true_grid %}"{{ line }}" {% endfor %};
+                    }
+                    {% for cell_key, cell_value in content.content.items %}
+                    .X{{location}} .expmid .{{ cell_key }} {
+                        grid-area: {{ cell_key.5 }};
+                        padding: {% if cell_value.type == 'text' %}1em{% else %}0{% endif %};
+                        display: flex;
+                        border-left: {% if cell_value.format.border_left %}{% if cell_value.format.border_bold %}3px{% else %}1px{% endif %} solid #000;{% else %}none;{% endif %}
+                        border-right: {% if cell_value.format.border_right %}{% if cell_value.format.border_bold %}3px{% else %}1px{% endif %} solid #000;{% else %}none;{% endif %}
+                        border-top: {% if cell_value.format.border_top %}{% if cell_value.format.border_bold %}3px{% else %}1px{% endif %} solid #000;{% else %}none;{% endif %}
+                        border-bottom: {% if cell_value.format.border_bottom %}{% if cell_value.format.border_bold %}3px{% else %}1px{% endif %} solid #000;{% else %}none;{% endif %}
+                        {% if cell_value.format.horizontal_align == 'left' %}justify-content: start;{% endif %}
+                        {% if cell_value.format.horizontal_align == 'center' %}justify-content: center;{% endif %}
+                        {% if cell_value.format.horizontal_align == 'right' %}justify-content: end;{% endif %}
+                        {% if cell_value.format.horizontal_align == 'justify' %}justify-content: start;{% endif %}
+                        {% if cell_value.format.vertical_align == 'top' %}align-items: start;{% endif %}
+                        {% if cell_value.format.vertical_align == 'middle' %}align-items: center;{% endif %}
+                        {% if cell_value.format.vertical_align == 'bottom' %}align-items: end;{% endif %}
+                        background-color: {% if cell_value.format.background_color %}{{ cell_value.format.background_color }}{% else %}#ffffff{% endif %};
+                        color: {% if cell_value.format.text_color %}{{ cell_value.format.text_color }}{% else %}#000000{% endif %};
+                    }
+                    .X{{location}} .expmid .{{ cell_key }} p {
+                        margin-bottom: 0 !important;
+                        {% if cell_value.format.bold %}font-weight: bold;{% endif %}
+                        {% if cell_value.format.italic %}font-style: italic;{% endif %}
+                        {% if cell_value.format.underline %}text-decoration: underline;{% endif %}
+                        {% if cell_value.format.horizontal_align == 'left' %}text-align: left;{% endif %}
+                        {% if cell_value.format.horizontal_align == 'center' %}text-align: center;{% endif %}
+                        {% if cell_value.format.horizontal_align == 'right' %}text-align: right;{% endif %}
+                        {% if cell_value.format.horizontal_align == 'justify' %}text-align: justify;{% endif %}
+                    }
+                    .X{{location}} .expmid .{{ cell_key }} textarea {
+                        {% if cell_value.format.bold %}font-weight: bold;{% endif %}
+                        {% if cell_value.format.italic %}font-style: italic;{% endif %}
+                        {% if cell_value.format.underline %}text-decoration: underline;{% endif %}
+                        {% if cell_value.format.horizontal_align == 'left' %}text-align: left;{% endif %}
+                        {% if cell_value.format.horizontal_align == 'center' %}text-align: center;{% endif %}
+                        {% if cell_value.format.horizontal_align == 'right' %}text-align: right;{% endif %}
+                        {% if cell_value.format.horizontal_align == 'justify' %}text-align: justify;{% endif %}
+                    }
+                    {% endfor %}
+                </style>
                 {% for cell_key, cell_value in content.content.items %}
                 <div class="{{ cell_key }}">
                     {% if cell_value.type == 'text' %}
@@ -77,6 +77,13 @@
                 <button class="iterative-xblock-submit submit Submit"
                     aria-describedby="iterative-xblock_submit_{{ location }}">
                     <span>{{ submit_message }}</span>
+                </button>
+            </div>
+            {% endif %}
+            {% if enable_download %}
+            <div class="centered">
+                <button class="iterative-xblock-student-download-pdf" aria-describedby="iterative-xblock_download_{{ location }}">
+                    <span>PDF</span>
                 </button>
             </div>
             {% endif %}
