@@ -258,6 +258,7 @@ class IterativeXBlock(XBlock):
                 "indicator_class": self.get_indicator_class(),
                 "content": adapt_content(self.content),
                 "title": self.title,
+                "location": str(self.location).split('@')[-1],
                 "submit_message": self.submit_message
             }
         )
@@ -325,6 +326,7 @@ class IterativeXBlock(XBlock):
                 "answers": answers,
                 "content": adapt_content(self.content),
                 "title": self.title,
+                "location": str(self.location).split('@')[-1],
                 "submit_message": self.submit_message
             }
         )

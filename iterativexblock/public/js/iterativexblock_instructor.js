@@ -17,6 +17,7 @@ function IterativeXBlockInstructor(runtime, element, settings) {
                 question.val(selectedUserAnswers.answers[key]);
                 question.css("height", question.prop('scrollHeight') + 'px');
             }
+            $(element).find(".iterative-xblock-student-download-pdf").prop('disabled', false);
         }
     });
 
@@ -65,8 +66,8 @@ function IterativeXBlockInstructor(runtime, element, settings) {
                 $(this).click();
             }));
         });
-        Promise.all(promises).then(() => {
-            var pdfElement = $(element).find("#" + settings.location + " .iterative-xblock-gridarea");
+        Promise.all(promises).then(() => setTimeout(() => {
+            var pdfElement = $(element).find("#" + settings.location);
             html2pdf().from(pdfElement[0]).set({
                 margin: 1,
                 filename: settings.location + '.pdf',
@@ -74,8 +75,10 @@ function IterativeXBlockInstructor(runtime, element, settings) {
                 jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
             }).save().then(() => {
                 buttonElement.prop('disabled', false);
+            }).catch((error) => {
+                buttonElement.prop('disabled', false);
             });
-        });
+        }, 1000));
     }
 
     $(function ($) {
@@ -86,12 +89,10 @@ function IterativeXBlockInstructor(runtime, element, settings) {
         });
         
         var iteraid = "iterative_" + settings.location;
-        //console.log(iteraid);
 		renderMathForSpecificElements(iteraid);
     });
 
     function renderMathForSpecificElements(id) {
-        //console.log("Render Mathjax in " + id);
         if (typeof MathJax !== "undefined") {
             var $container = $('#' + id);
             if ($container.length) {

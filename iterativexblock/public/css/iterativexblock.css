@@ -12,6 +12,12 @@
   text-align: center;
 }
 
+.iterative-xblock-error-msg {
+  color: red;
+  margin-top: 20px;
+  text-align: center;
+}
+
 .studio-warning-msg {
   color: orange;
   margin: 0 10%;
