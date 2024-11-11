@@ -383,7 +383,10 @@ class IterativeXBlock(XBlock):
             ],
             additional_js=[
                 'public/js/iterativexblock_author.js',
-            ]
+            ],
+            settings={
+                "location": str(self.location).split('@')[-1]
+            }
         )
         return frag
 
