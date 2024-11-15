@@ -275,7 +275,7 @@ class IterativeXBlock(XBlock):
             answers = []
         else:
             show_student_select = True
-            students = User.objects.filter(courseenrollment__course_id=self.course_id,courseenrollment__is_active=1).order_by('id').values('id' ,'first_name', 'last_name', 'email')
+            students = User.objects.filter(courseenrollment__course_id=self.course_id,courseenrollment__is_active=1).order_by('id').values('id', 'username', 'first_name', 'last_name', 'email')
             answers = []
             for student in students:
                 id_student = student['id']
@@ -293,12 +293,13 @@ class IterativeXBlock(XBlock):
                         answers_student[id_question] = ""
                 answers.append({
                     "id_student": id_student,
+                    "username": student['username'],
                     "first_name": student['first_name'],
                     "last_name": student['last_name'],
                     "email": student['email'],
                     "answers": answers_student
                 })
-            answers.sort(key=lambda x: x['last_name'])
+            answers.sort(key=lambda x: x['username'])
         context = {
             "title": self.title,
             'location': str(self.location).split('@')[-1],
@@ -524,3 +525,14 @@ class IterativeXBlock(XBlock):
                     new_question = IterativeXBlockQuestion(id_course=id_course, id_xblock=id_xblock, id_question=id_question)
                     new_question.save()
         return {"result": 'success'}
+
+
+    def max_score(self):
+        """
+        Returns the configured number of possible points for this component.
+        Arguments:
+            None
+        Returns:
+            float: The number of possible points for this component
+        """
+        return 1.0

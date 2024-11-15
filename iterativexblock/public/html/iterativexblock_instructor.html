@@ -12,7 +12,7 @@
                 <select id="iterative-xblock-instructor-select-student">
                     <option value="none" disabled selected>Por favor seleccione una opción...</option>
                     {% for student in answers %}
-                    <option value="{{student.id_student}}">{{ student.last_name }}, {{ student.first_name }}</option>
+                    <option value="{{student.id_student}}">{{ student.username }}</option>
                     {% endfor %}
                 </select>
             </div>
