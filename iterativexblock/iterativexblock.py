@@ -1,9 +1,11 @@
+import copy
 import datetime
 from django.template.context import Context
+import json
 import pkg_resources
 import re
 from xblock.core import XBlock
-from xblock.fields import String, Scope, Boolean, Float, Dict, Integer
+from xblock.fields import String, Scope, Boolean, Float, Dict
 from xblockutils.resources import ResourceLoader
 from xblock.fragment import Fragment
 
@@ -43,13 +45,13 @@ class IterativeXBlock(XBlock):
         help="Text to be displayed on the submit button."
     )
 
-    content = Dict(
-        default={
+    content = String(
+        default=json.dumps({
             "grid": [
                 ["" for i in range(10)] for j in range(10)
             ],
             "content": {}
-        },
+        }),
         scope=Scope.settings,
         help="Content of this XBlock: texts, questions, iframes, and references to previous answers."
     )
@@ -108,12 +110,12 @@ class IterativeXBlock(XBlock):
     def get_ids(self, type):
         from .compatibility import adapt_content
         ids = []
-        if "n_rows" in self.content.keys():
-            for cell in adapt_content(self.content)["content"].values():
+        if "n_rows" in json.loads(self.content).keys():
+            for cell in adapt_content(json.loads(self.content))["content"].values():
                 if cell["type"] == type:
                     ids.append(cell["content"])
         else:
-            for cell in self.content["content"].values():
+            for cell in json.loads(self.content)["content"].values():
                 if cell["type"] == type:
                     ids.append(cell["content"])
         return ids
@@ -161,7 +163,8 @@ class IterativeXBlock(XBlock):
         from .compatibility import adapt_content
         id_course = self.course_id
         id_xblock = str(self.location).split('@')[-1]
-        new_content = adapt_content(source_item.content).copy()
+        new_content = copy.deepcopy(adapt_content(json.loads(source_item.content)))
+
         for cell_id, cell_value in new_content["content"].items():
             if cell_value["type"] == "question":
                 id_question = cell_value["content"]
@@ -172,14 +175,26 @@ class IterativeXBlock(XBlock):
                 else:
                     base_question = id_question
                     num = 1
+
+                # Generate unique question ID
                 new_question_id = f"{base_question}_{num}"
                 while IterativeXBlockQuestion.objects.filter(id_course=id_course, id_question=new_question_id).exists():
                     num += 1
                     new_question_id = f"{base_question}_{num}"
-                new_question = IterativeXBlockQuestion(id_course=id_course, id_xblock=id_xblock, id_question=new_question_id)
+
+                # Save new question to the database
+                new_question = IterativeXBlockQuestion(
+                    id_course=id_course, 
+                    id_xblock=id_xblock, 
+                    id_question=new_question_id
+                )
                 new_question.save()
+
+                # Update the content dictionary
                 cell_value["content"] = new_question_id
-        self.content = new_content
+
+        # Save the updated content
+        self.content = json.dumps(new_content)
         return True
 
 
@@ -197,7 +212,7 @@ class IterativeXBlock(XBlock):
             "title": self.title,
             'location': str(self.location).split('@')[-1],
             'configured': self.configured,
-            'content': adapt_content(self.content),
+            'content': adapt_content(json.loads(self.content)),
             'submit_message': self.submit_message,
             'enable_download': self.enable_download,
             'show_submit_button': len(self.get_ids("question")) > 0
@@ -256,7 +271,7 @@ class IterativeXBlock(XBlock):
                 "answers": answers,
                 "completed": completed,
                 "indicator_class": self.get_indicator_class(),
-                "content": adapt_content(self.content),
+                "content": adapt_content(json.loads(self.content)),
                 "title": self.title,
                 "location": str(self.location).split('@')[-1],
                 "submit_message": self.submit_message
@@ -304,7 +319,7 @@ class IterativeXBlock(XBlock):
             "title": self.title,
             'location': str(self.location).split('@')[-1],
             'configured': self.configured,
-            'content': adapt_content(self.content),
+            'content': adapt_content(json.loads(self.content)),
             'enable_download': self.enable_download,
             'answers': answers,
             'show_student_select': show_student_select
@@ -325,7 +340,7 @@ class IterativeXBlock(XBlock):
             ],
             settings={
                 "answers": answers,
-                "content": adapt_content(self.content),
+                "content": adapt_content(json.loads(self.content)),
                 "title": self.title,
                 "location": str(self.location).split('@')[-1],
                 "submit_message": self.submit_message
@@ -353,7 +368,7 @@ class IterativeXBlock(XBlock):
                 'public/js/iterativexblock_studio.js',
             ],
             settings={
-                "content": adapt_content(self.content),
+                "content": adapt_content(json.loads(self.content)),
                 "configured": self.configured,
                 "title": self.title,
                 "submit_message": self.submit_message,
@@ -369,7 +384,7 @@ class IterativeXBlock(XBlock):
             "title": self.title,
             'location': str(self.location).split('@')[-1],
             'configured': self.configured,
-            "content": adapt_content(self.content)
+            "content": adapt_content(json.loads(self.content))
         }
         template = loader.render_django_template(
             'public/html/iterativexblock_author.html',
@@ -440,7 +455,7 @@ class IterativeXBlock(XBlock):
                 deleted_question.delete()
         if len(content["content"].keys()) != 0:
             self.configured = True
-        self.content = data.get('content')
+        self.content = json.dumps(data.get('content'))
         self.submit_message = data.get('submit_message')
         self.title = data.get('title')
         self.enable_download = data.get('enable_download') == "yes"
@@ -518,7 +533,7 @@ class IterativeXBlock(XBlock):
         from .compatibility import adapt_content
         id_course = self.course_id
         id_xblock = str(self.location).split('@')[-1]
-        for cell_id, cell_value in adapt_content(self.content)["content"].items():
+        for cell_id, cell_value in adapt_content(json.loads(self.content))["content"].items():
             if cell_value["type"] == "question":
                 id_question = cell_value["content"]
                 if not IterativeXBlockQuestion.objects.filter(id_course=id_course, id_xblock=id_xblock, id_question=id_question).exists():
