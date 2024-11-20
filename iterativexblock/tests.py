@@ -76,7 +76,7 @@ class IterativeXBlockTestCase(TransactionTestCase):
         self.assertEqual(self.xblock1.title, "Iterative XBlock")
         self.assertEqual(self.xblock1.configured, False)
         self.assertEqual(self.xblock1.submit_message, "Enviar")
-        self.assertEqual(self.xblock1.content, {
+        self.assertEqual(self.xblock1.grid_structure, {
             "grid": [
                 ["" for i in range(10)] for j in range(10)
             ],
@@ -216,7 +216,7 @@ class IterativeXBlockTestCase(TransactionTestCase):
         request.body = data.encode('utf-8')
         response = self.xblock1.studio_submit(request)
         self.assertEqual(response.json_body["result"], "success")
-        self.assertEqual(self.xblock1.content, sample_content)
+        self.assertEqual(self.xblock1.grid_structure, sample_content)
 
 
     def test_configure_question(self):
@@ -327,7 +327,7 @@ class IterativeXBlockTestCase(TransactionTestCase):
         response = self.xblock2.studio_submit(request)
         id_xblock = str(self.xblock2.location).split('@')[-1]
         self.assertEqual(response.json_body["result"], "success")
-        self.assertEqual(self.xblock2.content, sample_content)   
+        self.assertEqual(self.xblock2.grid_structure, sample_content)   
         self.assertEqual(IterativeXBlockQuestion.objects.filter(id_course=COURSE_ID, id_xblock=id_xblock).count(), 3)
         i = 1
         for question in IterativeXBlockQuestion.objects.filter(id_course=COURSE_ID, id_xblock=id_xblock):
@@ -496,7 +496,7 @@ class IterativeXBlockTestCase(TransactionTestCase):
         response = self.xblock3.studio_submit(request)
         id_xblock = str(self.xblock3.location).split('@')[-1]
         self.assertEqual(response.json_body["result"], "success")
-        self.assertEqual(self.xblock3.content, sample_content)
+        self.assertEqual(self.xblock3.grid_structure, sample_content)
         self.assertEqual(IterativeXBlockQuestion.objects.filter(id_course=COURSE_ID, id_xblock=id_xblock).count(), 2)
         i = 4
         for question in IterativeXBlockQuestion.objects.filter(id_course=COURSE_ID, id_xblock=id_xblock):
@@ -642,7 +642,7 @@ class IterativeXBlockTestCase(TransactionTestCase):
         self.assertEqual(response.json_body["result"], "success")
         self.assertEqual(self.xblock4.title, "Some other title")
         self.assertEqual(self.xblock4.submit_message, "Custom submit message")
-        self.assertEqual(self.xblock4.content, sample_content)
+        self.assertEqual(self.xblock4.grid_structure, sample_content)
         self.assertEqual(IterativeXBlockQuestion.objects.filter(id_course=COURSE_ID, id_xblock=id_xblock).count(), 2)
         i = 6
         for question in IterativeXBlockQuestion.objects.filter(id_course=COURSE_ID, id_xblock=id_xblock):
@@ -780,7 +780,7 @@ class IterativeXBlockTestCase(TransactionTestCase):
         request2.body = data2.encode('utf-8')
         response2 = self.xblock4.studio_submit(request2)
         self.assertEqual(response2.json_body["result"], "success")
-        self.assertEqual(self.xblock4.content, sample_content2)
+        self.assertEqual(self.xblock4.grid_structure, sample_content2)
         self.assertEqual(IterativeXBlockQuestion.objects.filter(id_course=COURSE_ID, id_xblock=id_xblock).count(), 2)
         i = 6
         for question in IterativeXBlockQuestion.objects.filter(id_course=COURSE_ID, id_xblock=id_xblock):

@@ -24,7 +24,7 @@ def package_data(pkg, roots):
 
 setup(
     name='iterativexblock',
-    version='1.0.1',
+    version='1.0.2',
     description='An XBlock that saves answers and allows them to be accessed at other instances of the XBlock in a course.',
     license='GPL 3.0',
     packages=[
