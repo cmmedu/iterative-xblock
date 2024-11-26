@@ -91,6 +91,9 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 if (!urlPattern.test(cell.content)) {
                     return "La URL de la celda no es válida."
                 }
+                if (!cell.content.startsWith("https://static.sumaysigue.uchile.cl/")) {
+                    return "La URL de la celda debe ser del Static de Suma y Sigue: https://static.sumaysigue.uchile.cl/"
+                }
             } else {
                 return "Por favor, seleccione un tipo de contenido para cada celda."
             }
@@ -455,7 +458,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
             let typeInput = $(`<select id="cell_${letter}_type" class="cell-input-type setting-select-input cell_${letter}_type"></select>`);
             typeInput.append($(`<option selected disabled value="none">Seleccione una opción...</option>`));
             typeInput.append($(`<option value="text">Texto</option>`));
-            typeInput.append($(`<option value="iframe">Iframe</option>`));
+            typeInput.append($(`<option value="iframe">Imagen de Static</option>`));
             typeInput.append($(`<option value="question">Pregunta</option>`));
             typeInput.append($(`<option value="answer">Respuesta</option>`));
             inputsContainer.append(typeInput);
