@@ -150,7 +150,9 @@ class IterativeXBlock(XBlock):
             id_student = user_by_anonymous_id(user_id).id
         for id_question in self.get_ids("question"):
             if id_question is not None:
-                question = IterativeXBlockQuestion.objects.get(id_course=course_id, id_xblock=id_xblock, id_question=id_question)
+                question = IterativeXBlockQuestion.objects.filter(id_course=course_id, id_xblock=id_xblock, id_question=id_question).first()
+                if question is None:
+                    continue
                 answers = IterativeXBlockAnswer.objects.filter(question=question, id_student=id_student)
                 for answer in answers:
                     answer.delete()
@@ -247,13 +249,11 @@ class IterativeXBlock(XBlock):
                 id_student = self.scope_ids.user_id
                 answers = {}
                 for id_question in self.get_ids("question"):
-                    try:
-                        question = IterativeXBlockQuestion.objects.get(id_course=id_course, id_xblock=id_xblock, id_question=id_question)
-                    except IterativeXBlockQuestion.DoesNotExist:
+                    question = IterativeXBlockQuestion.objects.filter(id_course=id_course, id_xblock=id_xblock, id_question=id_question).first()
+                    if question is None:
                         continue
-                    try:
-                        answer = IterativeXBlockAnswer.objects.get(id_course=id_course, question=question, id_student=id_student)
-                    except IterativeXBlockAnswer.DoesNotExist:
+                    answer = IterativeXBlockAnswer.objects.filter(id_course=id_course, question=question, id_student=id_student).first()
+                    if answer is None:
                         answers[id_question] = ""
                         continue
                     answers[id_question] = answer.answer
@@ -297,16 +297,15 @@ class IterativeXBlock(XBlock):
                 id_student = student['id']
                 answers_student = {}
                 for id_question in self.get_ids("question"):
-                    try:
-                        question = IterativeXBlockQuestion.objects.get(id_course=self.course_id, id_xblock=str(self.location).split('@')[-1], id_question=id_question)
-                    except IterativeXBlockQuestion.DoesNotExist:
+                    question = IterativeXBlockQuestion.objects.filter(id_course=self.course_id, id_xblock=str(self.location).split('@')[-1], id_question=id_question).first()
+                    if question is None:
                         # handle case
                         continue
-                    try:
-                        answer = IterativeXBlockAnswer.objects.get(id_course=self.course_id, question=question, id_student=id_student)
-                        answers_student[id_question] = answer.answer
-                    except IterativeXBlockAnswer.DoesNotExist:
+                    answer = IterativeXBlockAnswer.objects.filter(id_course=self.course_id, question=question, id_student=id_student).first()
+                    if answer is None:
                         answers_student[id_question] = ""
+                        continue
+                    answers_student[id_question] = answer.answer
                 answers.append({
                     "id_student": id_student,
                     "username": student['username'],
@@ -446,9 +445,8 @@ class IterativeXBlock(XBlock):
                 new_question = IterativeXBlockQuestion(id_course=id_course, id_xblock=id_xblock, id_question=question)
                 new_question.save()
             for question in deleted_questions:
-                try:
-                    deleted_question = IterativeXBlockQuestion.objects.get(id_course=id_course, id_xblock=id_xblock, id_question=question)
-                except IterativeXBlockQuestion.DoesNotExist:
+                deleted_question = IterativeXBlockQuestion.objects.filter(id_course=id_course, id_xblock=id_xblock, id_question=question).first()
+                if deleted_question is None:
                     continue
                 deleted_answers = IterativeXBlockAnswer.objects.filter(id_course=id_course, question=deleted_question).all()
                 for answer in deleted_answers:
@@ -491,9 +489,8 @@ class IterativeXBlock(XBlock):
             )
             submission_time = datetime.datetime.now()
             for id_question, answer in data.items():
-                try:
-                    question = IterativeXBlockQuestion.objects.get(id_course=id_course, id_xblock=id_xblock, id_question=id_question)
-                except IterativeXBlockQuestion.DoesNotExist:
+                question = IterativeXBlockQuestion.objects.filter(id_course=id_course, id_xblock=id_xblock, id_question=id_question).first()
+                if question is None:
                     # manejar este caso
                     continue
                 new_answer = IterativeXBlockAnswer(question=question, id_course=id_course, id_student=id_student, answer=answer, timestamp=submission_time)
@@ -514,13 +511,11 @@ class IterativeXBlock(XBlock):
         else:
             id_student = self.scope_ids.user_id
         id_question = data["id_question"]
-        try:
-            question = IterativeXBlockQuestion.objects.get(id_course=id_course, id_question=id_question)
-        except IterativeXBlockQuestion.DoesNotExist:
+        question = IterativeXBlockQuestion.objects.filter(id_course=id_course, id_question=id_question).first()
+        if question is None:
             return {"result": "no_question"}
-        try:
-            answer = IterativeXBlockAnswer.objects.get(id_course=id_course, question=question, id_student=id_student)
-        except IterativeXBlockAnswer.DoesNotExist:
+        answer = IterativeXBlockAnswer.objects.filter(id_course=id_course, question=question, id_student=id_student).first()
+        if answer is None:
             return {"result": 'no_answer'}
         return {"result": 'success', 'answer': answer.answer, 'answer_time': str(answer.timestamp)}
 

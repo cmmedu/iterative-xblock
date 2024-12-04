@@ -50,6 +50,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
         if (input_enable_download.is(":visible") && enable_download.val() !== "yes" && enable_download.val() !== "no") {
             return "Debe seleccionar una opción para habilitar o deshabilitar la descarga de respuestas."
         }
+        let questions = [];
         for (let cell of Object.values(data["content"]["content"])) {
             if (cell.type === "question") {
                 if (cell.content.length === 0) {
@@ -67,6 +68,7 @@ function IterativeXBlockStudio(runtime, element, settings) {
                 if (isNaN(cell.metadata.min_words) || cell.metadata.min_words < 0) {
                     return "El mínimo de palabras de la pregunta debe ser un número mayor o igual a 0."
                 }
+                questions.push(cell.content);
             } else if (cell.type === "answer") {
                 if (cell.content.length === 0) {
                     return "Debe ingresar el ID de una respuesta para cada celda."
@@ -97,6 +99,9 @@ function IterativeXBlockStudio(runtime, element, settings) {
             } else {
                 return "Por favor, seleccione un tipo de contenido para cada celda."
             }
+        }
+        if (questions.length !== new Set(questions).size) {
+            return "No puede haber dos celdas con la misma pregunta."
         }
         return ""
     }
