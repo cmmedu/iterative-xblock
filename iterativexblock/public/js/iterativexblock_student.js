@@ -1,11 +1,18 @@
 function IterativeXBlockStudent(runtime, element, settings) {
 
-
     let statusDiv = $(element).find('.status');
     let buttonSubmit = $(element).find(".iterative-xblock-submit");
     let submitUrl = runtime.handlerUrl(element, 'student_submit');
     let displayUrl = runtime.handlerUrl(element, 'fetch_previous_submission');
     let ensureUrl = runtime.handlerUrl(element, 'ensure_db_integrity');
+    
+    // Add variables for state caching
+    var $xblocksContainer = $('#seq_content');
+    var xblockId = settings.location;
+    var cachedStateId = xblockId + '_iterative_state';
+    var cachedAnswersId = xblockId + '_iterative_answers';
+    var cachedIndicatorClassId = xblockId + '_iterative_indicator_class';
+    var cachedCompletedId = xblockId + '_iterative_completed';
 
     function showErrorMessage(msg) {
         $(element).find('#iterative-xblock-student-error-msg').html(msg);
@@ -69,6 +76,24 @@ function IterativeXBlockStudent(runtime, element, settings) {
     }
 
     function afterSubmission(result) {
+        console.log('Iterative afterSubmission:', result);
+        
+        // Cache state for page navigation
+        $xblocksContainer.data(cachedIndicatorClassId, result.indicator_class);
+        
+        // Save answers state
+        var answers = makeSubmissionData();
+        $xblocksContainer.data(cachedAnswersId, answers);
+        
+        // Save complete state
+        var state = {
+            indicator_class: result.indicator_class,
+            answers: answers,
+            completed: result.result === 'success'
+        };
+        $xblocksContainer.data(cachedStateId, state);
+        $xblocksContainer.data(cachedCompletedId, state.completed);
+        
         statusDiv.removeClass("unanswered");
         statusDiv.removeClass('correct');
         buttonSubmit.attr("disabled", true);
@@ -104,6 +129,8 @@ function IterativeXBlockStudent(runtime, element, settings) {
         if (error_msg !== "") {
             showErrorMessage(error_msg);
         } else {
+            console.log('Submitting answers for Iterative XBlock:', xblockId, data);
+            
             $.ajax({
                 type: "POST",
                 url: submitUrl,
@@ -178,30 +205,64 @@ function IterativeXBlockStudent(runtime, element, settings) {
     }
 
     $(function ($) {
+        console.log('Iterative XBlock initializing:', xblockId);
+        
+        // Check for cached state
+        if ($xblocksContainer.data(cachedStateId)) {
+            console.log('Found cached state for Iterative XBlock:', xblockId);
+            var state = $xblocksContainer.data(cachedStateId);
+            console.log('Cached state:', state);
+            
+            // Restore visual state
+            statusDiv.removeClass('unanswered correct');
+            statusDiv.addClass(state.indicator_class);
+            
+            // Restore answers if they exist
+            if (state.answers) {
+                console.log('Restoring answers:', state.answers);
+                for (let key in state.answers) {
+                    let question = $(element).find("#iterative-xblock-question-" + key);
+                    question.val(state.answers[key]);
+                    question.css('height', question.prop('scrollHeight') + 'px');
+                }
+            }
+            
+            // If completed, disable inputs and button
+            if (state.completed) {
+                $(element).find(".iterative-xblock-question").attr("disabled", true);
+                buttonSubmit.attr("disabled", true);
+            }
+            
+        } else {
+            console.log('No cached state found for Iterative XBlock:', xblockId);
+            
+            // Initialize with settings if available
+            if (settings.completed) {
+                var answers = settings.answers;
+                for (var key in answers) {
+                    let question = $(element).find("#iterative-xblock-question-" + key);
+                    question.val(answers[key]);
+                    question.css('height', question.prop('scrollHeight') + 'px');
+                }
+                $(element).find(".iterative-xblock-question").attr("disabled", true);
+                buttonSubmit.attr("disabled", true);
+            }
+            statusDiv.removeClass("unanswered");
+            statusDiv.addClass("correct");
+            statusDiv.addClass(settings.indicator_class);
+        }
+        
         $.post(ensureUrl, JSON.stringify({})).done(function (response) {
             if (response["result"] !== "success") {
                 showErrorMessage("Algo salió mal.");
             }
         });
-        if (settings.completed) {
-            var answers = settings.answers;
-            for (var key in answers) {
-                let question = $(element).find("#iterative-xblock-question-" + key);
-                question.val(answers[key]);
-                question.css('height', question.prop('scrollHeight') + 'px');
-            }
-            $(element).find(".iterative-xblock-question").attr("disabled", true);
-            buttonSubmit.attr("disabled", true);
-        }
-        statusDiv.removeClass("unanswered");
-        statusDiv.addClass("correct");
-        statusDiv.addClass(settings.indicator_class);
+        
         var iteraid = "iterative_" + settings.location;
-		renderMathForSpecificElements(iteraid);
+        renderMathForSpecificElements(iteraid);
     });
 
     function renderMathForSpecificElements(id) {
-        //console.log("Render Mathjax in " + id);
         if (typeof MathJax !== "undefined") {
             var $container = $('#' + id);
             if ($container.length) {
