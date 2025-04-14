@@ -76,7 +76,7 @@ function IterativeXBlockStudent(runtime, element, settings) {
     }
 
     function afterSubmission(result) {
-        console.log('Iterative afterSubmission:', result);
+        //console.log('Iterative afterSubmission:', result);
         
         // Cache state for page navigation
         $xblocksContainer.data(cachedIndicatorClassId, result.indicator_class);
@@ -85,7 +85,7 @@ function IterativeXBlockStudent(runtime, element, settings) {
         var answers = makeSubmissionData();
         $xblocksContainer.data(cachedAnswersId, answers);
         
-        // Save complete state
+        // guardar state como los clase3
         var state = {
             indicator_class: result.indicator_class,
             answers: answers,
@@ -129,7 +129,7 @@ function IterativeXBlockStudent(runtime, element, settings) {
         if (error_msg !== "") {
             showErrorMessage(error_msg);
         } else {
-            console.log('Submitting answers for Iterative XBlock:', xblockId, data);
+            //console.log('Submitting answers for Iterative XBlock:', xblockId, data);
             
             $.ajax({
                 type: "POST",
@@ -209,9 +209,9 @@ function IterativeXBlockStudent(runtime, element, settings) {
         
         // Check for cached state
         if ($xblocksContainer.data(cachedStateId)) {
-            console.log('Found cached state for Iterative XBlock:', xblockId);
+            //console.log('Found cached state for Iterative XBlock:', xblockId);
             var state = $xblocksContainer.data(cachedStateId);
-            console.log('Cached state:', state);
+            //console.log('Cached state:', state);
             
             // Restore visual state
             statusDiv.removeClass('unanswered correct');
@@ -219,7 +219,7 @@ function IterativeXBlockStudent(runtime, element, settings) {
             
             // Restore answers if they exist
             if (state.answers) {
-                console.log('Restoring answers:', state.answers);
+                //console.log('Restoring answers:', state.answers);
                 for (let key in state.answers) {
                     let question = $(element).find("#iterative-xblock-question-" + key);
                     question.val(state.answers[key]);
@@ -234,7 +234,7 @@ function IterativeXBlockStudent(runtime, element, settings) {
             }
             
         } else {
-            console.log('No cached state found for Iterative XBlock:', xblockId);
+            //console.log('No cached state found for Iterative XBlock:', xblockId);
             
             // Initialize with settings if available
             if (settings.completed) {
