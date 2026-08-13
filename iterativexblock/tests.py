@@ -7,7 +7,7 @@ from xblock.field_data import DictFieldData
 from .iterativexblock import IterativeXBlock
 from .models import IterativeXBlockQuestion, IterativeXBlockAnswer
 
-COURSE_ID = "some_course_id"
+COURSE_ID = "org/course/run"
 
 
 class TestRequest(object):
@@ -69,6 +69,75 @@ class IterativeXBlockTestCase(TransactionTestCase):
         self.xblock5.destroy_questions()
 
 
+    def _request(self, payload):
+        """
+        Builds a fake request carrying the given JSON payload, for @json_handler methods.
+        """
+        request = TestRequest()
+        request.method = 'POST'
+        request.body = json.dumps(payload).encode('utf-8')
+        return request
+
+
+    def _cell(self, cell_type, content):
+        return {
+            'type': cell_type,
+            'content': content,
+            'metadata': {
+                'placeholder': 'Ver respuesta' if cell_type == 'answer' else 'Placeholder',
+                'min_chars': '0',
+                'min_words': '0',
+                'required': 'required'
+            },
+            'format': {
+                'bold': False,
+                'italic': False,
+                'underline': False,
+                'strike': False,
+                'horizontal_align': 'justify',
+                'vertical_align': 'middle',
+                'border_left': False,
+                'border_top': False,
+                'border_right': False,
+                'border_bottom': False,
+                'border_bold': False,
+                'background_color': '#ffffff',
+                'text_color': '#000000'
+            }
+        }
+
+
+    def _grid_content(self, cells):
+        """
+        Builds a grid_structure-shaped dict from {letter: (type, content)} pairs.
+        """
+        letters = list(cells.keys())
+        grid = [letters + [''] * (10 - len(letters))] + [['' for _ in range(10)] for _ in range(9)]
+        return {
+            'grid': grid,
+            'content': {'cell_{}'.format(k): self._cell(t, c) for k, (t, c) in cells.items()}
+        }
+
+
+    def _configure(self, xblock, cells, new_questions=None, removed_questions=None, **extra):
+        """
+        Submits a Studio configuration built from {letter: (type, content)} pairs.
+        """
+        if new_questions is None:
+            new_questions = [c for t, c in cells.values() if t == "question"]
+        if removed_questions is None:
+            removed_questions = []
+        payload = {
+            "content": self._grid_content(cells),
+            "title": xblock.title,
+            "submit_message": xblock.submit_message,
+            "new_questions": new_questions,
+            "removed_questions": removed_questions,
+        }
+        payload.update(extra)
+        return xblock.studio_submit(self._request(payload))
+
+
     def test_validate_field_data(self):
         """
         Checks if XBlock was created successfully.
@@ -76,7 +145,7 @@ class IterativeXBlockTestCase(TransactionTestCase):
         self.assertEqual(self.xblock1.title, "Iterative XBlock")
         self.assertEqual(self.xblock1.configured, False)
         self.assertEqual(self.xblock1.submit_message, "Enviar")
-        self.assertEqual(self.xblock1.grid_structure, {
+        self.assertEqual(json.loads(self.xblock1.grid_structure), {
             "grid": [
                 ["" for i in range(10)] for j in range(10)
             ],
@@ -216,7 +285,7 @@ class IterativeXBlockTestCase(TransactionTestCase):
         request.body = data.encode('utf-8')
         response = self.xblock1.studio_submit(request)
         self.assertEqual(response.json_body["result"], "success")
-        self.assertEqual(self.xblock1.grid_structure, sample_content)
+        self.assertEqual(json.loads(self.xblock1.grid_structure), sample_content)
 
 
     def test_configure_question(self):
@@ -327,7 +396,7 @@ class IterativeXBlockTestCase(TransactionTestCase):
         response = self.xblock2.studio_submit(request)
         id_xblock = str(self.xblock2.location).split('@')[-1]
         self.assertEqual(response.json_body["result"], "success")
-        self.assertEqual(self.xblock2.grid_structure, sample_content)   
+        self.assertEqual(json.loads(self.xblock2.grid_structure), sample_content)
         self.assertEqual(IterativeXBlockQuestion.objects.filter(id_course=COURSE_ID, id_xblock=id_xblock).count(), 3)
         i = 1
         for question in IterativeXBlockQuestion.objects.filter(id_course=COURSE_ID, id_xblock=id_xblock):
@@ -496,7 +565,7 @@ class IterativeXBlockTestCase(TransactionTestCase):
         response = self.xblock3.studio_submit(request)
         id_xblock = str(self.xblock3.location).split('@')[-1]
         self.assertEqual(response.json_body["result"], "success")
-        self.assertEqual(self.xblock3.grid_structure, sample_content)
+        self.assertEqual(json.loads(self.xblock3.grid_structure), sample_content)
         self.assertEqual(IterativeXBlockQuestion.objects.filter(id_course=COURSE_ID, id_xblock=id_xblock).count(), 2)
         i = 4
         for question in IterativeXBlockQuestion.objects.filter(id_course=COURSE_ID, id_xblock=id_xblock):
@@ -642,7 +711,7 @@ class IterativeXBlockTestCase(TransactionTestCase):
         self.assertEqual(response.json_body["result"], "success")
         self.assertEqual(self.xblock4.title, "Some other title")
         self.assertEqual(self.xblock4.submit_message, "Custom submit message")
-        self.assertEqual(self.xblock4.grid_structure, sample_content)
+        self.assertEqual(json.loads(self.xblock4.grid_structure), sample_content)
         self.assertEqual(IterativeXBlockQuestion.objects.filter(id_course=COURSE_ID, id_xblock=id_xblock).count(), 2)
         i = 6
         for question in IterativeXBlockQuestion.objects.filter(id_course=COURSE_ID, id_xblock=id_xblock):
@@ -780,7 +849,7 @@ class IterativeXBlockTestCase(TransactionTestCase):
         request2.body = data2.encode('utf-8')
         response2 = self.xblock4.studio_submit(request2)
         self.assertEqual(response2.json_body["result"], "success")
-        self.assertEqual(self.xblock4.grid_structure, sample_content2)
+        self.assertEqual(json.loads(self.xblock4.grid_structure), sample_content2)
         self.assertEqual(IterativeXBlockQuestion.objects.filter(id_course=COURSE_ID, id_xblock=id_xblock).count(), 2)
         i = 6
         for question in IterativeXBlockQuestion.objects.filter(id_course=COURSE_ID, id_xblock=id_xblock):
@@ -1306,14 +1375,195 @@ class IterativeXBlockTestCase(TransactionTestCase):
             }
         }
         fake_xblock =  Mock(
-            content=sample_content,
+            grid_structure=json.dumps(sample_content),
             title='TestTitle',
             submit_message='TestSubmitMessage'
         )
-        duplicated = self.xblock9.studio_post_duplicate("", fake_xblock)
+        fake_store = Mock()
+        duplicated = self.xblock9.studio_post_duplicate(fake_store, fake_xblock)
         self.assertTrue(duplicated)
+        fake_store.update_item.assert_called_once_with(self.xblock9, None)
         questions = IterativeXBlockQuestion.objects.filter(id_course=COURSE_ID, id_xblock=str(self.xblock9.location).split('@')[-1])
         self.assertEqual(questions.count(), 2)
         for question in ["q018", "q019"]:
             self.assertTrue(questions.filter(id_question=question+"_1").exists())
+
+    def test_duplicate_increments_existing_suffix(self):
+        fake_xblock = Mock(
+            grid_structure=json.dumps(self._grid_content({'a': ('question', 'q018_2')})),
+            title='TestTitle',
+            submit_message='TestSubmitMessage'
+        )
+        fake_store = Mock()
+        duplicated = self.xblock9.studio_post_duplicate(fake_store, fake_xblock)
+        self.assertTrue(duplicated)
+        id_xblock = str(self.xblock9.location).split('@')[-1]
+        self.assertTrue(IterativeXBlockQuestion.objects.filter(id_course=COURSE_ID, id_xblock=id_xblock, id_question="q018_3").exists())
+
+    def test_resource_string(self):
+        content = self.xblock1.resource_string('public/css/iterativexblock.css')
+        self.assertIsInstance(content, str)
+
+    def test_max_score(self):
+        self.assertEqual(self.xblock1.max_score(), 1.0)
+
+    def test_get_ids_old_format(self):
+        old_format = {
+            "n_rows": 1,
+            "1": {
+                "n_cells": 2,
+                "1": {
+                    "type": "question",
+                    "content": "qOld1",
+                    "alignment": "justify",
+                    "bold": False,
+                    "italic": False,
+                    "underline": False,
+                    "strikethrough": False,
+                },
+                "2": {
+                    "type": "answer",
+                    "content": "qOld2",
+                    "alignment": "justify",
+                    "bold": False,
+                    "italic": False,
+                    "underline": False,
+                    "strikethrough": False,
+                }
+            }
+        }
+        self.xblock1.grid_structure = json.dumps(old_format)
+        self.assertEqual(self.xblock1.get_ids("question"), ["qOld1"])
+        self.assertEqual(self.xblock1.get_ids("answer"), ["qOld2"])
+
+    # --- student_view dispatch + learner_view / instructor_view ---
+
+    def test_student_view_dispatches_to_instructor(self):
+        self.xblock1.runtime.user_is_staff = True
+        frag = self.xblock1.student_view()
+        self.assertIsNotNone(frag)
+
+    def test_student_view_dispatches_to_student(self):
+        self.xblock1.runtime.user_is_staff = False
+        frag = self.xblock1.student_view()
+        self.assertIsNotNone(frag)
+        self.assertEqual(self.xblock1.score, 1)
+
+    def test_learner_view_with_questions_no_submission(self):
+        self._configure(self.xblock2, {'a': ('question', 'q101'), 'b': ('question', 'q102')})
+        self.xblock2.runtime.user_is_staff = False
+        frag = self.xblock2.student_view()
+        self.assertIsNotNone(frag)
+        self.assertEqual(self.xblock2.score, 0.0)
+
+    def test_learner_view_with_questions_submitted(self):
+        self._configure(self.xblock2, {'a': ('question', 'q103'), 'b': ('question', 'q104')})
+        self.xblock2.scope_ids.user_id = "301"
+        self.xblock2.student_submit(self._request({"q103": "Answer A", "q104": "Answer B"}))
+        self.xblock2.runtime.user_is_staff = False
+        frag = self.xblock2.student_view()
+        self.assertIsNotNone(frag)
+
+    def test_instructor_view_with_questions(self):
+        self._configure(self.xblock2, {'a': ('question', 'q105')})
+        self.xblock2.runtime.user_is_staff = True
+        frag = self.xblock2.student_view()
+        self.assertIsNotNone(frag)
+
+    # --- studio_view / author_view ---
+
+    def test_studio_view(self):
+        frag = self.xblock1.studio_view({})
+        self.assertIsNotNone(frag)
+
+    def test_author_view(self):
+        frag = self.xblock1.author_view()
+        self.assertIsNotNone(frag)
+
+    # --- check_question_ids ---
+
+    def test_check_question_ids_success(self):
+        response = self.xblock1.check_question_ids(self._request(["qNew1", "qNew2"]))
+        self.assertEqual(response.json_body["result"], "success")
+
+    def test_check_question_ids_failed(self):
+        self._configure(self.xblock2, {'a': ('question', 'q201')})
+        response = self.xblock3.check_question_ids(self._request(["q201"]))
+        self.assertEqual(response.json_body["result"], "failed")
+
+    # --- studio_submit edge branches ---
+
+    def test_studio_submit_conflict_with_existing_question(self):
+        self._configure(self.xblock2, {'a': ('question', 'q301')})
+        response = self._configure(self.xblock3, {'a': ('question', 'q301')})
+        self.assertEqual(response.json_body["result"], "failed")
+        self.assertEqual(response.json_body["error"], 102)
+
+    def test_studio_submit_remove_question_with_answer(self):
+        self._configure(self.xblock2, {'a': ('question', 'q401'), 'b': ('question', 'q402')})
+        self.xblock2.scope_ids.user_id = "302"
+        self.xblock2.student_submit(self._request({"q401": "Ans1", "q402": "Ans2"}))
+        id_xblock = str(self.xblock2.location).split('@')[-1]
+        question = IterativeXBlockQuestion.objects.get(id_course=COURSE_ID, id_xblock=id_xblock, id_question="q401")
+        self.assertEqual(IterativeXBlockAnswer.objects.filter(question=question).count(), 1)
+        response = self._configure(
+            self.xblock2, {'a': ('question', 'q402')},
+            new_questions=[], removed_questions=["q401"],
+        )
+        self.assertEqual(response.json_body["result"], "success")
+        self.assertFalse(IterativeXBlockQuestion.objects.filter(id_course=COURSE_ID, id_xblock=id_xblock, id_question="q401").exists())
+        self.assertEqual(IterativeXBlockAnswer.objects.filter(question=question).count(), 0)
+
+    # --- student_submit edge branches ---
+
+    def test_student_submit_repeated(self):
+        self._configure(self.xblock2, {'a': ('question', 'q501')})
+        self.xblock2.scope_ids.user_id = "303"
+        self.xblock2.score = 1
+        response = self.xblock2.student_submit(self._request({"q501": "Second try"}))
+        self.assertEqual(response.json_body["result"], "repeated")
+
+    def test_student_submit_missing_question(self):
+        self.xblock2.scope_ids.user_id = "304"
+        response = self.xblock2.student_submit(self._request({"qGhost": "Answer"}))
+        self.assertEqual(response.json_body["result"], "success")
+        self.assertEqual(IterativeXBlockAnswer.objects.filter(id_student="304").count(), 0)
+
+    # --- fetch_previous_submission ---
+
+    def test_fetch_previous_submission_self(self):
+        self._configure(self.xblock2, {'a': ('question', 'q601')})
+        self.xblock2.scope_ids.user_id = "305"
+        self.xblock2.student_submit(self._request({"q601": "MyAnswer"}))
+        response = self.xblock2.fetch_previous_submission(self._request({"id_user": "", "id_question": "q601"}))
+        self.assertEqual(response.json_body["result"], "success")
+        self.assertEqual(response.json_body["answer"], "MyAnswer")
+
+    def test_fetch_previous_submission_explicit_user(self):
+        self._configure(self.xblock2, {'a': ('question', 'q602')})
+        self.xblock2.scope_ids.user_id = "306"
+        self.xblock2.student_submit(self._request({"q602": "OtherAnswer"}))
+        response = self.xblock2.fetch_previous_submission(self._request({"id_user": "306", "id_question": "q602"}))
+        self.assertEqual(response.json_body["result"], "success")
+        self.assertEqual(response.json_body["answer"], "OtherAnswer")
+
+    def test_fetch_previous_submission_no_question(self):
+        response = self.xblock2.fetch_previous_submission(self._request({"id_user": "", "id_question": "qGhostQuestion"}))
+        self.assertEqual(response.json_body["result"], "no_question")
+
+    def test_fetch_previous_submission_no_answer(self):
+        self._configure(self.xblock2, {'a': ('question', 'q603')})
+        response = self.xblock2.fetch_previous_submission(self._request({"id_user": "", "id_question": "q603"}))
+        self.assertEqual(response.json_body["result"], "no_answer")
+
+    # --- ensure_db_integrity ---
+
+    def test_ensure_db_integrity(self):
+        self._configure(self.xblock2, {'a': ('question', 'q701')})
+        id_xblock = str(self.xblock2.location).split('@')[-1]
+        IterativeXBlockQuestion.objects.filter(id_course=COURSE_ID, id_xblock=id_xblock, id_question="q701").delete()
+        self.assertFalse(IterativeXBlockQuestion.objects.filter(id_course=COURSE_ID, id_xblock=id_xblock, id_question="q701").exists())
+        response = self.xblock2.ensure_db_integrity(self._request({}))
+        self.assertEqual(response.json_body["result"], "success")
+        self.assertTrue(IterativeXBlockQuestion.objects.filter(id_course=COURSE_ID, id_xblock=id_xblock, id_question="q701").exists())
 

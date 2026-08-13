@@ -1,5 +1,7 @@
 # Iterative XBlock
 
+![coverage](coverage-badge.svg)
+
 Iterative XBlock is a potent educational tool designed for integration into [edX courses](https://www.edx.org/). This tool enables the incorporation of open-response questions whose answers can be referenced in later parts of the course.
 
 Here are some example use cases:
