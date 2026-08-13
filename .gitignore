@@ -132,8 +132,6 @@ dmypy.json
 
 # openedx test files
 test_root/
-setup.cfg
-
 notas.txt
-
 iterativexblock.egg-info/
+wf_tmp/

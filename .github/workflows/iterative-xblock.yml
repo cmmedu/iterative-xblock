@@ -1,16 +1,25 @@
-name: Iterative XBlock
+name: Python application
 
 on:
   push:
     branches:
-      - main
+      - 'eol-release/*'
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+    branches:
+      - 'eol-release/*'
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-    - name: Run tests
-      run: |
-        cd .github/
-        docker compose run lms /openedx/requirements/iterative-xblock/.github/test.sh
+  test:
+    uses: eol-uchile/workflow-commons/.github/workflows/pythonapp.yml@pythonapp-2
+    with:
+      app_id: ${{ vars.EOLITO_BOT_APP_ID }}
+      django-lms: true
+      django-cms: false
+      platform-eol: true
+      platform-openuchile: false
+    secrets:
+      private_key: ${{ secrets.EOLITO_BOT_PRIVATE_KEY }}
