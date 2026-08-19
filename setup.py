@@ -32,6 +32,7 @@ setup(
     ],
     install_requires=[
         'XBlock',
+        'web-fragments',
     ],
     entry_points={
         'xblock.v1': [

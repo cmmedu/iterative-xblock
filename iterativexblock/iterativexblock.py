@@ -7,7 +7,7 @@ import re
 from xblock.core import XBlock
 from xblock.fields import String, Scope, Boolean, Float, Dict
 from xblockutils.resources import ResourceLoader
-from xblock.fragment import Fragment
+from web_fragments.fragment import Fragment
 
 loader = ResourceLoader(__name__)
 
